@@ -73,8 +73,8 @@
 
             <div>
                 <ul class="navbar-nav d-md-flex d-none ms-auto">
-                    <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Register</a></li>
+                    <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="/register" class="nav-link">Register</a></li>
                 </ul>
             </div>
         </div>
