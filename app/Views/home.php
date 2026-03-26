@@ -8,51 +8,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc3/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    
-    <style>
-        .bg-library {
-            /* min-height:100vh; */
-            background: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da') no-repeat center center/cover;
-        }
-
-        .bg-library:before {
-            content:"";
-            position:absolute;
-            width:100%;
-            height:100%;
-            background: rgba(60, 40, 20, 0.75);
-            top:0;
-            left:0;
-        }
-
-        .content {
-            position:relative;
-            z-index: 2;
-            color:white;
-        }
-
-        .hero-title {
-            font-size: 50px;
-            font-weight: bold;
-        }
-
-        .hero-sub {
-            font-size: 18px;
-        }
-
-        .bg-f5f1e6 {
-            background: #f5f1e6;
-        }
-
-        .bg-fff7f0 {
-            background: #fff7f0;
-        }
-
-        .color-8b5e3c {
-            color: #8b5e3c;
-        }
-
-    </style>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="sidebar-collapse layout-fixed sidebar-expand-md">
     
@@ -97,8 +53,8 @@
 
     <div class="app-main pb-0">
         
-        <div class="bg-library ">
-            <div class="content">
+        <div class="bg-library">
+            <div class="front text-white">
                 <div class="container text-center pt-5 pb-3">
                     
                     <!-- HERO -->
@@ -145,7 +101,7 @@
         </div>
 
         <!-- HOW IT WORKS -->
-        <section class="content bg-light text-dark">
+        <section class="front bg-light text-dark">
             <div class="container p-4">
                 <h2 class="text-center mt-5 mb-3">How It Works</h2>
                 
@@ -154,7 +110,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-person-plus fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-person-plus fs-1 bg-dark-brown"></i>
                                 <h5>1. Register & Login</h5>
                                 <p>Create your account and access the system.</p>
                             </div>
@@ -164,7 +120,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-search fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-search fs-1 bg-dark-brown"></i>
                                 <h5>2. Search Books</h5>
                                 <p>Browse books and check their availability.</p>
                             </div>
@@ -174,7 +130,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-calendar-event fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-calendar-event fs-1 bg-dark-brown"></i>
                                 <h5>3. View Available Dates</h5>
                                 <p>See which dates are available (unreserved dates are highlighted).</p>
                             </div>
@@ -184,7 +140,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-calendar-check fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-calendar-check fs-1 bg-dark-brown"></i>
                                 <h5>4. Select Borrow Dates</h5>
                                 <p>Select your preferred start and end dates. The system ensures your borrowing period does not exceed the maximum allowed duration.</p>
                             </div>
@@ -194,7 +150,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-bookmark-check fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-bookmark-check fs-1 bg-dark-brown"></i>
                                 <h5>5. Confirm Reservation</h5>
                                 <p>Reserve the book based on your selected schedule.</p>
                             </div>
@@ -204,7 +160,7 @@
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
                             <div class="card-body">
-                                <i class="bi bi-box-arrow-down fs-1 color-8b5e3c"></i>
+                                <i class="bi bi-box-arrow-down fs-1 bg-dark-brown"></i>
                                 <h5>6. Borrow & Return</h5>
                                 <p>Pick up on your start date and return before the due date. Late returns will incur fines.</p>
                             </div>
@@ -220,7 +176,7 @@
         </section>
 
         <!-- FEEDBACKS -->
-        <section class="content bg-f5f1e6 text-dark">
+        <section class="front bg-f5f1e6 text-dark">
             <div class="container p-4">
                 <h2 class="text-center mt-5 mb-3">User Feedback</h2>
                 <div class="row text-center">
