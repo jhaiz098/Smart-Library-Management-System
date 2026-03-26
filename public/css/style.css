@@ -1,21 +1,33 @@
 :root {
-    --color-primary: #8b5e3c;       /* dark brown, main buttons & highlights */
-    --color-secondary: #5c3d2e;     /* darker brown, header/footer text */
-    --color-bg-light: #f5f1e6;      /* page background */
-    --color-bg-offwhite: #fff7f0;   /* card backgrounds */
+    --color-dark-brown: #8b5e3c;       /* dark brown, main buttons & highlights */
+    --color-dark-dark-brown: #5c3d2e;     /* darker brown, header/footer text */
+    --color-light-yellow: #f5f1e6;      /* page background */
+    --color-light-brown-yellow: #fff7f0;   /* card backgrounds */
     --overlay-dark: rgba(60, 40, 20, 0.75); /* overlay for hero section */
 }
 
+.text-dark-brown {
+    color: var(--color-dark-brown);
+}
+
+.text-dark-dark-brown {
+    color: var(--color-dark-dark-brown);
+}
+
 .bg-dark-brown {
-    color: var(--color-primary);
+    background: var(--color-dark-brown);
 }
 
-.bg-f5f1e6 {
-    background: #f5f1e6;
+.bg-dark-dark-brown {
+    background-color: var(--color-dark-dark-brown);
 }
 
-.bg-fff7f0 {
-    background: #fff7f0;
+.bg-light-yellow {
+    background: var(--color-light-yellow);
+}
+
+.bg-light-brown-yellow {
+    background: var(--color-light-brown-yellow);
 }
 
 .bg-library {
@@ -45,4 +57,8 @@
 
 .hero-sub {
     font-size: 18px;
+}
+
+.mh-100vh {
+    min-height: 100vh;
 }

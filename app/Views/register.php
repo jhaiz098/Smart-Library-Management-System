@@ -7,20 +7,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-
+    <link rel="stylesheet" href="css/style.css">
+    
     <style>
-        body {
-            background: #f5f1e6;
-        }
-
-        .register-container {
-            min-height: 100vh;
-        }
-
-        .register-card {
-            border-radius: 12px;
-        }
-
         .btn-main {
             background: #8b5e3c;
             color: white;
@@ -30,32 +19,24 @@
             background: #6f472d;
             color: white;
         }
-
-        .brand {
-            color: #5c3d2e;
-        }
-        
-        .bg-8b5e3c {
-            background-color: #8b5e3c;
-        }
     </style>
 </head>
 <body>
 
 <div class="app-wrapper">
 
-<div class="app-main p-4">
+<div class="app-main p-4 bg-light-yellow">
 
-    <a href="/" class="btn bg-8b5e3c text-white position-absolute">Home</a>
+    <a href="/" class="btn bg-dark-brown text-white position-absolute">Home</a>
 
-    <div class="container register-container d-flex align-items-center justify-content-center">
+    <div class="container mh-100vh d-flex align-items-center justify-content-center">
         
         <div class="col-md-5">
             <div class="card register-card shadow-lg p-4">
 
                 <!-- Brand -->
                 <div class="text-center mb-3">
-                    <h3 class="fw-bold brand">
+                    <h3 class="fw-bold text-dark-dark-brown">
                         <i class="bi bi-book me-2"></i> LibraGo
                     </h3>
                     <p class="text-muted">Create your account</p>
@@ -101,7 +82,7 @@
                     <div class="text-center">
                         <small>
                             Already have an account?
-                            <a href="/login" class="text-decoration-none" style="color:#8b5e3c;">
+                            <a href="/login" class="text-decoration-none text-dark-brown">
                                 Login
                             </a>
                         </small>

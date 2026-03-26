@@ -15,7 +15,7 @@
 <div class="app-wrapper">
     
     <!-- HEADER -->
-    <header class="app-header navbar navbar-expand-md navbar-dark" style="background-color:#5c3d2e;">
+    <header class="app-header navbar navbar-expand-md navbar-dark bg-dark-dark-brown">
         <div class="container-fluid d-flex justify-content-between">
             <div class="d-flex align-items-center">
                 <a href="#" class="btn btn-link text-white fs-5 d-sm-none" data-lte-toggle="sidebar"><i class="bi bi-list"></i></a>
@@ -62,7 +62,7 @@
                     <p class="hero-sub">Smart Library Reservation and Borrowing Management System</p>
                     <p>Reserve books, select your borrow dates, and manage your library visits easily.</p>
                 
-                    <a href="#" class="btn btn-lg text-white m-5" style="background:#8b5e3c;">Get Started</a>
+                    <a href="#" class="btn btn-lg text-white m-5 bg-dark-brown">Get Started</a>
                 
                     <!-- FEATURES -->
 
@@ -102,15 +102,15 @@
 
         <!-- HOW IT WORKS -->
         <section class="front bg-light text-dark">
-            <div class="container p-4">
+            <div class="container">
                 <h2 class="text-center mt-5 mb-3">How It Works</h2>
                 
                 <div class="row text-center">
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-person-plus fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-person-plus fs-1 text-dark-brown"></i>
                                 <h5>1. Register & Login</h5>
                                 <p>Create your account and access the system.</p>
                             </div>
@@ -118,9 +118,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-search fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-search fs-1 text-dark-brown"></i>
                                 <h5>2. Search Books</h5>
                                 <p>Browse books and check their availability.</p>
                             </div>
@@ -128,9 +128,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-calendar-event fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-calendar-event fs-1 text-dark-brown"></i>
                                 <h5>3. View Available Dates</h5>
                                 <p>See which dates are available (unreserved dates are highlighted).</p>
                             </div>
@@ -138,9 +138,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-calendar-check fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-calendar-check fs-1 text-dark-brown"></i>
                                 <h5>4. Select Borrow Dates</h5>
                                 <p>Select your preferred start and end dates. The system ensures your borrowing period does not exceed the maximum allowed duration.</p>
                             </div>
@@ -148,9 +148,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-bookmark-check fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-bookmark-check fs-1 text-dark-brown"></i>
                                 <h5>5. Confirm Reservation</h5>
                                 <p>Reserve the book based on your selected schedule.</p>
                             </div>
@@ -158,9 +158,9 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-fff7f0">
+                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-box-arrow-down fs-1 bg-dark-brown"></i>
+                                <i class="bi bi-box-arrow-down fs-1 text-dark-brown"></i>
                                 <h5>6. Borrow & Return</h5>
                                 <p>Pick up on your start date and return before the due date. Late returns will incur fines.</p>
                             </div>
@@ -176,12 +176,12 @@
         </section>
 
         <!-- FEEDBACKS -->
-        <section class="front bg-f5f1e6 text-dark">
-            <div class="container p-4">
+        <section class="front bg-light-yellow text-dark">
+            <div class="container">
                 <h2 class="text-center mt-5 mb-3">User Feedback</h2>
                 <div class="row text-center">
                     <div class="col-md-4">
-                        <div class="card p-3">
+                        <div class="card p-3 mb-3">
                             <div class="card-body">
                                 <p class="fst-italic">"LibraGo made borrowing books so easy! No more waiting in long lines."</p>
                                 <p class="fw-bold">- Maria D.</p>
@@ -189,7 +189,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card p-3">
+                        <div class="card p-3 mb-3">
                             <div class="card-body">
                                 <p class="fst-italic">"Scheduling my library visit online saved me so much time."</p>
                                 <p class="fw-bold">- John P.</p>
@@ -197,7 +197,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="card p-3">
+                        <div class="card p-3 mb-3">
                             <div class="card-body">
                                 <p class="fst-italic">"I love how easy it is to choose my borrow dates. So convenient!"</p>
                                 <p class="fw-bold">- Aileen R.</p>
@@ -209,7 +209,7 @@
         </section>
     </div>
 
-    <div class="app-footer text-center text-white" style="background:#5c3d2e;">
+    <div class="app-footer text-center text-white bg-dark-dark-brown">
         <strong>LibraGo</strong> - 2026
     </div>
 </div>
