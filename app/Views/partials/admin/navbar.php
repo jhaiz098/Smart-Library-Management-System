@@ -59,6 +59,11 @@
                 </a>
             </li> -->
             <li class="nav-item">
+                <a href="/admin/unpaid_fines_list" class="nav-link text-white px-3 py-2">
+                    Fines
+                </a>
+            </li>
+            <li class="nav-item">
                 <a href="/admin/library_settings" class="nav-link text-white px-3 py-2">
                     Settings
                 </a>

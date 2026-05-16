@@ -61,6 +61,9 @@ $routes->get('borrow_requests/completed_borrow_requests', 'Admin\Book::completed
 
 $routes->get('users', 'Admin\User::list');
 
+$routes->get('paid_fines_list', 'Admin\Fines::paid_fines_list');
+$routes->get('unpaid_fines_list', 'Admin\Fines::unpaid_fines_list');
+
 $routes->get('library_settings', 'Admin\Setting::library_settings');
 $routes->post('library_settings/update', 'Admin\Setting::library_settings_update');
 
