@@ -7,6 +7,7 @@ use App\Models\BorrowingModel;
 use App\Models\BorrowingHistory;
 use App\Models\LibrarySettingsModel;
 use App\Models\FinesModel;
+use DateTime;
 
 class BorrowedBooks extends BaseController
 {
@@ -42,12 +43,14 @@ class BorrowedBooks extends BaseController
             ->paginate($perPage);
 
         $daily_overdue_fine = $library_settings_model->first()['daily_overdue_fine'];
+        $max_fine_amount = $library_settings_model->first()['max_fine_amount'];
         
         return view('admin/borrowed_books/borrowed_books', [
             'borrowed_books' => $borrowed_books,
             'pager' => $borrowing_model->pager,
             'borrow_status' => 'borrowed',
-            'daily_overdue_fine' => $daily_overdue_fine
+            'daily_overdue_fine' => $daily_overdue_fine,
+            'max_fine_amount' => $max_fine_amount
         ]);
     }
 
@@ -94,7 +97,6 @@ class BorrowedBooks extends BaseController
 
         $role_id = (int) session()->get('role_id');
 
-        // ROLE CHECK
         if (!in_array($role_id, [1, 2])) {
             return redirect()->back()
                 ->with('error', 'You are not authorized to process returns.');
@@ -102,28 +104,23 @@ class BorrowedBooks extends BaseController
 
         $borrowing = $borrowing_model->find($id);
 
-        // check if borrowing exists
         if (!$borrowing) {
             return redirect()->back()
                 ->with('error', 'Borrowing record not found.');
         }
 
-        // only borrowed can be returned
-        if ($borrowing['status'] !== 'borrowed') {
+        if ($borrowing['status'] === 'returned') {
             return redirect()->back()
-                ->with('error', 'This borrowing cannot be returned.');
+                ->with('error', 'This book is already returned.');
         }
 
         $now = date('Y-m-d H:i:s');
 
-        // update borrowing
+        // update borrowing first
         $borrowing_model->update($id, [
             'status' => 'returned',
-
             'return_date' => $now,
-
             'returned_to' => session()->get('user_id'),
-
             'remarks' => $this->request->getPost('remarks')
                 ?: 'Book returned successfully.'
         ]);
@@ -131,51 +128,48 @@ class BorrowedBooks extends BaseController
         // history log
         $history_model->insert([
             'borrowing_id' => $id,
-
             'action' => 'returned',
-
             'performed_at' => $now,
             'performed_by' => session()->get('user_id'),
-
             'remarks' => $this->request->getPost('remarks')
                 ?: 'Book returned successfully.'
         ]);
 
         /*
-        |--------------------------------------------------------------------------
-        | CREATE FINE IF OVERDUE
-        |--------------------------------------------------------------------------
+        |----------------------------------------------------
+        | FINE CALCULATION (OVERDUE ONLY)
+        |----------------------------------------------------
         */
 
-        $due_date = strtotime($borrowing['due_date']);
-        $return_date = strtotime($now);
+        $due_date = new DateTime($borrowing['due_date']);
+        $return_date = new DateTime($now);
 
-        // overdue check
         if ($return_date > $due_date) {
 
-            // compute overdue days
-            $seconds_late = $return_date - $due_date;
+            $interval = $due_date->diff($return_date);
+            $days_late = (int) $interval->days;
 
-            $days_late = ceil($seconds_late / (60 * 60 * 24));
+            // load settings ONCE (bug fix)
+            $settings = $library_settings_model->first();
 
-            // example fine formula
-            $fine_per_day = $library_settings_model->first()['daily_overdue_fine'];
+            $fine_per_day = (float) $settings['daily_overdue_fine'];
+            $max_fine_amount = (float) $settings['max_fine_amount'];
 
             $amount = $days_late * $fine_per_day;
 
-            // insert fine
+            // enforce max cap
+            if ($max_fine_amount > 0) {
+                $amount = min($amount, $max_fine_amount);
+            }
+
             $fine_model->insert([
-
                 'borrowing_id' => $id,
-
                 'user_id' => $borrowing['user_id'],
-
+                'daily_overdue_fine' => $fine_per_day,
+                'max_fine_amount' => $max_fine_amount,
                 'amount' => $amount,
-
                 'remarks' => "Overdue by {$days_late} day(s).",
-
                 'status' => 'unpaid',
-
                 'issued_by' => session()->get('user_id')
             ]);
         }
@@ -251,7 +245,7 @@ class BorrowedBooks extends BaseController
                 ?: "Borrowing extended by {$extend_days} day(s)."
         ]);
         
-        return redirect()->back()
+        return redirect()->to(base_url('admin/borrowed_books/borrowed'))
             ->with('success', "Borrowing extended by {$extend_days} day(s).");
     }
 

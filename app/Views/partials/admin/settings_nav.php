@@ -9,7 +9,4 @@
     <li class="nav-item">
         <a href="role_permissions_settings" class="nav-link <?= ($settings_type) == "role_permissions_settings" ? 'active' : '' ?>">Role & Permissions</a>
     </li>
-    <li class="nav-item">
-        <a href="borrowing_rules_settings" class="nav-link <?= ($settings_type) == "borrowing_rules_settings" ? 'active' : '' ?>">Borrowing Rules</a>
-    </li>
 </ul>

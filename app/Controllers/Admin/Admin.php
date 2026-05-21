@@ -11,7 +11,48 @@ class Admin extends BaseController
 {
     public function dashboard()
     {
-        return view('admin/dashboard');
+        $db = \Config\Database::connect();
+
+        // TOTAL COUNTS
+        $totalBooks = $db->table('books')->countAll();
+        $totalUsers = $db->table('users')->countAll();
+
+        $activeBorrowed = $db->table('borrowings')
+            ->where('status', 'borrowed')
+            ->countAllResults();
+
+        $overdueBorrowed = $db->table('borrowings')
+            ->where('status', 'borrowed')
+            ->where('due_date <', date('Y-m-d H:i:s'))
+            ->countAllResults();
+
+        $totalFines = $db->table('fines')
+            ->where('status', 'unpaid')
+            ->countAllResults();
+
+        $paidFines = $db->table('fines')
+            ->where('status', 'paid')
+            ->countAllResults();
+
+        // RECENT BORROWINGS
+        $recentBorrowings = $db->table('borrowings')
+            ->select('borrowings.*, users.full_name, books.title')
+            ->join('users', 'users.id = borrowings.user_id')
+            ->join('books', 'books.id = borrowings.book_id')
+            ->orderBy('borrowings.borrow_date', 'DESC')
+            ->limit(5)
+            ->get()
+            ->getResultArray();
+
+        return view('admin/dashboard', [
+            'totalBooks' => $totalBooks,
+            'totalUsers' => $totalUsers,
+            'activeBorrowed' => $activeBorrowed,
+            'overdueBorrowed' => $overdueBorrowed,
+            'totalFines' => $totalFines,
+            'paidFines' => $paidFines,
+            'recentBorrowings' => $recentBorrowings
+        ]);
     }
 
     public function book_management_active()

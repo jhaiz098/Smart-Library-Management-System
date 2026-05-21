@@ -19,6 +19,8 @@ $routes->get('/logout', 'Auth::logout');
 
 $routes->get('/unauthorized', 'Error::unauthorized');
 
+$routes->get('/server_time', 'Server::server_time');
+
 // PRIVATE (PROTECTED) (Login required)
 
 $routes->group('', ['filter' => 'auth'], function($routes) {
@@ -63,6 +65,7 @@ $routes->get('users', 'Admin\User::list');
 
 $routes->get('paid_fines_list', 'Admin\Fines::paid_fines_list');
 $routes->get('unpaid_fines_list', 'Admin\Fines::unpaid_fines_list');
+$routes->post('unpaid_fines_list/pay_fine', 'Admin\Fines::pay_fine');
 
 $routes->get('library_settings', 'Admin\Setting::library_settings');
 $routes->post('library_settings/update', 'Admin\Setting::library_settings_update');
@@ -73,8 +76,7 @@ $routes->post('category_management_settings/update_category', 'Admin\Setting::up
 $routes->post('category_management_settings/delete_category/(:num)', 'Admin\Setting::delete_category/$1');
 
 $routes->get('role_permissions_settings', 'Admin\Setting::role_permissions_settings');
-
-$routes->get('borrowing_rules_settings', 'Admin\Setting::borrowing_rules_settings');
+$routes->post('role_permissions_settings/update', 'Admin\Setting::update_permission');
 });
 
 

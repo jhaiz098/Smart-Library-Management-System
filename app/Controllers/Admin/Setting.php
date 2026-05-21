@@ -6,6 +6,9 @@ use App\Controllers\BaseController;
 use App\Models\BookModel;
 use App\Models\CategoryModel;
 use App\Models\LibrarySettingsModel;
+use App\Models\RolePermissionsModel;
+use App\Models\StaffLevelModel;
+use App\Models\UserModel;
 
 class Setting extends BaseController
 {
@@ -96,9 +99,85 @@ class Setting extends BaseController
 
     public function role_permissions_settings()
     {
+        $role_perm_model = new RolePermissionsModel();
+        $staff_level_model = new StaffLevelModel();
+
         $settings_type = "role_permissions_settings";
+
+        /*
+        |--------------------------------------------------------------------------
+        | GET ALL ROLE PERMISSIONS
+        |--------------------------------------------------------------------------
+        */
+
+        $roles_permissions = $role_perm_model->findAll();
+
+        foreach ($roles_permissions as $key => $perm) {
+
+            if ($perm['role_id'] == 1) {
+                $roles_permissions[$key]['label'] = 'Admin';
+            } else {
+                $staff = $staff_level_model->find($perm['staff_level_id']);
+                $roles_permissions[$key]['label'] = $staff['name'] ?? 'Unknown';
+            }
+        }
+
         return view('admin/settings/role_permissions_settings', [
-            'settings_type' => $settings_type
+            'settings_type' => $settings_type,
+            'permissions' => $roles_permissions
+        ]);
+    }
+
+    public function update_permission()
+    {
+        $model = new RolePermissionsModel();
+
+        $id = $this->request->getPost('id');
+        $key = $this->request->getPost('key');
+        $value = $this->request->getPost('value');
+
+        $allowedKeys = [
+            'can_manage_users',
+            'can_manage_books',
+            'can_process_borrow_requests',
+            'can_manage_borrowed_books',
+            'can_extend_borrowings',
+            'can_process_returns',
+            'can_manage_fines',
+            'can_manage_settings',
+            'can_manage_roles_permissions'
+        ];
+
+        if (!in_array($key, $allowedKeys)) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Invalid permission key'
+            ]);
+        }
+
+        // validate record exists
+        $record = $model->find($id);
+
+        if (!$record) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'Permission row not found'
+            ]);
+        }
+
+        $updated = $model->update($id, [
+            $key => $value ? 1 : 0
+        ]);
+
+        if (!$updated) {
+            return $this->response->setJSON([
+                'status' => 'error',
+                'message' => 'DB update failed'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'status' => 'success'
         ]);
     }
 

@@ -1,30 +1,19 @@
 <?php
-
     namespace App\Models;
     use CodeIgniter\Model;
 
-    class FinesModel extends Model
+    class StaffLevelModel extends Model
     {
-        protected $table = 'fines';
+        protected $table = 'staff_levels';
         protected $primaryKey = 'id';
         protected $returnType = 'array';
 
         protected $allowedFields = [
-            'borrowing_id',
-            'user_id',
-            'max_fine_amount',
-            'daily_overdue_fine',
-            'amount',
-            'remarks',
-            'status',
-            'issued_by',
-            'paid_at',
-            'paid_by',
+            'name',
         ];
-
+        
         protected $useTimestamps = true;
         protected $createdField = 'created_at';
         protected $updatedField = 'updated_at';
     }
-
 ?>

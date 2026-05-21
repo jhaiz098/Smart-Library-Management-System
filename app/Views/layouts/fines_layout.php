@@ -71,7 +71,7 @@
                         <li class="nav-item"><a href="unpaid_fines_list" class="nav-link <?= ($fine_status) == 'unpaid' ? 'active' : '' ?>">Unpaid</a></li>
                         <li class="nav-item"><a href="paid_fines_list" class="nav-link <?= ($fine_status) == 'paid' ? 'active' : '' ?>">Paid</a></li>
                     </ul>
-                    <?= $this->renderSection('render_books') ?>
+                    <?= $this->renderSection('render_fines') ?>
                 </div>
             </div>
         </div>

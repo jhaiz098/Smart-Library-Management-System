@@ -87,6 +87,7 @@
                                 data-book="<?= $bb['book_title'] ?>"
                                 data-due="<?= $bb['due_date'] ?>"
                                 data-daily_overdue_fine="<?= $daily_overdue_fine ?>"
+                                data-max_fine_amount="<?= $max_fine_amount ?>"
                                 >
 
                                 Return
@@ -367,7 +368,15 @@ document.addEventListener('DOMContentLoaded', function () {
     // RETURN MODAL
     const returnModal = document.getElementById('returnModal');
 
-    returnModal.addEventListener('show.bs.modal', function (event) {
+    // RESET WHEN CLOSED
+    returnModal.addEventListener('hidden.bs.modal', function () {
+
+        document.getElementById('fine_notice').innerHTML = '';
+
+    });
+
+    // SHOW MODAL
+    returnModal.addEventListener('show.bs.modal', async function (event) {
 
         const button = event.relatedTarget;
 
@@ -375,60 +384,74 @@ document.addEventListener('DOMContentLoaded', function () {
         const user = button.getAttribute('data-user');
         const book = button.getAttribute('data-book');
         const due = button.getAttribute('data-due');
-        const daily_overdue_fine = button.getAttribute('data-daily_overdue_fine');
+        const fineRate = parseFloat(button.getAttribute('data-daily_overdue_fine') || 0);
+        const maxFineAmount = parseFloat(button.getAttribute('data-max_fine_amount') || 0);
+
+        const fineNotice = document.getElementById('fine_notice');
 
         document.getElementById('return_user').innerText = user;
         document.getElementById('return_book').innerText = book;
         document.getElementById('return_id').value = id;
 
-        // OVERDUE CHECK
-        const dueDate = new Date(due);
-        const now = new Date();
+        fineNotice.innerHTML = '';
 
-        const fineNotice = document.getElementById('fine_notice');
+        // 🔥 SERVER TIME (source of truth)
+        const res = await fetch("<?= base_url('server_time') ?>");
+        const data = await res.json();
+
+        const now = new Date(data.now);
+        const dueDate = new Date(due.replace(' ', 'T'));
+
+        console.log('SERVER NOW:', now);
+        console.log('DUE:', dueDate);
 
         if (now > dueDate) {
 
             const diffMs = now - dueDate;
 
-            const daysLate = Math.ceil(
-                diffMs / (1000 * 60 * 60 * 24)
-            );
+            const daysLate = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
 
-            const finePerDay = daily_overdue_fine;
+            // 💰 calculations
+            const uncappedTotal = daysLate * fineRate;
 
-            const estimatedFine = daysLate * finePerDay;
+            const cappedTotal = maxFineAmount > 0
+                ? Math.min(uncappedTotal, maxFineAmount)
+                : uncappedTotal;
 
             fineNotice.innerHTML = `
                 <div class="alert alert-danger">
 
-                    <strong>Overdue Detected</strong>
-                    <br>
+                    <strong>Overdue Detected</strong><br>
+                    Late by: ${daysLate} day(s)<br>
+                    Fine Rate: ₱${fineRate} per day<br>
 
-                    Late by: ${daysLate} day(s)
-                    <br>
+                    <hr>
 
-                    Fine Rate: ₱${finePerDay} per day
-                    <br>
+                    <div>
+                        Uncapped Total: ₱${uncappedTotal}
+                    </div>
 
-                    Estimated Fine:
-                    ₱${finePerDay} × ${daysLate}
-                    = <strong>₱${estimatedFine}</strong>
+                    <div>
+                        Max Fine Allowed: ₱${maxFineAmount}
+                    </div>
 
-                    <br><br>
+                    <div>
+                        Final Fine:
+                        <strong class="${uncappedTotal > maxFineAmount ? 'text-warning' : ''}">
+                            ₱${cappedTotal}
+                        </strong>
+                    </div>
 
-                    A fine record will automatically be created after return.
+                    ${uncappedTotal > maxFineAmount ? `
+                        <div class="text-danger mt-2 small">
+                            ⚠ Fine exceeds max limit. Cap will be applied.
+                        </div>
+                    ` : ''}
 
                 </div>
             `;
         }
-        else {
-
-            fineNotice.innerHTML = '';
-        }
-
     });
-
 
 
 
@@ -450,11 +473,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('extend_id').value = id;
     });
 
-});
 
-document.addEventListener('DOMContentLoaded', function () {
 
-    const historyModal = document.getElementById('historyModal');
+
 
     historyModal.addEventListener('show.bs.modal', function (event) {
 
@@ -464,35 +485,22 @@ document.addEventListener('DOMContentLoaded', function () {
         const user = button.getAttribute('data-user');
         const book = button.getAttribute('data-book');
 
-        // set modal info
+        // 🔥 THIS WAS MISSING
         document.getElementById('history_user').innerText = user;
         document.getElementById('history_book').innerText = book;
 
-        // loading state
-        document.getElementById('history_content').innerHTML = `
-            <div class="text-center py-3">
-                Loading history...
-            </div>
-        `;
+        document.getElementById('history_content').innerHTML =
+            `<div class="text-center py-3">Loading history...</div>`;
 
-        // fetch history
         fetch("<?= base_url('admin/borrowed_books/history/') ?>" + borrowingId)
-
-            .then(response => response.text())
-
+            .then(res => res.text())
             .then(data => {
                 document.getElementById('history_content').innerHTML = data;
             })
-
-            .catch(error => {
-
-                document.getElementById('history_content').innerHTML = `
-                    <div class="alert alert-danger">
-                        Failed to load borrowing history.
-                    </div>
-                `;
+            .catch(() => {
+                document.getElementById('history_content').innerHTML =
+                    `<div class="alert alert-danger">Failed to load history</div>`;
             });
-
     });
 
 });
