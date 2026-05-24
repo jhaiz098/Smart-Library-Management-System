@@ -60,6 +60,7 @@ $routes->post('borrow_requests/approved_borrow_requests_claim/(:num)', 'Admin\Bo
 $routes->post('borrow_requests/approved_borrow_requests_cancel/(:num)', 'Admin\Book::approved_borrow_requests_cancel/$1');
 
 $routes->get('borrow_requests/completed_borrow_requests', 'Admin\Book::completed_borrow_requests_list');
+$routes->get('borrow_requests/expired_borrow_requests', 'Admin\Book::expired_borrow_requests_list');
 
 $routes->get('users', 'Admin\User::list');
 
@@ -90,4 +91,11 @@ $routes->get('books/view/(:num)', 'User\Book::book_view/$1');
 $routes->post('books/view/send_borrow_request/(:num)', 'User\Book::send_borrow_request/$1');
 $routes->post('books/view/cancel_borrow_request/(:num)', 'User\Book::cancel_borrow_request/$1');
 
+$routes->post('books/view/reserve_book/(:num)', 'User\Book::reserve_book/$1');
+$routes->post('books/view/cancel_reserve_book/(:num)', 'User\Book::cancel_reserve_book/$1');
+
+$routes->get('my_transactions/borrowings', 'User\Transactions::borrowings_list');
+$routes->get('my_transactions/borrow_requests', 'User\Transactions::borrow_requests_list');
+$routes->get('my_transactions/reservations', 'User\Transactions::reservations_list');
+$routes->get('my_transactions/all', 'User\Transactions::all_list');
 });

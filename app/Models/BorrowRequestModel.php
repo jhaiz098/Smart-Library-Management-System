@@ -14,6 +14,7 @@
             'book_id',
             'status',
             'request_date',
+            'expires_at',
             'processed_at',
             'processed_by',
             'remarks',

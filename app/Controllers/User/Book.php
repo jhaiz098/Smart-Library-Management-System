@@ -52,14 +52,31 @@ class Book extends BaseController
 
         $book['is_borrowed'] = $current_borrowing ? true : false;
 
+        $user_borrowing = $borrowing_model
+            ->where('book_id', $id)
+            ->where('user_id', $user_id)
+            ->where('status', 'borrowed')
+            ->first();
+
+        $book['user_borrowed'] = $user_borrowing ? true : false;
+
         // USER BORROW REQUEST (important)
         $user_borrow_request = $borrow_request_model
             ->where('book_id', $id)
             ->where('user_id', $user_id)
-            ->where('status', 'pending')
+            ->orderBy('id', 'DESC')
             ->first();
 
         $book['user_borrow_request'] = $user_borrow_request;
+
+        $book['has_active_borrow_request'] = (
+            $user_borrow_request &&
+            in_array($user_borrow_request['status'], [
+                'pending',
+                'approved',
+                'rejected'
+            ])
+        );
 
         // USER RESERVATION
         $user_reservation = $reservation_model
@@ -72,8 +89,14 @@ class Book extends BaseController
 
         // ALL RESERVATIONS (QUEUE)
         $book['reservations'] = $reservation_model
+            ->select('
+                    reservations.*,
+                    users.library_id as reserver_library_id,
+                    users.full_name as reserver_full_name
+                ')
+            ->join('users', 'users.id = reservations.user_id')
             ->where('book_id', $id)
-            ->where('status', 'pending')
+            ->where('reservations.status', 'pending')
             ->orderBy('created_at', 'ASC')
             ->findAll();
 
@@ -85,43 +108,227 @@ class Book extends BaseController
 
         // CURRENT BORROWER DETAILS
         $book['borrowings'] = $borrowing_model
-            ->where('book_id', $id)
-            ->where('status', 'borrowed')
+            ->select('
+                borrowings.*,
+                users.library_id as borrower_library_id,
+                users.full_name as borrower_full_name
+            ')
+            ->join('users', 'users.id = borrowings.user_id')
+            ->where('borrowings.book_id', $id)
+            ->where('borrowings.status', 'borrowed')
             ->first();
 
+        // FIRST RESERVER
+        $first_reserver = null;
+
+        if (!empty($book['reservations'])) {
+            $first_reserver = $book['reservations'][0];
+        }
+
+        $book['is_first_reserver'] = (
+            $first_reserver &&
+            $first_reserver['user_id'] == $user_id
+        );
+        
+        
         $buttons = [];
+
+        /*
+        |--------------------------------------------------------------------------
+        | BOOK IS AVAILABLE
+        |--------------------------------------------------------------------------
+        */
+
+        $has_valid_borrow_request = (
+            $book['user_borrow_request'] &&
+            in_array($book['user_borrow_request']['status'], [
+                'pending',
+                'approved',
+                'rejected'
+            ])
+        );
 
         if (!$book['is_borrowed']) {
 
-            if ($book['user_borrow_request']) {
-                $buttons[] = [
-                    'text' => 'Cancel Borrow Request',
-                    'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
-                    'color' => 'danger'
-                ];
-            } else {
-                $buttons[] = [
-                    'text' => 'Send Borrow Request',
-                    'action' => site_url('user/books/view/send_borrow_request/' . $id),
-                    'color' => 'primary'
-                ];
+            /*
+            |--------------------------------------------------------------------------
+            | THERE IS A RESERVATION QUEUE
+            |--------------------------------------------------------------------------
+            */
+
+            if (!empty($book['reservations'])) {
+
+                /*
+                |--------------------------------------------------------------------------
+                | USER IS FIRST IN QUEUE
+                |--------------------------------------------------------------------------
+                */
+
+                if ($book['is_first_reserver']) {
+
+                    // USER ALREADY HAS BORROW REQUEST
+                    if ($has_valid_borrow_request) {
+
+                        if ($book['user_borrow_request']['status'] == 'pending') {
+
+                            $buttons[] = [
+                                'text' => 'Cancel Borrow Request',
+                                'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
+                                'color' => 'danger'
+                            ];
+
+                        } elseif ($book['user_borrow_request']['status'] == 'approved') {
+
+                            $buttons[] = [
+                                'text' => 'Cancel Approved Request',
+                                'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
+                                'color' => 'danger'
+                            ];
+
+                        } elseif ($book['user_borrow_request']['status'] == 'rejected') {
+
+                            $buttons[] = [
+                                'text' => 'Send Borrow Request Again',
+                                'action' => site_url('user/books/view/send_borrow_request/' . $id),
+                                'color' => 'primary'
+                            ];
+                        }
+
+                    } else {
+
+                        $buttons[] = [
+                            'text' => 'Send Borrow Request',
+                            'action' => site_url('user/books/view/send_borrow_request/' . $id),
+                            'color' => 'primary'
+                        ];
+                    }
+
+                }
+
+                /*
+                |--------------------------------------------------------------------------
+                | USER IS NOT FIRST IN QUEUE
+                |--------------------------------------------------------------------------
+                */
+
+                else {
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | USER ALREADY RESERVED
+                    |--------------------------------------------------------------------------
+                    */
+
+                    if ($book['user_reservation']) {
+
+                        $buttons[] = [
+                            'text' => 'Cancel Reservation',
+                            'action' => site_url('user/books/view/cancel_reserve_book/' . $id),
+                            'color' => 'warning'
+                        ];
+
+                    }
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | USER HAS NOT RESERVED YET
+                    |--------------------------------------------------------------------------
+                    */
+
+                    else {
+
+                        $buttons[] = [
+                            'text' => 'Join Reservation Queue',
+                            'action' => site_url('user/books/view/reserve_book/' . $id),
+                            'color' => 'secondary'
+                        ];
+                    }
+                }
+
+            }
+
+            /*
+            |--------------------------------------------------------------------------
+            | NO RESERVATIONS YET
+            |--------------------------------------------------------------------------
+            */
+
+            else {
+
+                if ($has_valid_borrow_request) {
+
+                    if ($book['user_borrow_request']['status'] == 'pending') {
+
+                        $buttons[] = [
+                            'text' => 'Cancel Borrow Request',
+                            'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
+                            'color' => 'danger'
+                        ];
+
+                    } elseif ($book['user_borrow_request']['status'] == 'approved') {
+
+                        $buttons[] = [
+                            'text' => 'Cancel Approved Request',
+                            'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
+                            'color' => 'danger'
+                        ];
+
+                    } elseif ($book['user_borrow_request']['status'] == 'rejected') {
+
+                        $buttons[] = [
+                            'text' => 'Send Borrow Request Again',
+                            'action' => site_url('user/books/view/send_borrow_request/' . $id),
+                            'color' => 'primary'
+                        ];
+                    }
+
+                } else {
+
+                    $buttons[] = [
+                        'text' => 'Send Borrow Request',
+                        'action' => site_url('user/books/view/send_borrow_request/' . $id),
+                        'color' => 'primary'
+                    ];
+                }
             }
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | BOOK IS BORROWED
+        |--------------------------------------------------------------------------
+        */
+
         if ($book['is_borrowed']) {
 
-            if ($book['user_reservation']) {
+            // USER CURRENTLY BORROWED BOOK
+            if ($book['user_borrowed']) {
+
                 $buttons[] = [
-                    'text' => 'Cancel Reservation',
-                    'action' => site_url('user/books/cancel_reservation/' . $id),
-                    'color' => 'warning'
+                    'text' => 'You Currently Borrowed This Book',
+                    'action' => '#',
+                    'color' => 'dark'
                 ];
+
             } else {
-                $buttons[] = [
-                    'text' => 'Reserve Book',
-                    'action' => site_url('user/books/reserve/' . $id),
-                    'color' => 'secondary'
-                ];
+
+                // USER ALREADY RESERVED
+                if ($book['user_reservation']) {
+
+                    $buttons[] = [
+                        'text' => 'Cancel Reservation',
+                        'action' => site_url('user/books/view/cancel_reserve_book/' . $id),
+                        'color' => 'warning'
+                    ];
+
+                } else {
+
+                    $buttons[] = [
+                        'text' => 'Reserve Book',
+                        'action' => site_url('user/books/view/reserve_book/' . $id),
+                        'color' => 'secondary'
+                    ];
+                }
             }
         }
 
@@ -152,8 +359,13 @@ class Book extends BaseController
         $data = [
             'user_id' => $user_id,
             'book_id' => $book_id,
+
             'status' => 'pending',
+
             'request_date' => date('Y-m-d H:i:s'),
+
+            // expires after 3 days
+            'expires_at' => date('Y-m-d H:i:s', strtotime('+3 days')),
         ];
 
         $borrow_request_model->insert($data);
@@ -166,6 +378,7 @@ class Book extends BaseController
     {
         $borrow_request_model = new BorrowRequestModel();
         $borrow_requests_history_model = new BorrowRequestHistoryModel();
+        $reservation_model = new ReservationModel();
 
         $user_id = session()->get('user_id');
         $book_id = $this->request->getPost('book_id');
@@ -174,7 +387,7 @@ class Book extends BaseController
         $existing = $borrow_request_model
             ->where('user_id', $user_id)
             ->where('book_id', $book_id)
-            ->where('status', 'pending')
+            ->whereIn('status', ['pending', 'approved'])
             ->first();
 
         if (!$existing) {
@@ -198,7 +411,103 @@ class Book extends BaseController
             'remarks' => 'Cancelled by user'
         ]);
 
+        $reservation = $reservation_model
+            ->where('user_id', $user_id)
+            ->where('book_id', $book_id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($reservation) {
+
+            $reservation_model->update($reservation['id'], [
+                'status' => 'cancelled'
+            ]);
+        }
+
         return redirect()->back()
             ->with('success', 'Borrow request cancelled successfully.');
+    }
+
+    public function reserve_book($id)
+    {
+        $reservation_model = new ReservationModel();
+        $borrowing_model = new BorrowingModel();
+
+        $user_id = session()->get('user_id');
+
+        // check if book is currently borrowed
+        $is_borrowed = $borrowing_model
+            ->where('book_id', $id)
+            ->where('status', 'borrowed')
+            ->first();
+
+        // OPTIONAL: prevent duplicate reservation
+        $existing = $reservation_model
+            ->where('book_id', $id)
+            ->where('user_id', $user_id)
+            ->where('status', 'pending')
+            ->first();
+
+        if ($existing) {
+            return redirect()->back()
+                ->with('error', 'You already reserved this book.');
+        }
+
+        // create reservation
+        $reservation_model->insert([
+            'book_id' => $id,
+            'user_id' => $user_id,
+
+            'reservation_date' => date('Y-m-d H:i:s'),
+
+            'status' => 'pending',
+
+            'remarks' => 'Book reserved successfully.',
+
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return redirect()->back()
+            ->with('success', 'Book reserved successfully.');
+    }
+
+    public function cancel_reserve_book($id)
+    {
+        $reservation_model = new ReservationModel();
+
+        $user_id = session()->get('user_id');
+        $role_id = (int) session()->get('role_id');
+
+        // FIND reservation
+        $reservation = $reservation_model
+            ->where('book_id', $id)
+            ->where('user_id', $user_id)
+            ->where('status', 'pending')
+            ->first();
+
+        if (!$reservation) {
+            return redirect()->back()
+                ->with('error', 'Reservation not found or already processed.');
+        }
+
+        // OPTIONAL: role check (user can only cancel own reservation)
+        if (!in_array($role_id, [1, 2, 3])) {
+            return redirect()->back()
+                ->with('error', 'You are not authorized.');
+        }
+
+        // UPDATE to cancelled
+        $reservation_model
+            ->where('id', $reservation['id'])
+            ->set([
+                'status' => 'cancelled',
+                'remarks' => 'Cancelled by user',
+                'updated_at' => date('Y-m-d H:i:s')
+            ])
+            ->update();
+
+        return redirect()->back()
+            ->with('success', 'Reservation cancelled successfully.');
     }
 }

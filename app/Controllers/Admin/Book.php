@@ -139,6 +139,14 @@ class Book extends BaseController
 
         $perPage = 10;
 
+        $borrow_requests_model->where('status', 'pending')
+            ->where('expires_at <=', date('Y-m-d H:i:s'))
+            ->set([
+                'status' => 'expired',
+                'remarks' => 'Automatically expired after reaching expiration date.'
+            ])
+            ->update();
+        
         $baseQuery = $borrow_requests_model
             ->select('
                 borrow_requests.*,
@@ -195,6 +203,39 @@ class Book extends BaseController
         ]);
     }
 
+    public function expired_borrow_requests_list()
+    {
+        $borrow_requests_model = new BorrowRequestModel();
+
+        $perPage = 10;
+
+        $baseQuery = $borrow_requests_model
+            ->select('
+                borrow_requests.*,
+                borrower.library_id as library_id,
+                borrower.full_name as full_name,
+                books.title as book_title,
+                processor.library_id as processed_by_library_id,
+                processor.full_name as processed_by_name
+            ')
+            ->join('users as borrower', 'borrower.id = borrow_requests.user_id')
+            ->join('books', 'books.id = borrow_requests.book_id')
+            ->join('users as processor', 'processor.id = borrow_requests.processed_by', 'left');
+
+        $expiredQuery = clone $baseQuery;
+
+        // PROCESSED
+        $expired_requests = $expiredQuery
+            ->where('borrow_requests.status', ['expired',])
+            ->paginate($perPage);
+
+        return view('admin/borrow_requests/expired_borrow_requests_list', [
+            'expired_requests' => $expired_requests,
+            'pager' => $expiredQuery->pager,
+            'request_status' => 'expired'
+        ]);
+    }
+    
     public function completed_borrow_requests_list()
     {
         $borrow_requests_model = new BorrowRequestModel();
@@ -221,7 +262,7 @@ class Book extends BaseController
             ->whereIn('borrow_requests.status', [
                 'claimed',
                 'rejected',
-                'cancelled'
+                'cancelled',
             ])
             ->paginate($perPage);
 
@@ -311,6 +352,7 @@ class Book extends BaseController
         $history_model = new BorrowRequestHistoryModel();
         $borrowing_model = new BorrowingModel();
         $library_settings_model = new LibrarySettingsModel();
+        $book_model = new BookModel();
 
         $role_id = (int) session()->get('role_id');
 
@@ -375,6 +417,10 @@ class Book extends BaseController
             'issued_by' => session()->get('user_id'),
 
             'remarks' => $this->request->getPost('remarks') ?: "Book marked as claimed successfully by {$role_label}."
+        ]);
+
+        $book_model->update($book_id, [
+            'availability' => 'borrowed'
         ]);
 
         return redirect()->back()

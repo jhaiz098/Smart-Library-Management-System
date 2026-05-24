@@ -24,8 +24,8 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-white px-3 py-2">
-                    Transactions
+                <a href="/user/my_transactions/borrowings" class="nav-link text-white px-3 py-2">
+                    My Transactions
                 </a>
             </li>
             <li class="nav-item">

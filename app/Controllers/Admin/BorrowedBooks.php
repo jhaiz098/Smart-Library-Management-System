@@ -3,6 +3,7 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
+use App\Models\BookModel;
 use App\Models\BorrowingModel;
 use App\Models\BorrowingHistory;
 use App\Models\LibrarySettingsModel;
@@ -92,6 +93,7 @@ class BorrowedBooks extends BaseController
         $history_model = new BorrowingHistory();
         $library_settings_model = new LibrarySettingsModel();
         $fine_model = new FinesModel();
+        $book_model = new BookModel();
 
         $id = $this->request->getPost('borrowing_id');
 
@@ -123,6 +125,10 @@ class BorrowedBooks extends BaseController
             'returned_to' => session()->get('user_id'),
             'remarks' => $this->request->getPost('remarks')
                 ?: 'Book returned successfully.'
+        ]);
+
+        $book_model->update($book_id, [
+            'availability' => 'available'
         ]);
 
         // history log

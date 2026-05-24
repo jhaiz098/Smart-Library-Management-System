@@ -1,11 +1,14 @@
-<?= $this->extend('layouts/admin_layout') ?>
+<?= $this->extend('layouts/user_layout') ?>
+
+<?= $this->section('title') ?>
+    User | My Transactions
+<?= $this->endSection() ?>
 
 <?= $this->section('header') ?>
-    Borrow Requests
+    My Transactions
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-
 <div class="p-3">
     <div class="card">
         <div class="card-header fw-bold">Borrow Requests</div>
@@ -28,12 +31,12 @@
                     <div class="card">
                         <div class="card-body">
                             <ul class="nav nav-tabs mb-3">
-                                <li class="nav-item"><a href="pending_borrow_requests" class="nav-link <?= ($request_status) == "pending" ? 'active' : '' ?>">Pending</a></li>
-                                <li class="nav-item"><a href="approved_borrow_requests" class="nav-link <?= ($request_status) == "approved" ? 'active' : '' ?>">Approved</a></li>
-                                <li class="nav-item"><a href="completed_borrow_requests" class="nav-link <?= ($request_status) == "completed" ? 'active' : '' ?>">Completed</a></li>
-                                <li class="nav-item"><a href="expired_borrow_requests" class="nav-link <?= ($request_status) == "expired" ? 'active' : '' ?>">Expired</a></li>
+                                <li class="nav-item"><a href="borrowings" class="nav-link <?= ($transaction_type) == "borrowings" ? 'active' : '' ?>">Borrowings</a></li>
+                                <li class="nav-item"><a href="borrow_requests" class="nav-link <?= ($transaction_type) == "borrow_requests" ? 'active' : '' ?>">Borrow Requests</a></li>
+                                <li class="nav-item"><a href="reservations" class="nav-link <?= ($transaction_type) == "reservations" ? 'active' : '' ?>">Reservations</a></li>
+                                <li class="nav-item"><a href="all" class="nav-link <?= ($transaction_type) == "all" ? 'active' : '' ?>">All</a></li>
                             </ul>
-                            <?= $this->renderSection('render_requests') ?>
+                            <?= $this->renderSection('render_transactions') ?>
                         </div>
                     </div>
                 </div>
@@ -41,5 +44,4 @@
         </div>
     </div>
 </div>
-
 <?= $this->endSection() ?>
