@@ -93,7 +93,9 @@ class Transactions extends BaseController
 
         $reservation_model = new ReservationModel();
 
-        // RESERVATIONS
+        $perPage = 10;
+
+        // PAGINATED RESERVATIONS
         $reservations = $reservation_model
             ->select('
                 reservations.*,
@@ -103,14 +105,17 @@ class Transactions extends BaseController
             ->join('books', 'books.id = reservations.book_id')
             ->where('reservations.user_id', $user_id)
             ->orderBy('reservations.created_at', 'DESC')
-            ->findAll();
+            ->paginate($perPage);
 
+        // COMPUTE QUEUE POSITION
         foreach ($reservations as &$reservation) {
 
-            $queue_position = $reservation_model
+            $queue_model = new ReservationModel();
+
+            $queue_position = $queue_model
                 ->where('book_id', $reservation['book_id'])
-                ->where('status', 'pending')
-                ->where('created_at <=', $reservation['created_at'])
+                ->whereIn('status', ['pending', 'ready'])
+                ->where('id <=', $reservation['id'])
                 ->countAllResults();
 
             $reservation['queue_position'] = $queue_position;
@@ -118,6 +123,7 @@ class Transactions extends BaseController
 
         return view('user/my_transactions/reservations', [
             'reservations' => $reservations,
+            'pager' => $reservation_model->pager,
             'transaction_type' => 'reservations'
         ]);
     }

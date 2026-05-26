@@ -10,6 +10,7 @@ use App\Models\BorrowRequestHistoryModel;
 use App\Models\BorrowingModel;
 use App\Models\UserModel;
 use App\Models\LibrarySettingsModel;
+use App\Models\ReservationModel;
 
 class Book extends BaseController
 {
@@ -351,6 +352,7 @@ class Book extends BaseController
         $borrow_request_model = new BorrowRequestModel();
         $history_model = new BorrowRequestHistoryModel();
         $borrowing_model = new BorrowingModel();
+        $reservation_model = new ReservationModel();
         $library_settings_model = new LibrarySettingsModel();
         $book_model = new BookModel();
 
@@ -419,9 +421,23 @@ class Book extends BaseController
             'remarks' => $this->request->getPost('remarks') ?: "Book marked as claimed successfully by {$role_label}."
         ]);
 
-        $book_model->update($book_id, [
+        $book_model->update($request['book_id'], [
             'availability' => 'borrowed'
         ]);
+
+        $reservation = $reservation_model
+            ->where('user_id', $request['user_id'])
+            ->where('book_id', $request['book_id'])
+            ->whereIn('status', ['pending', 'ready'])
+            ->first();
+
+        if ($reservation) {
+
+            $reservation_model->update($reservation['id'], [
+                'status' => 'fulfilled',
+                'updated_at' => date('Y-m-d H:i:s')
+            ]);
+        }
 
         return redirect()->back()
             ->with('success', 'Book marked as claimed successfully.');

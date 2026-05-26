@@ -127,7 +127,7 @@ class BorrowedBooks extends BaseController
                 ?: 'Book returned successfully.'
         ]);
 
-        $book_model->update($book_id, [
+        $book_model->update($borrowing['book_id'], [
             'availability' => 'available'
         ]);
 

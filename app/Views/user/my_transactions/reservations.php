@@ -136,7 +136,10 @@
                         </tbody>
 
                     </table>
-
+                    
+                    <div class="mt-3 d-flex justify-content-center">
+                        <?= $pager->links('default', 'bootstrap_full') ?>
+                    </div>
                 </div>
 
             <?php else: ?>

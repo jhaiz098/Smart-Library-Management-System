@@ -118,6 +118,12 @@
                                                 <?= esc($request['claim_code']) ?>
                                             </span>
 
+                                        <?php elseif($request['status'] == 'claimed'): ?>
+
+                                            <span class="text-muted">
+                                                Used
+                                            </span>
+
                                         <?php else: ?>
 
                                             <span class="text-muted">
