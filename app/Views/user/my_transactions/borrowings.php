@@ -41,7 +41,6 @@
                                 <th>Borrowed Date</th>
                                 <th>Due Date</th>
                                 <th>Status</th>
-                                <th width="15%">Action</th>
                             </tr>
 
                         </thead>
@@ -67,8 +66,8 @@
                                     <td>
 
                                         <?=
-                                            !empty($borrowing['borrowed_at'])
-                                            ? date('M d, Y', strtotime($borrowing['borrowed_at']))
+                                            !empty($borrowing['borrow_date'])
+                                            ? date('M d, Y', strtotime($borrowing['borrow_date']))
                                             : '-'
                                         ?>
 
@@ -114,17 +113,6 @@
 
                                     </td>
 
-                                    <td>
-
-                                        <a href="<?= site_url('user/books/view/' . $borrowing['book_id']) ?>"
-                                            class="btn btn-sm btn-primary">
-
-                                            View
-
-                                        </a>
-
-                                    </td>
-
                                 </tr>
 
                             <?php endforeach; ?>
@@ -132,7 +120,10 @@
                         </tbody>
 
                     </table>
-
+                    
+                    <div class="mt-3 d-flex justify-content-center">
+                        <?= $pager->links('default', 'bootstrap_full') ?>
+                    </div>
                 </div>
 
             <?php else: ?>

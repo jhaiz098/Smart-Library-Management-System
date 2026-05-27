@@ -41,7 +41,6 @@
                                 <th>Type</th>
                                 <th>Date</th>
                                 <th>Status</th>
-                                <th width="15%">Action</th>
                             </tr>
 
                         </thead>
@@ -105,41 +104,55 @@
                                     </td>
 
                                     <td>
-
                                         <?php $status = $transaction['status'] ?? null; ?>
 
                                         <?php if($transaction['transaction_type'] == 'borrowing'): ?>
+                                            <?php if($transaction['status'] == 'borrowed'): ?>
+                                                <span class="badge bg-primary">Borrowed</span>
 
-                                            <span class="badge bg-success">Borrowed</span>
-
+                                            <?php elseif($transaction['status'] == 'returned'): ?>
+                                                <span class="badge bg-success">Returned</span>
+                                            <?php endif; ?>
                                         <?php elseif($transaction['transaction_type'] == 'borrow_request'): ?>
 
-                                            <?php if($status == 'pending'): ?>
+                                            <?php if($transaction['status'] == 'pending'): ?>
                                                 <span class="badge bg-warning text-dark">Pending</span>
 
-                                            <?php elseif($status == 'approved'): ?>
-                                                <span class="badge bg-success">Approved</span>
+                                            <?php elseif($transaction['status'] == 'approved'): ?>
+                                                <span class="badge bg-info text-dark">Approved</span>
 
-                                            <?php elseif($status == 'rejected'): ?>
+                                            <?php elseif($transaction['status'] == 'claimed'): ?>
+                                                <span class="badge bg-success">Claimed</span>
+
+                                            <?php elseif($transaction['status'] == 'rejected'): ?>
                                                 <span class="badge bg-danger">Rejected</span>
 
+                                            <?php elseif($transaction['status'] == 'expired'): ?>
+                                                <span class="badge bg-secondary">Expired</span>
+
+                                            <?php elseif($transaction['status'] == 'cancelled'): ?>
+                                                <span class="badge bg-dark">Cancelled</span>
+
                                             <?php else: ?>
-                                                <span class="badge bg-dark">Unknown</span>
+                                                <span class="badge bg-secondary">Unknown</span>
                                             <?php endif; ?>
 
                                         <?php elseif($transaction['transaction_type'] == 'reservation'): ?>
 
-                                            <?php if($status == 'pending'): ?>
+                                            <?php if($transaction['status'] == 'pending'): ?>
                                                 <span class="badge bg-warning text-dark">Waiting</span>
 
-                                            <?php elseif($status == 'ready'): ?>
-                                                <span class="badge bg-success">Ready</span>
+                                            <?php elseif($transaction['status'] == 'fulfilled'): ?>
+                                                <span class="badge bg-success">Fulfilled</span>
 
-                                            <?php elseif($status == 'cancelled'): ?>
-                                                <span class="badge bg-secondary">Cancelled</span>
+                                            <?php elseif($transaction['status'] == 'cancelled'): ?>
+                                                <span class="badge bg-dark">Cancelled</span>
+
+                                            <?php elseif($transaction['status'] == 'expired'): ?>
+                                                <span class="badge bg-secondary">Expired</span>
 
                                             <?php else: ?>
-                                                <span class="badge bg-dark">Unknown</span>
+                                                <span class="badge bg-secondary">Unknown</span>
                                             <?php endif; ?>
 
                                         <?php else: ?>
@@ -147,17 +160,6 @@
                                             <span class="badge bg-secondary">N/A</span>
 
                                         <?php endif; ?>
-
-                                    </td>
-
-                                    <td>
-
-                                        <a href="<?= site_url('user/books/view/' . $transaction['book_id']) ?>"
-                                            class="btn btn-sm btn-primary">
-
-                                            View
-
-                                        </a>
 
                                     </td>
 

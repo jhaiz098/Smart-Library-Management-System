@@ -41,7 +41,6 @@
                                 <th>Reserved Date</th>
                                 <th>Queue Position</th>
                                 <th>Status</th>
-                                <th width="15%">Action</th>
                             </tr>
 
                         </thead>
@@ -83,17 +82,20 @@
                                     </td>
 
                                     <td>
-
-                                        <?php if($reservation['status'] == 'pending'): ?>
-
-                                            <span class="badge bg-warning text-dark">
-                                                Waiting
-                                            </span>
-
-                                        <?php elseif($reservation['status'] == 'ready'): ?>
+                                        <?php if(
+                                            $reservation['queue_position'] == 1 &&
+                                            $reservation['status'] == 'pending' &&
+                                            $reservation['availability'] == 'available'
+                                        ): ?>
 
                                             <span class="badge bg-success">
                                                 Ready
+                                            </span>
+
+                                        <?php elseif($reservation['status'] == 'pending'): ?>
+
+                                            <span class="badge bg-warning text-dark">
+                                                Waiting
                                             </span>
 
                                         <?php elseif($reservation['status'] == 'cancelled'): ?>
@@ -115,17 +117,6 @@
                                             </span>
 
                                         <?php endif; ?>
-
-                                    </td>
-
-                                    <td>
-
-                                        <a href="<?= site_url('user/books/view/' . $reservation['book_id']) ?>"
-                                            class="btn btn-sm btn-primary">
-
-                                            View
-
-                                        </a>
 
                                     </td>
 

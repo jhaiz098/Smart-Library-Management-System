@@ -13,10 +13,9 @@ class Transactions extends BaseController
     public function borrowings_list()
     {
         $user_id = session()->get('user_id');
+        $perPage = 10;
 
         $borrowing_model = new BorrowingModel();
-        $borrow_request_model = new BorrowRequestModel();
-        $reservation_model = new ReservationModel();
 
         // CURRENT BORROWINGS
         $borrowings = $borrowing_model
@@ -28,36 +27,13 @@ class Transactions extends BaseController
             ->join('books', 'books.id = borrowings.book_id')
             ->where('borrowings.user_id', $user_id)
             ->orderBy('borrowings.created_at', 'DESC')
-            ->findAll();
+            ->paginate($perPage);
 
-        // BORROW REQUESTS
-        $borrow_requests = $borrow_request_model
-            ->select('
-                borrow_requests.*,
-                books.title,
-                books.author
-            ')
-            ->join('books', 'books.id = borrow_requests.book_id')
-            ->where('borrow_requests.user_id', $user_id)
-            ->orderBy('borrow_requests.created_at', 'DESC')
-            ->findAll();
-
-        // RESERVATIONS
-        $reservations = $reservation_model
-            ->select('
-                reservations.*,
-                books.title,
-                books.author
-            ')
-            ->join('books', 'books.id = reservations.book_id')
-            ->where('reservations.user_id', $user_id)
-            ->orderBy('reservations.created_at', 'DESC')
-            ->findAll();
+        
 
         return view('user/my_transactions/borrowings', [
             'borrowings' => $borrowings,
-            'borrow_requests' => $borrow_requests,
-            'reservations' => $reservations,
+            'pager' => $borrowing_model->pager,
             'transaction_type' => 'borrowings'
         ]);
     }
@@ -65,10 +41,10 @@ class Transactions extends BaseController
     public function borrow_requests_list()
     {
         $user_id = session()->get('user_id');
+        $perPage = 10;
 
         $borrow_request_model = new BorrowRequestModel();
 
-        // BORROW REQUESTS
         $borrow_requests = $borrow_request_model
             ->select('
                 borrow_requests.*,
@@ -78,11 +54,11 @@ class Transactions extends BaseController
             ->join('books', 'books.id = borrow_requests.book_id')
             ->where('borrow_requests.user_id', $user_id)
             ->orderBy('borrow_requests.created_at', 'DESC')
-            ->findAll();
-
+            ->paginate($perPage);
 
         return view('user/my_transactions/borrow_requests', [
             'borrow_requests' => $borrow_requests,
+            'pager' => $borrow_request_model->pager,
             'transaction_type' => 'borrow_requests'
         ]);
     }
@@ -100,7 +76,8 @@ class Transactions extends BaseController
             ->select('
                 reservations.*,
                 books.title,
-                books.author
+                books.author,
+                books.availability
             ')
             ->join('books', 'books.id = reservations.book_id')
             ->where('reservations.user_id', $user_id)
@@ -113,8 +90,11 @@ class Transactions extends BaseController
             $queue_model = new ReservationModel();
 
             $queue_position = $queue_model
+                ->groupStart()
+                    ->whereIn('status', ['pending', 'ready'])
+                    ->orWhere('id', $reservation['id'])
+                ->groupEnd()
                 ->where('book_id', $reservation['book_id'])
-                ->whereIn('status', ['pending', 'ready'])
                 ->where('id <=', $reservation['id'])
                 ->countAllResults();
 
@@ -137,21 +117,42 @@ class Transactions extends BaseController
         $db = \Config\Database::connect();
 
         $sql = "
-            SELECT borrowings.id, borrowings.book_id, borrowings.created_at, books.title, books.author, 'borrowing' AS transaction_type
+            SELECT 
+                borrowings.id,
+                borrowings.book_id,
+                borrowings.created_at,
+                borrowings.status as status,
+                books.title,
+                books.author,
+                'borrowing' AS transaction_type
             FROM borrowings
             JOIN books ON books.id = borrowings.book_id
             WHERE borrowings.user_id = ?
 
             UNION ALL
 
-            SELECT borrow_requests.id, borrow_requests.book_id, borrow_requests.created_at, books.title, books.author, 'borrow_request' AS transaction_type
+            SELECT 
+                borrow_requests.id,
+                borrow_requests.book_id,
+                borrow_requests.created_at,
+                borrow_requests.status as status,
+                books.title,
+                books.author,
+                'borrow_request' AS transaction_type
             FROM borrow_requests
             JOIN books ON books.id = borrow_requests.book_id
             WHERE borrow_requests.user_id = ?
 
             UNION ALL
 
-            SELECT reservations.id, reservations.book_id, reservations.created_at, books.title, books.author, 'reservation' AS transaction_type
+            SELECT 
+                reservations.id,
+                reservations.book_id,
+                reservations.created_at,
+                reservations.status as status,
+                books.title,
+                books.author,
+                'reservation' AS transaction_type
             FROM reservations
             JOIN books ON books.id = reservations.book_id
             WHERE reservations.user_id = ?

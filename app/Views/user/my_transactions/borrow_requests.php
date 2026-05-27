@@ -41,7 +41,6 @@
                                 <th>Request Date</th>
                                 <th>Status</th>
                                 <th>Claim Code</th>
-                                <th width="15%">Action</th>
                             </tr>
 
                         </thead>
@@ -134,16 +133,7 @@
 
                                     </td>
 
-                                    <td>
-
-                                        <a href="<?= site_url('user/books/view/' . $request['book_id']) ?>"
-                                            class="btn btn-sm btn-primary">
-
-                                            View
-
-                                        </a>
-
-                                    </td>
+                                    
 
                                 </tr>
 
@@ -152,7 +142,10 @@
                         </tbody>
 
                     </table>
-
+                    
+                    <div class="mt-3 d-flex justify-content-center">
+                        <?= $pager->links('default', 'bootstrap_full') ?>
+                    </div>
                 </div>
 
             <?php else: ?>
