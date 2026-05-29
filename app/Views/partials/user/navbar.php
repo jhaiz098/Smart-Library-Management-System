@@ -29,8 +29,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/admin/users" class="nav-link text-white px-3 py-2">
-                    Users
+                <a href="/user/overdue/list" class="nav-link text-white px-3 py-2">
+                    Overdue
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="/user/fines/list" class="nav-link text-white px-3 py-2">
+                    Fines
                 </a>
             </li>
             <li class="nav-item">

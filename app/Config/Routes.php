@@ -98,4 +98,6 @@ $routes->get('my_transactions/borrowings', 'User\Transactions::borrowings_list')
 $routes->get('my_transactions/borrow_requests', 'User\Transactions::borrow_requests_list');
 $routes->get('my_transactions/reservations', 'User\Transactions::reservations_list');
 $routes->get('my_transactions/all', 'User\Transactions::all_list');
+
+$routes->get('fines/list', 'User\Fines::list');
 });
