@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Models\UserModel;
+use App\Models\StaffLevelModel;
 
 class Auth extends BaseController
 {
@@ -27,6 +28,7 @@ class Auth extends BaseController
     {
         $session = session();
         $model = new UserModel();
+        $staff_level_model = new StaffLevelModel();
 
         $login = $this->request->getPost('login');
         $password = $this->request->getPost('password');
@@ -46,19 +48,34 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'Wrong password');
         }
 
-        // set session
+        // base session data (all users)
         $sessionData = [
-            'user_id' => $user['id'],
+            'user_id'    => $user['id'],
             'library_id' => $user['library_id'],
-            'name' => $user['full_name'],
-            'role_id' => $user['role_id'],
-            'email' => $user['email'],
-            'logged_in' => true
+            'name'       => $user['full_name'],
+            'role_id'    => $user['role_id'],
+            'email'      => $user['email'],
+            'logged_in'  => true
         ];
 
-        // include staff level if exists
-        if ($user['staff_level_id']) {
-            $sessionData['staff_level_id'] = $user['staff_level_id'];
+        // ONLY STAFF (role_id = 2)
+        if ($user['role_id'] == 2) {
+
+            $staffLevelName = null;
+
+            if (!empty($user['staff_level_id'])) {
+
+                $staffLevel = $staff_level_model
+                    ->where('id', $user['staff_level_id'])
+                    ->first();
+
+                if ($staffLevel) {
+                    $staffLevelName = $staffLevel['name'];
+                }
+            }
+
+            $sessionData['staff_level_id'] = $user['staff_level_id'] ?? null;
+            $sessionData['staff_level_name'] = $staffLevelName;
         }
 
         $session->set($sessionData);

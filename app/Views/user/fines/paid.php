@@ -16,15 +16,6 @@
                 </div>
             </div>
 
-            <div class="text-end">
-                <div class="fw-semibold text-success">
-                    <?= count($fines) ?>
-                </div>
-                <div class="text-muted small">
-                    Paid Records
-                </div>
-            </div>
-
         </div>
 
         <!-- BODY -->

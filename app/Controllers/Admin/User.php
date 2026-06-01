@@ -15,26 +15,48 @@ class User extends BaseController
 
         $data['roles'] = $role_model->findAll();
 
+        // GET FILTERS
         $data['search'] = $this->request->getGet('search') ?? "";
         $data['sort']   = $this->request->getGet('sort') ?? "";
         $data['role']   = $this->request->getGet('role') ?? "";
+        $data['type']   = $this->request->getGet('type') ?? "all";
 
         $perPage = 10;
 
         // BASE QUERY
         $user_query = new UserModel();
 
+        // =========================
+        // TYPE FILTER (NEW)
+        // =========================
+        if ($data['type'] == 'user') {
+            $user_query->where('role_id', 3);
+        }
+        elseif ($data['type'] == 'staff') {
+            $user_query->where('role_id', 2);
+        }
+        elseif ($data['type'] == 'admin') {
+            $user_query->where('role_id', 1);
+        }
+        // "all" = no filter
+
+        // =========================
         // SEARCH
+        // =========================
         if (!empty($data['search'])) {
             $user_query->like('full_name', $data['search']);
         }
 
-        // FILTER
+        // =========================
+        // ROLE FILTER (optional extra filter)
+        // =========================
         if (!empty($data['role'])) {
             $user_query->where('role_id', $data['role']);
         }
 
+        // =========================
         // SORT
+        // =========================
         if ($data['sort'] == 'name_asc') {
             $user_query->orderBy('full_name', 'ASC');
         }
@@ -48,7 +70,7 @@ class User extends BaseController
             $user_query->orderBy('created_at', 'ASC');
         }
 
-        // PAGINATION (IMPORTANT CHANGE)
+        // PAGINATION
         $data['users'] = $user_query->paginate($perPage);
         $data['pager'] = $user_query->pager;
 
