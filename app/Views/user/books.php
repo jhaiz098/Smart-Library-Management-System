@@ -36,9 +36,6 @@ Books
                 Books Catalog
             </span>
 
-            <span class="text-muted small">
-                <?= isset($books) ? count($books) : 0 ?> books
-            </span>
         </div>
 
         <div class="card-body p-0">
@@ -107,7 +104,7 @@ Books
 
                                     <td>
 
-                                        <?php if($book['availability'] === 'Available'): ?>
+                                        <?php if($book['availability'] === 'available'): ?>
 
                                             <span class="badge bg-success px-3 py-2">
                                                 Available
@@ -116,7 +113,7 @@ Books
                                         <?php else: ?>
 
                                             <span class="badge bg-secondary px-3 py-2">
-                                                <?= $book['availability'] ?>
+                                                Borrowed
                                             </span>
 
                                         <?php endif; ?>

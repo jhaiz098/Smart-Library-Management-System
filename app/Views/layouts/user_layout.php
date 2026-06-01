@@ -33,7 +33,7 @@
         }
 
         /* PAGE HEADER */
-        .page-header {
+        .app-header {
             background: #ffffff;
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             font-weight: 600;
@@ -83,7 +83,7 @@
         <?= $this->include('partials/user/navbar') ?>
 
         <!-- PAGE HEADER -->
-        <div class="page-header m-3 p-3 rounded">
+        <div class="app-header m-3 p-3 rounded">
             <?= $this->renderSection('header') ?>
         </div>
 

@@ -170,9 +170,13 @@ class BorrowedBooks extends BaseController
                 $amount = min($amount, $max_fine_amount);
             }
 
+            // generate fine reference number
+            $fine_ref = "FIN-" . date('Y') . "-" . str_pad($id, 6, '0', STR_PAD_LEFT);
+
             $fine_model->insert([
                 'borrowing_id' => $id,
                 'user_id' => $borrowing['user_id'],
+                'fine_ref' => $fine_ref,
                 'daily_overdue_fine' => $fine_per_day,
                 'max_fine_amount' => $max_fine_amount,
                 'amount' => $amount,

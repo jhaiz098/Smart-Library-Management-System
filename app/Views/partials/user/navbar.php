@@ -11,16 +11,6 @@
     <!-- USER INFO -->
     <div class="p-3 text-center text-white border-bottom border-white border-opacity-25">
 
-        <?php
-            $name = session()->get('name');
-            $words = explode(' ', trim($name));
-            $initials = strtoupper(substr($words[0] ?? '', 0, 1));
-
-            if (isset($words[1])) {
-                $initials .= strtoupper(substr($words[1], 0, 1));
-            }
-        ?>
-
         <!-- INITIALS AVATAR -->
         <div class="mx-auto mb-2 d-flex align-items-center justify-content-center"
             style="
@@ -32,11 +22,11 @@
                 font-weight: 700;
                 font-size: 16px;
             ">
-            <?= $initials ?>
+            <?= strtoupper(substr(session()->get('name') ?? '', 0, 1)) ?>
         </div>
 
         <div class="fw-semibold small text-uppercase opacity-75">
-            Library Member
+            Library User
         </div>
 
         <div class="fw-bold mt-1">

@@ -12,6 +12,7 @@
         protected $allowedFields = [
             'borrowing_id',
             'user_id',
+            'fine_ref',
             'max_fine_amount',
             'daily_overdue_fine',
             'amount',

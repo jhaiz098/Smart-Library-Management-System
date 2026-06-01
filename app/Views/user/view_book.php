@@ -37,118 +37,242 @@
 
                 <div class="card-body">
 
-                    <div class="d-flex justify-content-between align-items-start flex-wrap">
+                    <div class="card border-0 shadow-sm mb-3">
+                        <div class="card-body p-4">
 
-                        <div>
-                            <div class="text-muted small mb-1">
-                                <?= esc($book['category_name']) ?>
+                            <div class="row align-items-center">
+
+                                <div class="col-auto">
+
+                                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width:80px;height:80px;">
+
+                                        <i class="bi bi-book-fill text-primary fs-2"></i>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="col">
+
+                                    <span class="badge bg-light text-dark border mb-2">
+                                        <?= esc($book['category_name']) ?>
+                                    </span>
+
+                                    <h2 class="fw-bold mb-1">
+                                        <?= esc($book['title']) ?>
+                                    </h2>
+
+                                    <div class="text-muted">
+                                        by <?= esc($book['author']) ?>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-auto">
+
+                                    <?php if($book['availability'] === 'available'): ?>
+
+                                        <span class="badge bg-success fs-6 px-3 py-2">
+                                            <i class="bi bi-check-circle-fill me-1"></i>
+                                            Available
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="badge bg-danger fs-6 px-3 py-2">
+                                            <i class="bi bi-clock-fill me-1"></i>
+                                            Borrowed
+                                        </span>
+
+                                    <?php endif; ?>
+
+                                </div>
+
                             </div>
 
-                            <h2 class="fw-bold mb-1">
-                                <?= esc($book['title']) ?>
-                            </h2>
-
-                            <div class="text-secondary mb-3">
-                                by <?= esc($book['author']) ?>
-                            </div>
                         </div>
-
-                        <div>
-
-                            <?php if($book['availability'] === 'available'): ?>
-
-                                <span class="badge bg-success px-3 py-2">
-                                    Available
-                                </span>
-
-                            <?php else: ?>
-
-                                <span class="badge bg-danger px-3 py-2">
-                                    Borrowed
-                                </span>
-
-                            <?php endif; ?>
-
-                        </div>
-
                     </div>
 
                     <hr>
 
-                    <div class="row">
+                    <div class="row g-3 mb-4">
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6">
 
-                            <div class="small text-muted">
-                                Publisher
-                            </div>
+                            <div class="border rounded-3 p-3 h-100">
 
-                            <div class="fw-semibold">
-                                <?= esc($book['publisher']) ?>
+                                <div class="small text-muted mb-1">
+                                    Publisher
+                                </div>
+
+                                <div class="fw-semibold">
+                                    <?= esc($book['publisher']) ?>
+                                </div>
+
                             </div>
 
                         </div>
 
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-6">
 
-                            <div class="small text-muted">
-                                Published Year
-                            </div>
+                            <div class="border rounded-3 p-3 h-100">
 
-                            <div class="fw-semibold">
-                                <?= esc($book['published_year']) ?>
+                                <div class="small text-muted mb-1">
+                                    Published Year
+                                </div>
+
+                                <div class="fw-semibold">
+                                    <?= esc($book['published_year']) ?>
+                                </div>
+
                             </div>
 
                         </div>
 
                     </div>
+                    
+                    <div class="border rounded p-3">
 
-                    <div class="small text-muted mb-2">
-                        Description
-                    </div>
+                        <div class="card border-0 bg-light">
 
-                    <div style="line-height: 1.8;">
-                        <?= nl2br(esc($book['description'])) ?>
+                            <div class="card-body">
+
+                                <div class="fw-semibold mb-3">
+                                    <i class="bi bi-file-text me-2"></i>
+                                    Description
+                                </div>
+
+                                <div class="text-secondary" style="line-height:1.8;">
+                                    <?= nl2br(esc($book['description'])) ?>
+                                </div>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="card bg-light border-0 mt-4">
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-header bg-white fw-bold">
+
+                    <i class="bi bi-info-circle-fill text-primary me-2"></i>
+                    Borrowing Rules
+
+                </div>
 
                 <div class="card-body">
 
-                    <h6 class="fw-bold mb-3">
-                        Borrowing Rules
-                    </h6>
+                    <div class="d-flex mb-3">
 
-                    <ul class="mb-0 small">
+                        <div class="me-3 text-primary">
+                            <i class="bi bi-calendar-check fs-5"></i>
+                        </div>
 
-                        <li>
-                            Books must be returned on or before the due date.
-                        </li>
+                        <div>
+                            <div class="fw-semibold">
+                                Return Books On Time
+                            </div>
 
-                        <li>
-                            Overdue books incur a fine of
-                            <strong>₱<?= number_format($library_settings['daily_overdue_fine'], 2) ?></strong>
-                            per day.
-                        </li>
+                            <div class="small text-muted">
+                                Books must be returned on or before their due date.
+                            </div>
+                        </div>
 
-                        <li>
-                            The maximum fine per borrowing is
-                            <strong>₱<?= number_format($library_settings['max_fine_amount'], 2) ?></strong>.
-                        </li>
+                    </div>
 
-                        <li>
-                            Borrowing privileges may be restricted when unpaid fines exist.
-                        </li>
+                    <hr>
 
-                        <li>
-                            Approved borrow requests must be claimed before they expire.
-                        </li>
+                    <div class="d-flex mb-3">
 
-                    </ul>
+                        <div class="me-3 text-warning">
+                            <i class="bi bi-cash-coin fs-5"></i>
+                        </div>
+
+                        <div>
+                            <div class="fw-semibold">
+                                Daily Overdue Fine
+                            </div>
+
+                            <div class="small text-muted">
+                                Overdue books incur a fine of
+                                <strong>
+                                    ₱<?= number_format($library_settings['daily_overdue_fine'], 2) ?>
+                                </strong>
+                                per day.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex mb-3">
+
+                        <div class="me-3 text-danger">
+                            <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                        </div>
+
+                        <div>
+                            <div class="fw-semibold">
+                                Maximum Fine Limit
+                            </div>
+
+                            <div class="small text-muted">
+                                Fine charges stop once the maximum amount of
+                                <strong>
+                                    ₱<?= number_format($library_settings['max_fine_amount'], 2) ?>
+                                </strong>
+                                has been reached.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex mb-3">
+
+                        <div class="me-3 text-secondary">
+                            <i class="bi bi-lock-fill fs-5"></i>
+                        </div>
+
+                        <div>
+                            <div class="fw-semibold">
+                                Borrowing Restrictions
+                            </div>
+
+                            <div class="small text-muted">
+                                Users with unpaid fines may have restricted borrowing privileges.
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex">
+
+                        <div class="me-3 text-success">
+                            <i class="bi bi-box-seam-fill fs-5"></i>
+                        </div>
+
+                        <div>
+                            <div class="fw-semibold">
+                                Claim Approved Requests
+                            </div>
+
+                            <div class="small text-muted">
+                                Approved borrow requests must be claimed before they expire.
+                            </div>
+                        </div>
+
+                    </div>
 
                 </div>
 
@@ -162,7 +286,8 @@
             <!-- CURRENT BORROWER -->
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white fw-bold">
+                <div class="card-header bg-white fw-semibold">
+                    <i class="bi bi-person-fill me-2 text-primary"></i>
                     Current Borrowing
                 </div>
 
@@ -202,8 +327,12 @@
 
                     <?php else: ?>
 
-                        <div class="text-success fw-semibold">
+                        <div class="alert alert-success mb-0">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
                             This book is currently available.
+
                         </div>
 
                     <?php endif; ?>
@@ -215,92 +344,117 @@
             <!-- RESERVATION QUEUE -->
             <div class="card border-0 shadow-sm mb-3">
 
-                <div class="card-header bg-white fw-bold">
-                    Reservation Queue
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+
+                    <div class="fw-bold">
+                        <i class="bi bi-people-fill text-primary me-2"></i>
+                        Reservation Queue
+                    </div>
+
                 </div>
 
-                <div class="card-body p-0">
+                <div class="card-body">
 
                     <?php if(!empty($book['reservations'])): ?>
 
-                        <table class="table table-hover align-middle mb-0">
+                        <?php $queue = 1; ?>
 
-                            <thead class="table-light">
+                        <?php foreach($book['reservations'] as $reservation): ?>
 
-                                <tr>
-                                    <th width="10%">#</th>
-                                    <th>User</th>
-                                    <th width="25%">Status</th>
-                                </tr>
+                            <div class="<?= $queue !== count($book['reservations']) ? 'border-bottom pb-3 mb-3' : '' ?>">
 
-                            </thead>
+                                <div class="d-flex align-items-center">
 
-                            <tbody>
+                                    <!-- Queue Number -->
+                                    <div class="me-3">
 
-                                <?php $queue = 1; ?>
+                                        <?php if($queue == 1): ?>
 
-                                <?php foreach($book['reservations'] as $reservation): ?>
+                                            <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center fw-bold"
+                                                style="width:42px;height:42px;">
 
-                                    <tr>
-
-                                        <td class="fw-bold">
-                                            <?= $queue ?>
-                                        </td>
-
-                                        <td>
-
-                                            <div class="fw-semibold">
-
-                                                <?= esc($reservation['reserver_full_name']) ?>
-
-                                                <?php if($reservation['user_id'] == session()->get('user_id')): ?>
-
-                                                    <span class="badge bg-primary ms-1">
-                                                        You
-                                                    </span>
-
-                                                <?php endif; ?>
+                                                <i class="bi bi-star-fill"></i>
 
                                             </div>
 
-                                            <div class="small text-muted">
-                                                <?= esc($reservation['reserver_library_id']) ?>
+                                        <?php else: ?>
+
+                                            <div class="rounded-circle bg-light border d-flex align-items-center justify-content-center fw-bold"
+                                                style="width:42px;height:42px;">
+
+                                                <?= $queue ?>
+
                                             </div>
 
-                                        </td>
+                                        <?php endif; ?>
 
-                                        <td>
+                                    </div>
 
-                                            <?php if($queue == 1): ?>
+                                    <!-- User Info -->
+                                    <div class="flex-grow-1">
 
-                                                <span class="badge bg-success">
-                                                    Next
-                                                </span>
+                                        <div class="fw-semibold">
 
-                                            <?php else: ?>
+                                            <?= esc($reservation['reserver_full_name']) ?>
 
-                                                <span class="badge bg-secondary">
-                                                    Waiting
+                                            <?php if($reservation['user_id'] == session()->get('user_id')): ?>
+
+                                                <span class="badge bg-primary ms-1">
+                                                    You
                                                 </span>
 
                                             <?php endif; ?>
 
-                                        </td>
+                                        </div>
 
-                                    </tr>
+                                        <div class="small text-muted">
+                                            <?= esc($reservation['reserver_library_id']) ?>
+                                        </div>
 
-                                    <?php $queue++; ?>
+                                    </div>
 
-                                <?php endforeach; ?>
+                                    <!-- Status -->
+                                    <div>
 
-                            </tbody>
+                                        <?php if($queue == 1): ?>
 
-                        </table>
+                                            <span class="badge bg-success px-3 py-2">
+                                                <i class="bi bi-arrow-right-circle-fill me-1"></i>
+                                                Next
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="badge bg-secondary px-3 py-2">
+                                                Waiting
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                            <?php $queue++; ?>
+
+                        <?php endforeach; ?>
 
                     <?php else: ?>
 
-                        <div class="p-3 text-muted">
-                            No reservations yet.
+                        <div class="text-center py-4">
+
+                            <i class="bi bi-people fs-1 text-muted"></i>
+
+                            <div class="fw-semibold mt-2">
+                                No Reservations Yet
+                            </div>
+
+                            <div class="text-muted small">
+                                Be the first person to reserve this book.
+                            </div>
+
                         </div>
 
                     <?php endif; ?>
@@ -363,7 +517,7 @@
                                     ): ?>
 
                                         <div class="text-primary fw-semibold">
-                                            ⏳ You already sent a borrow request. Waiting for approval.
+                                            <i class="bi bi-hourglass-split me-2"></i> You already sent a borrow request. Waiting for approval.
                                         </div>
 
                                         <div class="small text-muted mt-1">
@@ -372,8 +526,12 @@
 
                                     <?php else: ?>
 
-                                        <div class="text-success fw-semibold">
-                                            🎉 It’s your turn in the queue.
+                                        <div class="alert alert-success">
+
+                                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                                            It's your turn in the reservation queue.
+
                                         </div>
 
                                         <div class="small text-muted">
@@ -425,29 +583,25 @@
 
                                 <?php elseif($book['user_borrow_request']['status'] == 'approved'): ?>
 
-                                    <span class="badge bg-success mb-2">
-                                        Approved
-                                    </span>
+                                    <div class="alert alert-success">
 
-                                    <div class="alert alert-success mt-2 mb-0">
-
-                                        <div class="fw-semibold mb-2">
-                                            Your request has been approved.
+                                        <div class="fw-bold mb-2">
+                                            Request Approved
                                         </div>
 
-                                        <div class="small mb-1">
+                                        <div class="small text-muted">
                                             Claim Code
                                         </div>
 
-                                        <div class="fw-bold fs-5 text-dark">
+                                        <div class="display-6 fw-bold text-dark">
                                             <?= esc($book['user_borrow_request']['claim_code']) ?>
                                         </div>
 
                                         <hr>
 
-                                        <div class="small text-muted">
-                                            Please present this claim code to the librarian when claiming the book.
-                                        </div>
+                                        <small>
+                                            Present this code to the librarian when claiming your book.
+                                        </small>
 
                                     </div>
 
@@ -475,35 +629,62 @@
             <!-- ACTIONS -->
             <div class="card border-0 shadow-sm">
 
-                <div class="card-header bg-white fw-bold">
+                <div class="card-header bg-white fw-semibold">
+
+                    <i class="bi bi-lightning-charge-fill me-2 text-primary"></i>
+
                     Actions
+
                 </div>
 
                 <div class="card-body">
 
                     <?php foreach ($buttons as $btn): ?>
 
+                        <?php
+
+                            $icon = 'bi-cursor-fill';
+
+                            if (stripos($btn['text'], 'Borrow') !== false) {
+                                $icon = 'bi-book-fill';
+                            }
+
+                            if (stripos($btn['text'], 'Reserve') !== false) {
+                                $icon = 'bi-bookmark-fill';
+                            }
+
+                            if (stripos($btn['text'], 'Cancel') !== false) {
+                                $icon = 'bi-x-circle-fill';
+                            }
+
+                        ?>
+
                         <?php if($btn['action'] === '#'): ?>
 
-                            <button
-                                type="button"
-                                class="btn btn-<?= $btn['color'] ?> w-100 mb-2"
-                                disabled>
+                            <div class="border rounded p-3 mb-2 bg-light">
 
-                                <?= $btn['text'] ?>
+                                <div class="d-flex align-items-center">
 
-                            </button>
+                                    <i class="bi <?= $icon ?> text-secondary me-3 fs-5"></i>
+
+                                    <div class="flex-grow-1">
+
+                                        <div class="fw-semibold text-muted">
+                                            <?= $btn['text'] ?>
+                                        </div>
+
+                                        <div class="small text-muted">
+                                            Action currently unavailable.
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
 
                         <?php else: ?>
-                            <?php
-                                $confirmMessage = 'Are you sure you want to proceed?';
 
-                                if (
-                                    str_contains($btn['action'], 'cancel_borrow_request')
-                                ) {
-                                    $confirmMessage = 'Cancelling this borrow request will also remove your reservation from the queue. Continue?';
-                                }
-                            ?>
                             <form action="<?= $btn['action'] ?>"
                                 method="post"
                                 class="mb-2">
@@ -518,11 +699,39 @@
 
                                 <button
                                     type="button"
-                                    class="btn btn-<?= $btn['color'] ?> w-100"
+                                    class="btn btn-light border w-100 text-start p-3"
                                     data-bs-toggle="modal"
                                     data-bs-target="#actionModal<?= md5($btn['action']) ?>">
 
-                                    <?= $btn['text'] ?>
+                                    <div class="d-flex align-items-center">
+
+                                        <i class="bi <?= $icon ?> text-<?= $btn['color'] ?> me-3 fs-5"></i>
+
+                                        <div class="flex-grow-1">
+
+                                            <div class="fw-semibold text-dark">
+                                                <?= $btn['text'] ?>
+                                            </div>
+
+                                            <div class="small text-muted">
+
+                                                <?php if(stripos($btn['text'], 'Borrow') !== false): ?>
+                                                    Request to borrow this book.
+                                                <?php elseif(stripos($btn['text'], 'Reserve') !== false): ?>
+                                                    Join the reservation queue.
+                                                <?php elseif(stripos($btn['text'], 'Cancel') !== false): ?>
+                                                    Remove your current request.
+                                                <?php else: ?>
+                                                    Continue with this action.
+                                                <?php endif; ?>
+
+                                            </div>
+
+                                        </div>
+
+                                        <i class="bi bi-chevron-right text-muted"></i>
+
+                                    </div>
 
                                 </button>
 

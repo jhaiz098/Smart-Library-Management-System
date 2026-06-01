@@ -79,9 +79,21 @@
 
                                     <!-- QUEUE -->
                                     <td>
-                                        <span class="badge rounded-pill bg-info text-dark px-3 py-2">
-                                            #<?= esc($reservation['queue_position']) ?>
-                                        </span>
+
+                                        <?php if($reservation['status'] === 'pending'): ?>
+
+                                            <span class="badge rounded-pill bg-info text-dark px-3 py-2">
+                                                #<?= esc($reservation['queue_position']) ?>
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="text-muted">
+                                                —
+                                            </span>
+
+                                        <?php endif; ?>
+
                                     </td>
 
                                     <!-- STATUS -->

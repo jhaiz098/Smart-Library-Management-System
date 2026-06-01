@@ -1,64 +1,84 @@
 <?= $this->extend('layouts/User/fines_layout') ?>
 
-
-
 <?= $this->section('render_fines') ?>
 
 <div class="">
 
     <div class="card border-0 shadow-sm">
 
+        <!-- HEADER -->
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
-            <div class="fw-bold">
-                All Fines
+            <div>
+                <div class="fw-bold">All Fines</div>
+                <div class="text-muted small">
+                    Complete history of paid, unpaid, and waived fines
+                </div>
             </div>
-
-            <span class="badge bg-primary">
-                <?= count($fines) ?>
-            </span>
 
         </div>
 
+        <!-- BODY -->
         <div class="card-body p-0">
+
+            <?php if(!empty($fines)): ?>
+
+                <?php
+                    $perPage = $pager->getPerPage('default');
+                    $page = $pager->getCurrentPage('default');
+                    $i = ($page - 1) * $perPage + 1;
+                ?>
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover table-bordered align-middle mb-0">
+                    <table class="table align-middle mb-0">
 
                         <thead class="table-light">
 
-                            <tr>
-                                <tr>
-                                    <th>Book</th>
-                                    <th>Late By</th>
-                                    <th>Amount</th>
-                                    <th>Status</th>
-                                    <th>Date</th>
-                                </tr>
+                            <tr class="text-muted small">
+                                <th>#</th>
+                                <th>Book</th>
+                                <th>Late By</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
                             </tr>
 
                         </thead>
 
                         <tbody>
-                            <?php if(empty($fines)): ?>
-                                <tr>
-                                    <td colspan="10" class="text-center">No fines found.</td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach ($fines as $fine): ?>
+
+                            <?php foreach ($fines as $fine): ?>
 
                                 <tr>
 
-                                    <td>
-                                        <?= esc($fine['book_title']) ?>
+                                    <!-- # -->
+                                    <td class="text-muted fw-semibold">
+                                        <?= $i++ ?>
                                     </td>
 
+                                    <!-- BOOK -->
                                     <td>
-                                        <?= esc($fine['late_by']) ?>
+
+                                        <div class="fw-semibold">
+                                            <?= esc($fine['book_title']) ?>
+                                        </div>
+
                                     </td>
 
+                                    <!-- LATE BY -->
                                     <td>
+
+                                        <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                                            <?= esc($fine['late_by']) ?>
+                                            day<?= $fine['late_by'] != 1 ? 's' : '' ?>
+                                        </span>
+
+                                    </td>
+
+                                    <!-- AMOUNT -->
+                                    <td>
+
                                         <div class="fw-bold">
                                             ₱<?= number_format($fine['amount'], 2) ?>
                                         </div>
@@ -67,35 +87,39 @@
                                             !empty($fine['max_fine_amount']) &&
                                             $fine['amount'] >= $fine['max_fine_amount']
                                         ): ?>
-                                            <small class="text-muted">
-                                                Capped at ₱<?= number_format($fine['max_fine_amount'], 2) ?>
-                                            </small>
+
+                                            <div class="small text-muted">
+                                                Max: ₱<?= number_format($fine['max_fine_amount'], 2) ?>
+                                            </div>
+
                                         <?php endif; ?>
+
                                     </td>
 
+                                    <!-- STATUS -->
                                     <td>
 
                                         <?php if ($fine['status'] === 'unpaid'): ?>
 
-                                            <span class="badge bg-warning text-dark">
+                                            <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
                                                 Unpaid
                                             </span>
 
                                         <?php elseif ($fine['status'] === 'paid'): ?>
 
-                                            <span class="badge bg-success">
+                                            <span class="badge rounded-pill bg-success px-3 py-2">
                                                 Paid
                                             </span>
 
                                         <?php elseif ($fine['status'] === 'waived'): ?>
 
-                                            <span class="badge bg-secondary">
+                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
                                                 Waived
                                             </span>
 
                                         <?php else: ?>
 
-                                            <span class="badge bg-dark">
+                                            <span class="badge rounded-pill bg-dark px-3 py-2">
                                                 <?= ucfirst($fine['status']) ?>
                                             </span>
 
@@ -103,27 +127,56 @@
 
                                     </td>
 
-                                    <td>
+                                    <!-- DATE -->
+                                    <td class="text-muted">
+
                                         <?php if ($fine['status'] === 'paid'): ?>
-                                            <?= !empty($fine['paid_at']) ? date('M d, Y', strtotime($fine['paid_at'])) : '-' ?>
+
+                                            <?= !empty($fine['paid_at'])
+                                                ? date('M d, Y', strtotime($fine['paid_at']))
+                                                : '-' ?>
+
                                         <?php else: ?>
-                                            <?= !empty($fine['created_at']) ? date('M d, Y', strtotime($fine['created_at'])) : '-' ?>
+
+                                            <?= !empty($fine['created_at'])
+                                                ? date('M d, Y', strtotime($fine['created_at']))
+                                                : '-' ?>
+
                                         <?php endif; ?>
+
                                     </td>
 
                                 </tr>
 
-                                <?php endforeach; ?>
-                            <?php endif; ?>
+                            <?php endforeach; ?>
 
                         </tbody>
 
                     </table>
-                    
-                    <div class="mt-3 d-flex justify-content-center">
-                        <?= $pager->links('default', 'bootstrap_full') ?>
-                    </div>
+
                 </div>
+
+                <!-- PAGINATION -->
+                <div class="p-3 d-flex justify-content-center">
+                    <?= $pager->links('default', 'bootstrap_full') ?>
+                </div>
+
+            <?php else: ?>
+
+                <!-- EMPTY STATE -->
+                <div class="text-center p-5">
+
+                    <div class="mb-2 fs-5 fw-semibold text-muted">
+                        No fines found
+                    </div>
+
+                    <div class="text-muted small">
+                        Fine records will appear here when penalties are generated.
+                    </div>
+
+                </div>
+
+            <?php endif; ?>
 
         </div>
 
