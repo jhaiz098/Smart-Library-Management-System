@@ -16,7 +16,8 @@
             'contact_number',
             'password',
             'role_id',
-            'status'
+            'status',
+            'must_change_password'
         ];
         
         protected $useTimestamps = true;

@@ -217,7 +217,8 @@
                 </div>
 
             </div>
-
+            
+            <?php if($user['role_id'] != 1): ?>
             <!-- ACTIONS -->
             <div class="card border-0 shadow-sm mt-3">
 
@@ -227,6 +228,7 @@
 
                 <div class="card-body d-flex gap-2">
 
+                    <!-- EDIT -->
                     <a href="/admin/users/edit/<?= $user['id'] ?>"
                         class="btn btn-warning">
 
@@ -235,6 +237,19 @@
 
                     </a>
 
+                    <!-- RESET PASSWORD BUTTON -->
+                    <button
+                        type="button"
+                        class="btn btn-info text-white"
+                        data-bs-toggle="modal"
+                        data-bs-target="#resetPasswordModal<?= $user['id'] ?>">
+
+                        <i class="bi bi-key"></i>
+                        Reset Password
+
+                    </button>
+
+                    <!-- ACTIVATE / DEACTIVATE -->
                     <?php if($user['status'] == 'activated'): ?>
 
                         <a href="/admin/users/deactivate/<?= $user['id'] ?>"
@@ -258,6 +273,78 @@
                     <?php endif; ?>
 
                 </div>
+            </div>
+            <?php endif; ?>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade"
+    id="resetPasswordModal<?= $user['id'] ?>"
+    tabindex="-1"
+    aria-labelledby="resetPasswordLabel<?= $user['id'] ?>"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title"
+                    id="resetPasswordLabel<?= $user['id'] ?>">
+                    Reset Password
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="mb-2">
+                    Are you sure you want to reset the password for:
+                </p>
+
+                <div class="fw-bold">
+                    <?= esc($user['full_name']) ?>
+                </div>
+
+                <div class="text-muted small">
+                    <?= esc($user['library_id']) ?>
+                </div>
+
+                <div class="alert alert-warning mt-3 mb-0">
+                    A temporary password will be generated and must be provided to the user.
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-light border"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <form action="/admin/users/reset_password/<?= $user['id'] ?>"
+                      method="post">
+
+                    <?= csrf_field() ?>
+
+                    <button type="submit"
+                            class="btn btn-warning">
+                        Reset Password
+                    </button>
+
+                </form>
 
             </div>
 
@@ -266,5 +353,4 @@
     </div>
 
 </div>
-
 <?= $this->endSection() ?>

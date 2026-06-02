@@ -21,6 +21,11 @@ $routes->get('/unauthorized', 'Error::unauthorized');
 
 $routes->get('/server_time', 'Server::server_time');
 
+$routes->get('/auth/change_password', 'Auth::must_change_pass');
+$routes->post('/auth/update_password', 'Auth::must_update_pass');
+
+
+
 // PRIVATE (PROTECTED) (Login required)
 
 $routes->group('', ['filter' => 'auth'], function($routes) {
@@ -63,8 +68,14 @@ $routes->get('borrow_requests/completed_borrow_requests', 'Admin\Book::completed
 $routes->get('borrow_requests/expired_borrow_requests', 'Admin\Book::expired_borrow_requests_list');
 
 $routes->get('users', 'Admin\User::list');
+$routes->get('users/add_user', 'Admin\User::add_user');
+$routes->post('users/add', 'Admin\User::add');
 $routes->get('users/view/(:num)', 'Admin\User::view/$1');
 $routes->get('users/edit/(:num)', 'Admin\User::edit/$1');
+$routes->get('users/toggle_status/(:num)', 'Admin\User::toggle_status/$1');
+$routes->post('users/update/(:num)', 'Admin\User::update/$1');
+$routes->post('users/delete/(:num)', 'Admin\User::delete/$1');
+$routes->post('users/reset_password/(:num)', 'Admin\User::reset_password/$1');
 
 $routes->get('paid_fines_list', 'Admin\Fines::paid_fines_list');
 $routes->get('unpaid_fines_list', 'Admin\Fines::unpaid_fines_list');

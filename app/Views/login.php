@@ -41,6 +41,12 @@
                     <p class="text-muted">Login to your account</p>
                 </div>
 
+                <?php if(session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success border-0 shadow-sm">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                <?php endif; ?>
+
                 <?php if (session()->getFlashdata('error')): ?>
                     <div class="alert alert-danger">
                         <?= session()->getFlashdata('error') ?>

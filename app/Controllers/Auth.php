@@ -9,17 +9,19 @@ class Auth extends BaseController
 {
     public function login()
     {
-        // already logged in
-        if (session()->get('logged_in')) {
+        $session = session();
 
-            // admin or staff
-            if (in_array(session()->get('role_id'), [1, 2])) {
+        // if logged in AND not force logout → redirect dashboard
+        if ($session->get('logged_in') && !$session->get('force_logout')) {
+
+            if (in_array($session->get('role_id'), [1, 2])) {
                 return redirect()->to('/admin/dashboard');
             }
 
-            // normal user
             return redirect()->to('/user/dashboard');
         }
+
+        $session->destroy();
 
         return view('login');
     }
@@ -43,12 +45,20 @@ class Auth extends BaseController
             return redirect()->back()->with('error', 'User not found');
         }
 
+        // check if deactivated
+        if ($user['status'] !== 'activated') {
+            return redirect()->back()->with(
+                'error',
+                'Your account has been deactivated. Please contact the administrator.'
+            );
+        }
+
         // check password
         if (!password_verify($password, $user['password'])) {
             return redirect()->back()->with('error', 'Wrong password');
         }
 
-        // base session data (all users)
+        // base session data
         $sessionData = [
             'user_id'    => $user['id'],
             'library_id' => $user['library_id'],
@@ -58,7 +68,7 @@ class Auth extends BaseController
             'logged_in'  => true
         ];
 
-        // ONLY STAFF (role_id = 2)
+        // staff extra data
         if ($user['role_id'] == 2) {
 
             $staffLevelName = null;
@@ -79,6 +89,10 @@ class Auth extends BaseController
         }
 
         $session->set($sessionData);
+
+        if (!empty($user['must_change_password']) && $user['must_change_password'] == 1) {
+            return redirect()->to('/auth/change_password');
+        }
 
         // redirect based on role
         if ($user['role_id'] == 1 || $user['role_id'] == 2) {
@@ -158,5 +172,74 @@ class Auth extends BaseController
     {
         session()->destroy();
         return redirect()->to('/login');
+    }
+
+    public function must_change_pass()
+    {
+        return view('must_change_password');
+    }
+
+    public function must_update_pass()
+    {
+        $session = session();
+        $userModel = new UserModel();
+
+        $userId = $session->get('user_id');
+
+        // if not logged in
+        if (!$userId) {
+            return redirect()->to('/login');
+        }
+
+        // get post data
+        $currentPassword = $this->request->getPost('current_password');
+        $newPassword     = $this->request->getPost('new_password');
+        $confirmPassword = $this->request->getPost('confirm_password');
+
+        // get user
+        $user = $userModel->find($userId);
+
+        if (!$user) {
+            return redirect()->back()
+                ->with('error', 'User not found.');
+        }
+
+        // check current password (temporary password)
+        if (!password_verify($currentPassword, $user['password'])) {
+            return redirect()->back()
+                ->with('error', 'Current password is incorrect.');
+        }
+
+        // check match
+        if ($newPassword !== $confirmPassword) {
+            return redirect()->back()
+                ->with('error', 'Passwords do not match.');
+        }
+
+        try {
+
+            // update password + remove must_change_password flag
+            $updated = $userModel->update($userId, [
+                'password' => password_hash($newPassword, PASSWORD_DEFAULT),
+                'must_change_password' => 0
+            ]);
+
+            if (!$updated) {
+                return redirect()->back()
+                    ->with('error', 'Failed to update password.');
+            }
+
+            $session->setFlashdata('success', 'Password updated successfully. Please login again.');
+
+            // mark forced logout
+            $session->set('force_logout', true);
+
+            return redirect()->to('/login');
+
+        } catch (\Exception $e) {
+
+            return redirect()->back()
+                ->with('error', 'Something went wrong while updating password.');
+        }
     }
 }

@@ -12,6 +12,10 @@ Edit User
 
 <div class="p-3">
 
+<a href="/admin/users" class="btn btn-secondary mb-3">
+    Back
+</a>
+
     <div class="row justify-content-center">
 
         <div class="col-lg-8">
@@ -30,9 +34,7 @@ Edit User
                         </div>
                     </div>
 
-                    <a href="/admin/users" class="btn btn-outline-secondary btn-sm">
-                        Back
-                    </a>
+                    
 
                 </div>
 
@@ -48,6 +50,18 @@ Edit User
                             </ul>
                         </div>
 
+                    <?php endif; ?>
+
+                    <?php if(session()->getFlashdata('success')): ?>
+                        <div class="alert alert-success border-0 shadow-sm">
+                            <?= session()->getFlashdata('success') ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if(session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger border-0 shadow-sm">
+                            <?= session()->getFlashdata('error') ?>
+                        </div>
                     <?php endif; ?>
 
                     <form action="/admin/users/update/<?= $user['id'] ?>" method="post">
@@ -179,80 +193,6 @@ Edit User
                         </div>
 
                     </form>
-
-                    <hr class="my-4">
-
-                    <div class="card border-warning">
-
-                        <div class="card-header bg-warning-subtle">
-
-                            <div class="fw-semibold text-warning-emphasis">
-                                Password Management
-                            </div>
-
-                        </div>
-
-                        <div class="card-body">
-
-                            <p class="text-muted mb-3">
-                                Reset this user's password. The user will need to use the new password on their next login.
-                            </p>
-
-                            <form action="/admin/users/reset_password/<?= $user['id'] ?>" method="post">
-
-                                <?= csrf_field() ?>
-
-                                <div class="row g-3">
-
-                                    <div class="col-md-6">
-
-                                        <label class="form-label fw-semibold">
-                                            New Password
-                                        </label>
-
-                                        <input
-                                            type="password"
-                                            name="password"
-                                            class="form-control"
-                                            required
-                                        >
-
-                                    </div>
-
-                                    <div class="col-md-6">
-
-                                        <label class="form-label fw-semibold">
-                                            Confirm Password
-                                        </label>
-
-                                        <input
-                                            type="password"
-                                            name="password_confirm"
-                                            class="form-control"
-                                            required
-                                        >
-
-                                    </div>
-
-                                </div>
-
-                                <div class="mt-3">
-
-                                    <button
-                                        type="submit"
-                                        class="btn btn-warning"
-                                        onclick="return confirm('Reset this user\\'s password?')"
-                                    >
-                                        Reset Password
-                                    </button>
-
-                                </div>
-
-                            </form>
-
-                        </div>
-
-                    </div>
 
                 </div>
 
