@@ -63,6 +63,8 @@ $routes->get('borrow_requests/completed_borrow_requests', 'Admin\Book::completed
 $routes->get('borrow_requests/expired_borrow_requests', 'Admin\Book::expired_borrow_requests_list');
 
 $routes->get('users', 'Admin\User::list');
+$routes->get('users/view/(:num)', 'Admin\User::view/$1');
+$routes->get('users/edit/(:num)', 'Admin\User::edit/$1');
 
 $routes->get('paid_fines_list', 'Admin\Fines::paid_fines_list');
 $routes->get('unpaid_fines_list', 'Admin\Fines::unpaid_fines_list');

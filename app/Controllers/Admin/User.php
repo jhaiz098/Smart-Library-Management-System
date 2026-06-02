@@ -5,6 +5,7 @@ namespace App\Controllers\Admin;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\RoleModel;
+use App\Models\StaffLevelModel;
 
 class User extends BaseController
 {
@@ -81,5 +82,55 @@ class User extends BaseController
         }
 
         return view('admin/users', $data);
+    }
+
+    public function view($id)
+    {
+        $user_model = new UserModel();
+        $role_model = new RoleModel();
+        $staff_level_model = new StaffLevelModel();
+
+        $user = $user_model->find($id);
+
+        if (!$user) {
+            return redirect()->back()->with('error', 'User not found.');
+        }
+
+        $user['role_name'] = $role_model
+            ->find($user['role_id'])['name'] ?? '-';
+
+        if (!empty($user['staff_level_id'])) {
+            $user['staff_position'] = $staff_level_model
+                ->find($user['staff_level_id'])['name'] ?? '-';
+        } else {
+            $user['staff_position'] = '-';
+        }
+
+        $data['user'] = $user;
+
+        return view('admin/users/view', $data);
+    }
+
+    public function edit($id)
+    {
+        $user_model = new UserModel();
+        $role_model = new RoleModel();
+        $staff_level_model = new StaffLevelModel();
+
+        $user = $user_model->find($id);
+
+        if (!$user) {
+            return redirect()
+                ->to('/admin/users')
+                ->with('error', 'User not found.');
+        }
+
+        $data = [
+            'user' => $user,
+            'roles' => $role_model->findAll(),
+            'staff_levels' => $staff_level_model->findAll()
+        ];
+
+        return view('admin/users/edit', $data);
     }
 }
