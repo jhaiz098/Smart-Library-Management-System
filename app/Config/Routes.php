@@ -49,14 +49,12 @@ $routes->post('book_management/delete_book/(:num)', 'Admin\Book::delete_book/$1'
 $routes->post('book_management/publish_book/(:num)', 'Admin\Book::publish_book/$1');
 $routes->post('book_management/unpublish_book/(:num)', 'Admin\Book::unpublish_book/$1');
 
-$routes->get('borrowed_books/borrowed', 'Admin\BorrowedBooks::borrowed_books_list');
+$routes->get('borrowed_books', 'Admin\BorrowedBooks::borrowed_books_list');
 $routes->post('borrowed_books/return/', 'Admin\BorrowedBooks::borrowed_books_return');
 $routes->post('borrowed_books/extend/', 'Admin\BorrowedBooks::borrowed_books_extend');
 $routes->get('borrowed_books/history/(:num)', 'Admin\BorrowedBooks::borrowed_books_history/$1');
 
-$routes->get('borrowed_books/returned', 'Admin\BorrowedBooks::returned_books_list');
-
-$routes->get('borrow_requests/pending_borrow_requests', 'Admin\Book::pending_borrow_requests_list');
+$routes->get('borrow_requests', 'Admin\Book::borrow_requests_list');
 $routes->post('borrow_requests/pending_borrow_requests_reject/(:num)', 'Admin\Book::pending_borrow_requests_reject/$1');
 $routes->post('borrow_requests/pending_borrow_requests_approve/(:num)', 'Admin\Book::pending_borrow_requests_approve/$1');
 

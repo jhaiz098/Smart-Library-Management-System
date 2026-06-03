@@ -181,40 +181,68 @@ class Book extends BaseController
             ->with('success', 'Book unpublished successfully.');
     }
 
-    public function pending_borrow_requests_list()
+    public function borrow_requests_list()
     {
         $borrow_requests_model = new BorrowRequestModel();
 
         $perPage = 10;
 
-        $borrow_requests_model->where('status', 'pending')
+        // Auto-expire pending requests
+        $borrow_requests_model
+            ->where('status', 'pending')
             ->where('expires_at <=', date('Y-m-d H:i:s'))
             ->set([
                 'status' => 'expired',
                 'remarks' => 'Automatically expired after reaching expiration date.'
             ])
             ->update();
-        
-        $baseQuery = $borrow_requests_model
+
+        $type = $this->request->getGet('type') ?? 'all';
+
+        $query = $borrow_requests_model
             ->select('
                 borrow_requests.*,
+
                 borrower.library_id as library_id,
                 borrower.full_name as full_name,
+
                 books.title as book_title
             ')
             ->join('users as borrower', 'borrower.id = borrow_requests.user_id')
             ->join('books', 'books.id = borrow_requests.book_id');
 
-        $pendingQuery = clone $baseQuery;
+        switch ($type) {
 
-        $pending_requests = $pendingQuery
-            ->where('borrow_requests.status', 'pending')
+            case 'pending':
+                $query->where('borrow_requests.status', 'pending');
+                break;
+
+            case 'approved':
+                $query->where('borrow_requests.status', 'approved');
+                break;
+
+            case 'completed':
+                $query->whereIn('borrow_requests.status', ['cancelled', 'rejected', 'claimed']);
+                break;
+
+            case 'expired':
+                $query->where('borrow_requests.status', 'expired');
+                break;
+
+            case 'all':
+            default:
+                // no filter
+                break;
+        }
+
+        $records = $query
+            ->orderBy('borrow_requests.request_date', 'DESC')
             ->paginate($perPage);
 
-        return view('admin/borrow_requests/pending_borrow_requests_list', [
-            'pending_requests' => $pending_requests,
-            'pager' => $pendingQuery->pager,
-            'request_status' => 'pending'
+        return view('admin/borrow_requests', [
+            'records' => $records,
+            'pager' => $borrow_requests_model->pager,
+            'request_status' => $type
         ]);
     }
 

@@ -72,14 +72,14 @@
             </li>
 
             <li class="nav-item">
-                <a href="/admin/borrowed_books/borrowed"
+                <a href="/admin/borrowed_books"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-arrow-left-right me-2"></i> Borrowed Books
                 </a>
             </li>
 
             <li class="nav-item">
-                <a href="/admin/borrow_requests/pending_borrow_requests"
+                <a href="/admin/borrow_requests"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-inbox-fill me-2"></i> Borrow Requests
                 </a>
