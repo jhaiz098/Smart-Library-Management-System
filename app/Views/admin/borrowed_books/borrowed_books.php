@@ -4,137 +4,183 @@
     <?= session()->get('role_id') == 1 ? 'Admin' : 'Staff' ?> | Borrowed Books
 <?= $this->endSection() ?>
 
-
 <?= $this->section('render_borrowed') ?>
-<div class="p-3 card">
-    <p class="fs-6 fw-bold">Borrowed Books</p>
 
-    <?= $this->include('partials/admin/borrowed_books_filters') ?>
-    <table class="table table-bordered table-hover fs-7 align-middle">
-        <thead class="text-center">
-            <tr>
-                <th>ID</th>
-                <th>Borrower</th>
-                <th>Book</th>
-                <th>Borrow Date</th>
-                <th>Due Date</th>
-                <th>Status</th>
-                <th>Issued By</th>
-                <th colspan="3">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if(empty($borrowed_books)): ?>
+<div class="border-0 shadow-sm">
 
-                <tr>
-                    <td colspan="8" class="text-center">
-                        No borrowed books found.
-                    </td>
-                </tr>
+        <!-- FLASH -->
+        <?php if(session()->getFlashdata('success')): ?>
+            <div class="alert alert-success border-0 shadow-sm">
+                <?= session()->getFlashdata('success') ?>
+            </div>
+        <?php endif; ?>
 
-            <?php else: ?>
-                <?php foreach($borrowed_books as $bb): ?>
-                    <tr>
-                        <td class="text-center">
-                            <?= $bb['id'] ?>
-                        </td>
+        <?php if(session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger border-0 shadow-sm">
+                <?= session()->getFlashdata('error') ?>
+            </div>
+        <?php endif; ?>
 
-                        <td>
-                            <?= $bb['borrower_library_id'] ?>
-                            <br>
-                            <?= $bb['borrower_name'] ?>
-                        </td>
+        <!-- TABLE -->
+        <div class="table-responsive rounded-3 border bg-white shadow-sm">
 
-                        <td>
-                            <?= $bb['book_title'] ?>
-                        </td>
+            <table class="table table-hover align-middle mb-0">
 
-                        <td>
-                            <?= $bb['borrow_date'] ?>
-                        </td>
-
-                        <td>
-                            <?= $bb['due_date'] ?>
-                        </td>
-
-                        <td>
-                            <?php if($bb['status_label'] === 'Overdue'): ?>
-                                <span class="badge bg-danger">
-                                    Overdue
-                                </span>
-                            <?php else: ?>
-                                <span class="badge bg-primary">
-                                    Borrowed
-                                </span>
-                            <?php endif; ?>
-                        </td>
-
-                        <td>
-                            <?= $bb['issued_by_library_id'] ?>
-                            <br>
-                            <?= $bb['issued_by_name'] ?>
-                        </td>
-
-                        <td>
-                            <button type="button" 
-                                class="btn btn-sm btn-success"
-
-                                data-bs-toggle="modal"
-                                data-bs-target="#returnModal"
-
-                                data-id="<?= $bb['id'] ?>"
-                                data-user="<?= $bb['borrower_name'] ?>"
-                                data-book="<?= $bb['book_title'] ?>"
-                                data-due="<?= $bb['due_date'] ?>"
-                                data-daily_overdue_fine="<?= $daily_overdue_fine ?>"
-                                data-max_fine_amount="<?= $max_fine_amount ?>"
-                                >
-
-                                Return
-                            </button>
-                        </td>
-
-                        <td>
-                            <button type="button" 
-                                class="btn btn-sm btn-primary"
-
-                                data-bs-toggle="modal"
-                                data-bs-target="#extendModal"
-
-                                data-id="<?= $bb['id'] ?>"
-                                data-user="<?= $bb['borrower_name'] ?>"
-                                data-book="<?= $bb['book_title'] ?>"
-                                data-due="<?= $bb['due_date'] ?>">
-
-                                Extend Due Date
-                            </button>
-                        </td>
-
-                        <td>
-                            <button type="button" 
-                                class="btn btn-sm btn-dark"
-
-                                data-bs-toggle="modal"
-                                data-bs-target="#historyModal"
-
-                                data-id="<?= $bb['id'] ?>"
-                                data-user="<?= $bb['borrower_name'] ?>"
-                                data-book="<?= $bb['book_title'] ?>">
-
-                                View History
-                            </button>
-                        </td>
+                <thead class="bg-light border-bottom align-middle">
+                    <tr class="text-muted small text-uppercase">
+                        <th>#</th>
+                        <th>Borrower</th>
+                        <th>Book</th>
+                        <th>Borrow Date</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Issued By</th>
+                        <th class="text-center">Actions</th>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
-    
-    <div class="mt-3 d-flex justify-content-center">
-        <?= $pager->links('default', 'bootstrap_full') ?>
-    </div>
-</div>
+                </thead>
 
+                <tbody>
+
+                    <?php if(empty($borrowed_books)): ?>
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">
+                                No borrowed books found
+                            </td>
+                        </tr>
+                    <?php else: ?>
+
+                        <?php $i = 1; foreach($borrowed_books as $bb): ?>
+
+                            <tr>
+
+                                <!-- ROW NUMBER -->
+                                <td class="text-muted fw-semibold text-center">
+                                    <?= $i++ ?>
+                                </td>
+
+                                <!-- BORROWER -->
+                                <td>
+                                    <div class="fw-semibold">
+                                        <?= esc($bb['borrower_name']) ?>
+                                    </div>
+                                    <div class="text-muted small">
+                                        <?= esc($bb['borrower_library_id']) ?>
+                                    </div>
+                                </td>
+
+                                <!-- BOOK -->
+                                <td class="fw-semibold">
+                                    <?= esc($bb['book_title']) ?>
+                                </td>
+
+                                <!-- BORROW DATE -->
+                                <td class="text-muted">
+                                    <?= date('F d, Y', strtotime($bb['borrow_date'])) ?>
+                                </td>
+
+                                <!-- DUE DATE -->
+                                <td class="text-muted">
+                                    <?= date('F d, Y', strtotime($bb['due_date'])) ?>
+                                </td>
+
+                                <!-- STATUS -->
+                                <td>
+                                    <?php if($bb['status_label'] === 'Overdue'): ?>
+                                        <span class="badge bg-danger rounded-pill px-3 py-2">
+                                            Overdue
+                                        </span>
+                                    <?php else: ?>
+                                        <span class="badge bg-primary rounded-pill px-3 py-2">
+                                            Borrowed
+                                        </span>
+                                    <?php endif; ?>
+                                </td>
+
+                                <!-- ISSUED BY -->
+                                <td>
+                                    <div class="small">
+                                        <?= esc($bb['issued_by_name']) ?>
+                                    </div>
+                                    <div class="text-muted small">
+                                        <?= esc($bb['issued_by_library_id']) ?>
+                                    </div>
+                                </td>
+
+                                <!-- ACTIONS -->
+                                <td class="text-center">
+
+                                    <div class="dropdown">
+
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                data-bs-toggle="dropdown">
+                                            Actions
+                                        </button>
+
+                                        <ul class="dropdown-menu">
+
+                                            <li>
+                                                <button class="dropdown-item text-success"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#returnModal"
+                                                    data-id="<?= $bb['id'] ?>"
+                                                    data-user="<?= $bb['borrower_name'] ?>"
+                                                    data-book="<?= $bb['book_title'] ?>"
+                                                    data-due="<?= $bb['due_date'] ?>"
+                                                    data-daily_overdue_fine="<?= $daily_overdue_fine ?>"
+                                                    data-max_fine_amount="<?= $max_fine_amount ?>">
+                                                    Return Book
+                                                </button>
+                                            </li>
+
+                                            <li>
+                                                <button class="dropdown-item text-primary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#extendModal"
+                                                    data-id="<?= $bb['id'] ?>"
+                                                    data-user="<?= $bb['borrower_name'] ?>"
+                                                    data-book="<?= $bb['book_title'] ?>"
+                                                    data-due="<?= $bb['due_date'] ?>">
+                                                    Extend Due Date
+                                                </button>
+                                            </li>
+
+                                            <li><hr class="dropdown-divider"></li>
+
+                                            <li>
+                                                <button class="dropdown-item text-dark"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#historyModal"
+                                                    data-id="<?= $bb['id'] ?>"
+                                                    data-user="<?= $bb['borrower_name'] ?>"
+                                                    data-book="<?= $bb['book_title'] ?>">
+                                                    View History
+                                                </button>
+                                            </li>
+
+                                        </ul>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="mt-3 d-flex justify-content-center">
+            <?= $pager->links('default', 'bootstrap_full') ?>
+        </div>
+
+</div>
 
 
 <div class="modal fade" id="returnModal" tabindex="-1">

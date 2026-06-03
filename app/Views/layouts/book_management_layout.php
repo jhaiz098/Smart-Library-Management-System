@@ -48,11 +48,45 @@ Book Management
             <?php endif; ?>
 
             <!-- SEARCH + FILTER -->
+            
+            <!-- BOOK STATUS NAV -->
+
+            <ul class="nav nav-pills gap-2 mb-3">
+
+                <li class="nav-item">
+
+                    <a
+                        href="book_management_active"
+                        class="nav-link <?= ($book_status == 'active') ? 'active' : 'text-dark' ?>"
+                    >
+
+                        <i class="bi bi-book-fill me-1"></i>
+                        Active
+
+                    </a>
+
+                </li>
+
+                <li class="nav-item">
+
+                    <a
+                        href="book_management_draft"
+                        class="nav-link <?= ($book_status == 'draft') ? 'active' : 'text-dark' ?>"
+                    >
+
+                        <i class="bi bi-file-earmark-text-fill me-1"></i>
+                        Draft
+
+                    </a>
+
+                </li>
+
+            </ul>
 
             <form
                 method="get"
                 action="<?= current_url() ?>"
-                class="row g-2 mb-4"
+                class="row g-2"
             >
 
                 <div class="col-md-6">
@@ -90,22 +124,22 @@ Book Management
 
                         <option value="title_asc"
                             <?= ($sort ?? '') == 'title_asc' ? 'selected' : '' ?>>
-                            Title A-Z
+                            Title Ascending
                         </option>
 
                         <option value="title_desc"
                             <?= ($sort ?? '') == 'title_desc' ? 'selected' : '' ?>>
-                            Title Z-A
+                            Title Descending
                         </option>
 
                         <option value="newest"
                             <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>
-                            Newest
+                            Recently Created
                         </option>
 
                         <option value="oldest"
                             <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>
-                            Oldest
+                            Earliest Created
                         </option>
 
                     </select>
@@ -141,42 +175,8 @@ Book Management
 
             </form>
 
-            <!-- BOOK STATUS NAV -->
-
-            <ul class="nav nav-pills gap-2">
-
-                <li class="nav-item">
-
-                    <a
-                        href="book_management_active"
-                        class="nav-link <?= ($book_status == 'active') ? 'active' : 'text-dark' ?>"
-                    >
-
-                        <i class="bi bi-book-fill me-1"></i>
-                        Active
-
-                    </a>
-
-                </li>
-
-                <li class="nav-item">
-
-                    <a
-                        href="book_management_draft"
-                        class="nav-link <?= ($book_status == 'draft') ? 'active' : 'text-dark' ?>"
-                    >
-
-                        <i class="bi bi-file-earmark-text-fill me-1"></i>
-                        Draft
-
-                    </a>
-
-                </li>
-
-            </ul>
-
             <hr>
-            
+
             <a
                 href="/admin/book_management/add_book"
                 class="btn btn-primary btn-sm px-3 py-2 my-2"

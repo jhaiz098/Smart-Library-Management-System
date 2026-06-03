@@ -171,32 +171,7 @@
 
                             </div>
 
-                            <div class="col-md-6">
-
-                                <label class="form-label fw-semibold">
-                                    Status
-                                </label>
-
-                                <select name="status"
-                                        class="form-select">
-
-                                    <option value="draft"
-                                        <?= (isset($book)
-                                        && $book['status'] == 'draft')
-                                        ? 'selected' : '' ?>>
-                                        Draft
-                                    </option>
-
-                                    <option value="active"
-                                        <?= (isset($book)
-                                        && $book['status'] == 'active')
-                                        ? 'selected' : '' ?>>
-                                        Active
-                                    </option>
-
-                                </select>
-
-                            </div>
+                            
 
                         </div>
 

@@ -63,41 +63,39 @@ class Book extends BaseController
         $id = $this->request->getPost('id');
 
         $data = [
-            'category_id' => trim($this->request->getPost('category_id')),
-            'title' => trim($this->request->getPost('title')),
-            'author' => trim($this->request->getPost('author')),
-            'description' => trim($this->request->getPost('description')),
-            'published_year' => trim($this->request->getPost('published_year')),
-            'publisher' => trim($this->request->getPost('publisher')),
-            'status' => trim($this->request->getPost('status')),
-            'availability' => "available",
+            'category_id'     => trim($this->request->getPost('category_id')),
+            'title'           => trim($this->request->getPost('title')),
+            'author'          => trim($this->request->getPost('author')),
+            'description'     => trim($this->request->getPost('description')),
+            'published_year'  => trim($this->request->getPost('published_year')),
+            'publisher'       => trim($this->request->getPost('publisher'))
         ];
 
-        // CHECK FOR EMPTY FIELDS
+        // validation (skip availability)
         foreach ($data as $key => $value) {
 
-            // skip availability since it's auto-set
-            if ($key == 'availability') {
-                continue;
-            }
-
             if (empty($value)) {
-
                 return redirect()->back()
                     ->withInput()
                     ->with('error', ucfirst(str_replace('_', ' ', $key)) . ' is required.');
-
             }
         }
 
         if ($id) {
+
+            // 🔥 EDIT MODE: DO NOT TOUCH STATUS
             $model->update($id, $data);
+
         } else {
+
+            // 🔥 ADD MODE: FORCE ACTIVE
+            $data['status'] = 'active';
+
             $model->insert($data);
         }
 
         return redirect()->to('/admin/book_management_active')
-            ->with('success', 'Book saved successfully.');
+            ->with('success', $id ? 'Book updated successfully.' : 'Book added successfully.');
     }
 
     public function delete_book($id)
