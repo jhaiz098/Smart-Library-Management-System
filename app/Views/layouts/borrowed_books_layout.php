@@ -25,25 +25,8 @@
     <!-- MAIN CARD -->
     <div class="card border-0 shadow-sm">
 
-        <!-- ALERTS -->
-        <div class="card-body pb-0">
-
-            <?php if(session()->getFlashdata('success')): ?>
-                <div class="alert alert-success border-0 shadow-sm">
-                    <?= session()->getFlashdata('success') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if(session()->getFlashdata('error')): ?>
-                <div class="alert alert-danger border-0 shadow-sm">
-                    <?= session()->getFlashdata('error') ?>
-                </div>
-            <?php endif; ?>
-
-        </div>
-
         <!-- TABS + CONTENT -->
-        <div class="card-body pt-0">
+        <div class="card-body">
 
             <ul class="nav nav-pills mb-3 border-bottom pb-2">
 

@@ -33,19 +33,7 @@ Book Management
 
         <div class="card-body">
 
-            <!-- ALERTS -->
-
-            <?php if(session()->getFlashdata('success')): ?>
-                <div class="alert alert-success border-0 shadow-sm">
-                    <?= session()->getFlashdata('success') ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if(session()->getFlashdata('error')): ?>
-                <div class="alert alert-danger border-0 shadow-sm">
-                    <?= session()->getFlashdata('error') ?>
-                </div>
-            <?php endif; ?>
+            
 
             <!-- SEARCH + FILTER -->
             
@@ -176,6 +164,19 @@ Book Management
             </form>
 
             <hr>
+            
+            <!-- ALERTS -->
+            <?php if(session()->getFlashdata('success')): ?>
+                <div class="alert alert-success border-0 shadow-sm">
+                    <?= session()->getFlashdata('success') ?>
+                </div>
+            <?php endif; ?>
+
+            <?php if(session()->getFlashdata('error')): ?>
+                <div class="alert alert-danger border-0 shadow-sm">
+                    <?= session()->getFlashdata('error') ?>
+                </div>
+            <?php endif; ?>
 
             <a
                 href="/admin/book_management/add_book"

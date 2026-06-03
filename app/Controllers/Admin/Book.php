@@ -458,7 +458,6 @@ class Book extends BaseController
 
             'borrow_date' => date('Y-m-d H:i:s'),
 
-            // example: 7 days borrowing
             'due_date' => date('Y-m-d H:i:s', strtotime("+{$borrow_days} days")),
 
             'status' => 'borrowed',
@@ -466,6 +465,14 @@ class Book extends BaseController
             'issued_by' => session()->get('user_id'),
 
             'remarks' => $this->request->getPost('remarks') ?: "Book marked as claimed successfully by {$role_label}."
+        ]);
+
+        $borrowing_id = $borrowing_model->insertID();
+
+        $borrowing_code = 'BRW-' . date('Y') . '-' . str_pad($borrowing_id, 6, '0', STR_PAD_LEFT);
+
+        $borrowing_model->update($borrowing_id, [
+            'borrowing_code' => $borrowing_code
         ]);
 
         $book_model->update($request['book_id'], [

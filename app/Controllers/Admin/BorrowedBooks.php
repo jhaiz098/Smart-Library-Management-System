@@ -71,11 +71,14 @@ class BorrowedBooks extends BaseController
                 books.title as book_title,
 
                 issuer.library_id as issued_by_library_id,
-                issuer.full_name as issued_by_name
+                issuer.full_name as issued_by_name,
+
+                fines.amount as fine_amount
             ')
             ->join('users as borrower', 'borrower.id = borrowings.user_id')
             ->join('books', 'books.id = borrowings.book_id')
             ->join('users as issuer', 'issuer.id = borrowings.issued_by', 'left')
+            ->join('fines', 'fines.borrowing_id = borrowings.id', 'left')
             ->where('borrowings.status', 'returned')
             ->orderBy('borrowings.borrow_date', 'DESC')
             ->paginate($perPage);

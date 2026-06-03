@@ -13,6 +13,7 @@
             'borrow_request_id',
             'user_id',
             'book_id',
+            'borrowing_code',
             'borrow_date',
             'due_date',
             'return_date',

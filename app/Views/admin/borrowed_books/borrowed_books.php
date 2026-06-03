@@ -29,6 +29,7 @@
                 <thead class="bg-light border-bottom align-middle">
                     <tr class="text-muted small text-uppercase">
                         <th>#</th>
+                        <th>Borrowing Code</th>
                         <th>Borrower</th>
                         <th>Book</th>
                         <th>Borrow Date</th>
@@ -56,6 +57,12 @@
                                 <!-- ROW NUMBER -->
                                 <td class="text-muted fw-semibold text-center">
                                     <?= $i++ ?>
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-dark rounded-pill px-3 py-2">
+                                        <?= $bb['borrowing_code'] ?>
+                                    </span>
                                 </td>
 
                                 <!-- BORROWER -->
@@ -441,7 +448,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         fineNotice.innerHTML = '';
 
-        // 🔥 SERVER TIME (source of truth)
+        // SERVER TIME
         const res = await fetch("<?= base_url('server_time') ?>");
         const data = await res.json();
 

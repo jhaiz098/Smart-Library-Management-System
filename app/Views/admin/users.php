@@ -135,6 +135,10 @@
                 </form>
             </div>
             
+            
+
+            <hr>
+
             <?php if(session()->getFlashdata('success')): ?>
                 <div class="alert alert-success border-0 shadow-sm">
                     <?= session()->getFlashdata('success') ?>
@@ -146,8 +150,6 @@
                     <?= session()->getFlashdata('error') ?>
                 </div>
             <?php endif; ?>
-
-            <hr>
 
             <a class="btn btn-primary btn-sm px-3 py-2 my-2" href="/admin/users/add_user">
                 + Add User
