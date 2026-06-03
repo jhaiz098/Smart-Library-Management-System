@@ -58,7 +58,7 @@
                         name="search"
                         placeholder="Search title..."
                         class="form-control"
-                        value=""
+                        value="<?= $_GET['search'] ?? '' ?>"
                     >
                 </div>
                 
@@ -72,13 +72,43 @@
                     <!-- SORT -->
                     <select name="sort" class="form-select" onchange="this.form.submit()">
                         <option value="">Sort By</option>
+                        
+                        <option value="title_asc"
+                            <?= ($sort ?? '') == 'title_asc' ? 'selected' : '' ?>>
+                            Title Ascending
+                        </option>
+
+                        <option value="title_desc"
+                            <?= ($sort ?? '') == 'title_desc' ? 'selected' : '' ?>>
+                            Title Descending
+                        </option>
+
+                        <option value="newest"
+                            <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>
+                            Recently Created
+                        </option>
+
+                        <option value="oldest"
+                            <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>
+                            Earliest Created
+                        </option>
                     </select>
                 </div>
 
                 <div class="col-md-2">
                     <!-- FILTER -->
-                    <select name="category" class="form-select" onchange="this.form.submit()">
-                        <option value="">All Categories</option>
+                    <select name="status" class="form-select" onchange="this.form.submit()">
+                        <option value="">All Statuses</option>
+
+                        <option value="borrowed"
+                            <?= ($status ?? '') == 'borrowed' ? 'selected' : '' ?>>
+                            Borrowed
+                        </option>
+
+                        <option value="overdue"
+                            <?= ($status ?? '') == 'overdue' ? 'selected' : '' ?>>
+                            Overdue
+                        </option>
                     </select>
                 </div>
             </form>

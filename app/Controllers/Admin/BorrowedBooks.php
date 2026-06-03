@@ -17,9 +17,13 @@ class BorrowedBooks extends BaseController
         $borrowing_model = new BorrowingModel();
         $library_settings_model = new LibrarySettingsModel();
 
-        $perPage = 10;
+        $type = $this->request->getGet('type') ?? 'all';
 
-        $borrowed_books = $borrowing_model
+        $search = trim($this->request->getGet('search') ?? '');
+        $sort = $this->request->getGet('sort') ?? '';
+        $status = $this->request->getGet('status') ?? '';
+
+        $query = $borrowing_model
             ->select('
                 borrowings.*,
 
@@ -31,27 +35,137 @@ class BorrowedBooks extends BaseController
                 issuer.library_id as issued_by_library_id,
                 issuer.full_name as issued_by_name,
 
-                CASE 
-                    WHEN borrowings.due_date < NOW() THEN "Overdue"
-                    ELSE "Borrowed"
+                fines.amount as fine_amount,
+
+                CASE
+                    WHEN borrowings.status = "borrowed"
+                        AND borrowings.due_date < NOW()
+                    THEN "Overdue"
+                    ELSE borrowings.status
                 END as status_label
             ')
             ->join('users as borrower', 'borrower.id = borrowings.user_id')
             ->join('books', 'books.id = borrowings.book_id')
             ->join('users as issuer', 'issuer.id = borrowings.issued_by', 'left')
-            ->where('borrowings.status', 'borrowed')
-            ->orderBy('borrowings.borrow_date', 'DESC')
-            ->paginate($perPage);
+            ->join('fines', 'fines.borrowing_id = borrowings.id', 'left');
 
-        $daily_overdue_fine = $library_settings_model->first()['daily_overdue_fine'];
-        $max_fine_amount = $library_settings_model->first()['max_fine_amount'];
-        
-        return view('admin/borrowed_books/borrowed_books', [
-            'borrowed_books' => $borrowed_books,
+        /*
+        |--------------------------------------------------------------------------
+        | TAB FILTER
+        |--------------------------------------------------------------------------
+        */
+        switch ($type) {
+
+            case 'borrowed':
+                $query->where('borrowings.status', 'borrowed');
+                break;
+
+            case 'returned':
+                $query->where('borrowings.status', 'returned');
+                break;
+
+            case 'all':
+            default:
+                break;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+        if (!empty($search)) {
+
+            $query->groupStart()
+                ->like('borrowings.borrowing_code', $search)
+                ->orLike('borrower.full_name', $search)
+                ->orLike('borrower.library_id', $search)
+                ->orLike('books.title', $search)
+            ->groupEnd();
+
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS FILTER
+        |--------------------------------------------------------------------------
+        */
+        switch ($status) {
+
+            case 'borrowed':
+
+                $query
+                    ->where('borrowings.status', 'borrowed')
+                    ->where('borrowings.due_date >=', date('Y-m-d H:i:s'));
+
+                break;
+
+            case 'overdue':
+
+                $query
+                    ->where('borrowings.status', 'borrowed')
+                    ->where('borrowings.due_date <', date('Y-m-d H:i:s'));
+
+                break;
+
+            case 'returned_on_time':
+
+                $query
+                    ->where('borrowings.status', 'returned')
+                    ->where('borrowings.return_date <= borrowings.due_date', null, false);
+
+                break;
+
+            case 'returned_late':
+
+                $query
+                    ->where('borrowings.status', 'returned')
+                    ->where('borrowings.return_date > borrowings.due_date', null, false);
+
+                break;
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SORTING
+        |--------------------------------------------------------------------------
+        */
+        switch ($sort) {
+
+            case 'title_asc':
+                $query->orderBy('books.title', 'ASC');
+                break;
+
+            case 'title_desc':
+                $query->orderBy('books.title', 'DESC');
+                break;
+
+            case 'oldest':
+                $query->orderBy('borrowings.borrow_date', 'ASC');
+                break;
+
+            case 'newest':
+            default:
+                $query->orderBy('borrowings.borrow_date', 'DESC');
+                break;
+        }
+
+        $records = $query->paginate(10);
+
+        $settings = $library_settings_model->first();
+
+        return view('admin/borrowed_books', [
+            'records' => $records,
             'pager' => $borrowing_model->pager,
-            'borrow_status' => 'borrowed',
-            'daily_overdue_fine' => $daily_overdue_fine,
-            'max_fine_amount' => $max_fine_amount
+
+            'borrow_status' => $type,
+
+            'search' => $search,
+            'sort' => $sort,
+            'status' => $status,
+
+            'daily_overdue_fine' => $settings['daily_overdue_fine'],
+            'max_fine_amount' => $settings['max_fine_amount']
         ]);
     }
 
@@ -83,7 +197,7 @@ class BorrowedBooks extends BaseController
             ->orderBy('borrowings.borrow_date', 'DESC')
             ->paginate($perPage);
 
-        return view('admin/borrowed_books/returned_books', [
+        return view('admin/borrowed_books', [
             'returned_books' => $returned_books,
             'pager' => $borrowing_model->pager,
             'borrow_status' => 'returned',
