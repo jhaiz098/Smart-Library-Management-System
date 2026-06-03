@@ -18,7 +18,7 @@
             'processed_at',
             'processed_by',
             'remarks',
-            'claim_code',
+            'borrow_request_code',
         ];
 
         protected $useTimestamps = true;

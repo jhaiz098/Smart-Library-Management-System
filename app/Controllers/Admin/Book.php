@@ -189,7 +189,7 @@ class Book extends BaseController
 
         // Auto-expire pending requests
         $borrow_requests_model
-            ->where('status', 'pending')
+            ->where('status', 'approved')
             ->where('expires_at <=', date('Y-m-d H:i:s'))
             ->set([
                 'status' => 'expired',
@@ -401,7 +401,9 @@ class Book extends BaseController
             'status' => 'approved',
             'processed_at' => date('Y-m-d H:i:s'),
             'processed_by' => $user_id,
-            'remarks' => "Approved by {$role_label}"
+            'remarks' => "Approved by {$role_label}",
+            // expires after 3 days
+            'expires_at' => date('Y-m-d 23:59:59', strtotime('+3 days'))
         ]);
 
         $borrow_requests_history_model->insert([
@@ -410,12 +412,6 @@ class Book extends BaseController
             'performed_at' => date('Y-m-d H:i:s'),
             'performed_by' => $user_id,
             'remarks' => "Approved by {$role_label}"
-        ]);
-
-        $claim_code = "BRW-" . date('Y') . "-" . str_pad($id, 6, '0', STR_PAD_LEFT);
-
-        $borrow_requests_model->update($id, [
-            'claim_code' => $claim_code
         ]);
 
         return redirect()->back()

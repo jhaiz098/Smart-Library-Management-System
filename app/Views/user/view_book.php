@@ -590,17 +590,28 @@
                                         </div>
 
                                         <div class="small text-muted">
-                                            Claim Code
+                                            Reference Number
                                         </div>
 
                                         <div class="display-6 fw-bold text-dark">
-                                            <?= esc($book['user_borrow_request']['claim_code']) ?>
+                                            <?= esc($book['user_borrow_request']['borrow_request_code']) ?>
                                         </div>
 
                                         <hr>
 
-                                        <small>
-                                            Present this code to the librarian when claiming your book.
+                                        <div class="mb-2">
+                                            <strong>Claim Before:</strong><br>
+                                            <span class="text-danger fw-bold">
+                                                <?= date('F d, Y h:i A', strtotime($book['user_borrow_request']['expires_at'])) ?>
+                                            </span>
+                                        </div>
+
+                                        <small class="d-block text-muted">
+                                            Present this reference number to the librarian when claiming your book.
+                                        </small>
+
+                                        <small class="d-block text-danger mt-1">
+                                            Failure to claim before the expiration date will automatically cancel this request.
                                         </small>
 
                                     </div>

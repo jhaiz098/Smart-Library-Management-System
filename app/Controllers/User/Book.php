@@ -368,7 +368,7 @@ class Book extends BaseController
         $user_id = $this->request->getPost('user_id');
         $book_id = $this->request->getPost('book_id');
 
-        // ❗ RULE: user cannot spam requests for same book
+        // Prevent duplicate pending requests
         $existing = $borrow_request_model
             ->where('user_id', $user_id)
             ->where('book_id', $book_id)
@@ -376,25 +376,39 @@ class Book extends BaseController
             ->first();
 
         if ($existing) {
-            return redirect()->back()->with('error', 'You already have a pending request for this book.');
+            return redirect()->back()
+                ->with('error', 'You already have a pending request for this book.');
         }
 
-        $data = [
-            'user_id' => $user_id,
-            'book_id' => $book_id,
-
-            'status' => 'pending',
-
+        // Insert first
+        $borrow_request_model->insert([
+            'user_id'      => $user_id,
+            'book_id'      => $book_id,
+            'status'       => 'pending',
             'request_date' => date('Y-m-d H:i:s'),
+        ]);
 
-            // expires after 3 days
-            'expires_at' => date('Y-m-d H:i:s', strtotime('+3 days')),
-        ];
+        // Get generated ID
+        $id = $borrow_request_model->getInsertID();
 
-        $borrow_request_model->insert($data);
+        // Generate code
+        $borrow_request_code =
+            'REQ-' .
+            date('Y') .
+            '-' .
+            str_pad($id, 6, '0', STR_PAD_LEFT);
 
-        return redirect()->to(site_url('user/books/view/' . $book_id))
-            ->with('success', 'Borrow request sent.');
+        // Update same record
+        $borrow_request_model->update($id, [
+            'borrow_request_code' => $borrow_request_code
+        ]);
+
+        return redirect()
+            ->to(site_url('user/books/view/' . $book_id))
+            ->with(
+                'success',
+                "Borrow request sent successfully. Reference No: {$borrow_request_code}"
+            );
     }
 
     public function cancel_borrow_request()

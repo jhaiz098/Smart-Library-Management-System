@@ -81,11 +81,18 @@
                                     <thead>
                                         <tr class="text-center">
                                             <th>#</th>
+                                            <th>Request Code</th>
                                             <th>Borrower</th>
                                             <th>Book Title</th>
                                             <th>Request Date</th>
+                                            <?php if($request_status == 'approved'): ?>
+                                            <th>Request Expiration Date</th>
+                                            <?php endif; ?>
                                             <?php if($request_status == 'all' || $request_status == 'completed'): ?>
                                             <th>Status</th>
+                                            <?php endif; ?>
+                                            <?php if($request_status == 'expired'): ?>
+                                            <th>Expiration Date</th>
                                             <?php endif; ?>
                                             <?php if($request_status == 'pending' || $request_status == 'approved'): ?>
                                             <th>Actions</th>
@@ -103,6 +110,13 @@
                                                 <td class="text-center text-muted">
                                                     <?= $i++ ?>
                                                 </td>
+
+                                                <td>
+                                                    <span class="badge bg-dark rounded-pill px-3 py-2">
+                                                        <?= $pr['borrow_request_code'] ?>
+                                                    </span>
+                                                </td>
+
                                                 <td>
                                                     <div class="fw-semibold">
                                                         <?= esc($pr['full_name']) ?>
@@ -116,6 +130,10 @@
                                                     <?= esc($pr['book_title']) ?>
                                                 </td>
                                                 <td><?= date('F d, Y', strtotime($pr['request_date'])) ?></td>
+
+                                                <?php if($request_status == 'approved' || $request_status == 'expired'): ?>
+                                                <td><?= date('F d, Y', strtotime($pr['expires_at'])) ?></td>
+                                                <?php endif; ?>
 
                                                 <?php if($request_status == 'all' || $request_status == 'completed'): ?>
                                                 <td>
@@ -177,7 +195,7 @@
                                                                     data-id="<?= $pr['id'] ?>"
                                                                     data-user="<?= $pr['full_name'] ?>"
                                                                     data-book="<?= $pr['book_title'] ?>"
-                                                                    data-code="<?= $pr['claim_code'] ?>"
+                                                                    data-code="<?= $pr['borrow_request_code'] ?>"
                                                                 >
                                                                     Mark as Claimed
                                                                 </button>
@@ -333,7 +351,7 @@
 
                                                     <tr>
                                                         <th>Claim Code</th>
-                                                        <td id="claim_code"></td>
+                                                        <td id="borrow_request_code"></td>
                                                     </tr>
                                                 </table>
 
@@ -511,7 +529,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // set values
         document.getElementById('claim_user').innerText = user;
         document.getElementById('claim_book').innerText = book;
-        document.getElementById('claim_code').innerText = code;
+        document.getElementById('borrow_request_code').innerText = code;
 
         // dynamic form action
         document.getElementById('claimForm').action =
