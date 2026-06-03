@@ -169,41 +169,6 @@ class BorrowedBooks extends BaseController
         ]);
     }
 
-    public function returned_books_list()
-    {
-        $borrowing_model = new BorrowingModel();
-
-        $perPage = 10;
-
-        $returned_books = $borrowing_model
-            ->select('
-                borrowings.*,
-
-                borrower.library_id as borrower_library_id,
-                borrower.full_name as borrower_name,
-
-                books.title as book_title,
-
-                issuer.library_id as issued_by_library_id,
-                issuer.full_name as issued_by_name,
-
-                fines.amount as fine_amount
-            ')
-            ->join('users as borrower', 'borrower.id = borrowings.user_id')
-            ->join('books', 'books.id = borrowings.book_id')
-            ->join('users as issuer', 'issuer.id = borrowings.issued_by', 'left')
-            ->join('fines', 'fines.borrowing_id = borrowings.id', 'left')
-            ->where('borrowings.status', 'returned')
-            ->orderBy('borrowings.borrow_date', 'DESC')
-            ->paginate($perPage);
-
-        return view('admin/borrowed_books', [
-            'returned_books' => $returned_books,
-            'pager' => $borrowing_model->pager,
-            'borrow_status' => 'returned',
-        ]);
-    }
-
     public function borrowed_books_return()
     {
         $borrowing_model = new BorrowingModel();
