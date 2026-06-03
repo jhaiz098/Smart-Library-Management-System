@@ -96,16 +96,45 @@ class Book extends BaseController
             $model->insert($data);
         }
 
-        return redirect()->to('/admin/book_management')
+        return redirect()->to('/admin/book_management_active')
             ->with('success', 'Book saved successfully.');
     }
 
     public function delete_book($id)
     {
         $model = new BookModel();
-        $model->delete($id);
 
-        return redirect()->to('/admin/book_management');
+        $book = $model->find($id);
+
+        if (!$book) {
+            return redirect()->back()
+                ->with('error', 'Book not found.');
+        }
+
+        // Prevent deleting borrowed books
+        if ($book['availability'] === 'borrowed') {
+            return redirect()->back()
+                ->with(
+                    'error',
+                    'This book cannot be deleted because it is currently borrowed.'
+                );
+        }
+
+        try {
+
+            if (!$model->delete($id)) {
+                return redirect()->back()
+                    ->with('error', 'Failed to delete book.');
+            }
+
+            return redirect()->back()
+                ->with('success', 'Book deleted successfully.');
+
+        } catch (\Exception $e) {
+
+            return redirect()->back()
+                ->with('error', 'Something went wrong while deleting the book.');
+        }
     }
 
     public function publish_book($id)
@@ -125,13 +154,33 @@ class Book extends BaseController
     {
         $model = new BookModel();
 
-        $data = [
-            'status' => 'draft',
-        ];
-        
-        $model->update($id, $data);
+        $book = $model->find($id);
 
-        return redirect()->to('/admin/book_management_active');
+        if (!$book) {
+            return redirect()->back()
+                ->with('error', 'Book not found.');
+        }
+
+        // Prevent unpublishing borrowed books
+        if ($book['availability'] === 'borrowed') {
+            return redirect()->back()
+                ->with(
+                    'error',
+                    'This book cannot be unpublished because it is currently borrowed.'
+                );
+        }
+
+        $updated = $model->update($id, [
+            'status' => 'draft'
+        ]);
+
+        if (!$updated) {
+            return redirect()->back()
+                ->with('error', 'Failed to unpublish book.');
+        }
+
+        return redirect()->to('/admin/book_management_active')
+            ->with('success', 'Book unpublished successfully.');
     }
 
     public function pending_borrow_requests_list()

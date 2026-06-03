@@ -18,8 +18,8 @@ class Book extends BaseController
         $book_model = new BookModel();
         $category_model = new CategoryModel();
 
-        // PAGINATION ADDED HERE
         $data['books'] = $book_model
+            ->where('status', 'active')
             ->orderBy('id', 'DESC')
             ->paginate(10);
 

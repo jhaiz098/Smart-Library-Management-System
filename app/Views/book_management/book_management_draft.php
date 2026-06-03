@@ -7,66 +7,177 @@
 <?= $this->section('render_books') ?>
 
 <div class="card">
-    <div class="card-body table-responsive">
+    <div class="table-responsive">
 
-        <p class="fs-6 fw-bold">Draft Books</p>
-        <table class="table table-bordered fs-7">
-            <tr class="text-center">
-                <th>ID</th>
-                <th>Category</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Description</th>
-                <th>Published Year</th>
-                <th>Publisher</th>
-                <th>Availability</th>
-                <th>Created at</th>
-                <th>Updated at</th>
-                <th colspan="3">Action</th>
-            </tr>
-            <?php if (empty($draft_books)): ?>
-                <tr>
-                    <td colspan="10" class="text-center">No books available</td>
+        <table class="table table-hover align-middle">
+
+            <thead class="table-light">
+
+                <tr class="text-muted small">
+
+                    <th style="width:60px;">#</th>
+                    <th>Category</th>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Publisher</th>
+                    <th>Year</th>
+                    <th>Created</th>
+                    <th>Actions</th>
+
                 </tr>
 
-            <?php else: ?>
+            </thead>
 
-                <?php foreach ($draft_books as $book): ?>
+            <tbody>
+
+                <?php if(empty($draft_books)): ?>
+
                     <tr>
-                        <td><?= $book['id'] ?></td>
-                        <td><?= $book['category_name'] ?></td>
-                        <td><?= $book['title'] ?></td>
-                        <td><?= $book['author'] ?></td>
-                        <td><?= $book['description'] ?></td>
-                        <td><?= $book['published_year'] ?></td>
-                        <td><?= $book['publisher'] ?></td>
-                        <td><?= $book['availability'] ?></td>
-                        <td><?= $book['created_at'] ?></td>
-                        <td><?= $book['updated_at'] ?></td>
-                        <td>
-                            <a href="/admin/book_management/edit_book/<?= $book['id'] ?>" class="btn btn-sm btn-secondary fs-7">
-                                Edit
-                            </a>
+
+                        <td colspan="9" class="text-center text-muted py-4">
+                            No draft books available
                         </td>
-                        <td>
-                            <button class="btn btn-sm btn-danger fs-7" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="<?= $book['id'] ?>">
-                                Delete
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-success fs-7" data-bs-toggle="modal" data-bs-target="#publishModal" data-id="<?= $book['id'] ?>">
-                                Publish
-                            </button>
-                        </td>
+
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
+
+                <?php else: ?>
+
+                    <?php $i = 1; ?>
+
+                    <?php foreach($draft_books as $book): ?>
+
+                        <tr>
+
+                            <td class="text-muted fw-semibold">
+                                <?= $i++ ?>
+                            </td>
+
+                            <td>
+
+                                <span class="badge bg-light text-dark border rounded-pill px-3 py-2">
+                                    <?= esc($book['category_name']) ?>
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <div class="fw-semibold">
+                                    <?= esc($book['title']) ?>
+                                </div>
+
+                                <div class="small text-muted">
+
+                                    <?php
+                                        $description = strip_tags($book['description']);
+
+                                        echo strlen($description) > 60
+                                            ? substr($description, 0, 60) . '...'
+                                            : $description;
+                                    ?>
+
+                                </div>
+
+                            </td>
+
+                            <td class="text-muted">
+                                <?= esc($book['author']) ?>
+                            </td>
+
+                            <td class="text-muted">
+                                <?= esc($book['publisher']) ?>
+                            </td>
+
+                            <td>
+                                <?= esc($book['published_year']) ?>
+                            </td>
+
+                            <td class="small text-muted">
+
+                                <?= date('M d, Y', strtotime($book['created_at'])) ?>
+
+                            </td>
+
+                            <td>
+
+                                <div class="dropdown">
+
+                                    <button
+                                        class="btn btn-sm btn-light border dropdown-toggle"
+                                        data-bs-toggle="dropdown"
+                                    >
+                                        Actions
+                                    </button>
+
+                                    <ul class="dropdown-menu">
+
+                                        <li>
+
+                                            <a
+                                                href="/admin/book_management/edit_book/<?= $book['id'] ?>"
+                                                class="dropdown-item"
+                                            >
+                                                Edit
+                                            </a>
+
+                                        </li>
+
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+
+                                        <li>
+
+                                            <button
+                                                type="button"
+                                                class="dropdown-item text-success"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#publishModal"
+                                                data-id="<?= $book['id'] ?>"
+                                            >
+                                                Publish
+                                            </button>
+
+                                        </li>
+
+                                        <li>
+
+                                            <button
+                                                type="button"
+                                                class="dropdown-item text-danger"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-id="<?= $book['id'] ?>"
+                                            >
+                                                Delete
+                                            </button>
+
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </tbody>
+
         </table>
-        <div class="mt-3 d-flex justify-content-center">
-            <?= $draft_pager
-                ->only(['search', 'sort', 'category'])
-                ->links('draft', 'bootstrap_full') ?>
-        </div>
+
+    </div>
+
+    <div class="mt-4 d-flex justify-content-center">
+
+        <?= $draft_pager
+            ->only(['search', 'sort', 'category'])
+            ->links('draft', 'bootstrap_full') ?>
+
     </div>
 </div>
 
@@ -75,11 +186,29 @@
             <div class="modal-content">
                 
                 <div class="modal-header">
-                    <h5 class="modal-title">Delete Book</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <h5 class="modal-title text-danger">
+                        Delete Book
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
                 </div>
+
                 <div class="modal-body">
-                    Are you sure you want to delete this book?
+
+                    <p>
+                        Are you sure you want to permanently delete this book?
+                    </p>
+
+                    <div class="alert alert-danger mb-0">
+                        This action cannot be undone.
+                    </div>
+
                 </div>
                 <div class="modal-footer">
 
@@ -104,11 +233,29 @@
             <div class="modal-content">
                 
                 <div class="modal-header">
-                    <h5 class="modal-title">Publish Book</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+                    <h5 class="modal-title text-success">
+                        Publish Book
+                    </h5>
+
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                    </button>
+
                 </div>
+
                 <div class="modal-body">
-                    Are you sure you want to publish this book?
+
+                    <p>
+                        Are you sure you want to publish this book?
+                    </p>
+
+                    <div class="alert alert-success mb-0">
+                        The book will become visible and available in the library collection.
+                    </div>
+
                 </div>
                 <div class="modal-footer">
 

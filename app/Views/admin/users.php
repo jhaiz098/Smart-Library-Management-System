@@ -73,7 +73,7 @@
             </ul>
             
             <!-- SEARCH + FILTER -->
-            <div class="filter-toolbar mb-3">
+            <div class="filter-toolbar">
                 <form method="get" action="<?= current_url() ?>" class="row g-2 align-items-center">
                     <input type="hidden" name="type" value="<?= esc($type) ?>">
 
@@ -146,6 +146,8 @@
                     <?= session()->getFlashdata('error') ?>
                 </div>
             <?php endif; ?>
+
+            <hr>
 
             <a class="btn btn-primary btn-sm px-3 py-2 my-2" href="/admin/users/add_user">
                 + Add User
