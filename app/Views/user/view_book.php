@@ -556,67 +556,77 @@
 
                         <div class="border rounded p-3 mb-3">
 
-                            <div class="fw-bold text-success mb-2">
+                            <div class="fw-bold text-success mb-3">
                                 Current Borrowing
                             </div>
 
-                            <div class="small text-muted">
-                                Borrowing Code
+                            <div class="mb-3">
+                                <div class="small text-muted">
+                                    Borrowing Code
+                                </div>
+
+                                <span class="badge bg-dark fs-6 px-3 py-2">
+                                    <?= esc($book['user_borrowing']['borrowing_code']) ?>
+                                </span>
                             </div>
 
-                            <div class="fw-bold fs-5 mb-3">
-                                <?= esc($book['user_borrowing']['borrowing_code']) ?>
-                            </div>
+                            <div class="row g-3">
 
-                            <table class="table table-sm mb-0">
+                                <div class="col-md-6">
+                                    <div class="small text-muted">
+                                        Borrow Date
+                                    </div>
 
-                                <tr>
-                                    <th width="35%">Borrow Date</th>
-                                    <td>
+                                    <div class="fw-semibold">
                                         <?= date('F d, Y', strtotime($book['user_borrowing']['borrow_date'])) ?>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
 
-                                <tr>
-                                    <th>Due Date</th>
-                                    <td>
+                                <div class="col-md-6">
+                                    <div class="small text-muted">
+                                        Due Date
+                                    </div>
+
+                                    <div class="fw-semibold">
                                         <?= date('F d, Y', strtotime($book['user_borrowing']['due_date'])) ?>
-                                    </td>
-                                </tr>
+                                    </div>
+                                </div>
 
-                                <tr>
-                                    <th>Status</th>
-                                    <td>
+                                <div class="col-md-6">
+                                    <div class="small text-muted">
+                                        Status
+                                    </div>
 
-                                        <?php if(strtotime($book['user_borrowing']['due_date']) < time()): ?>
+                                    <?php if(strtotime($book['user_borrowing']['due_date']) < time()): ?>
 
-                                            <span class="badge bg-danger">
-                                                Overdue
-                                            </span>
+                                        <span class="badge bg-danger">
+                                            Overdue
+                                        </span>
 
-                                        <?php else: ?>
+                                    <?php else: ?>
 
-                                            <span class="badge bg-success">
-                                                Borrowed
-                                            </span>
+                                        <span class="badge bg-success">
+                                            Borrowed
+                                        </span>
 
-                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                </div>
 
-                                    </td>
-                                </tr>
-                                            
                                 <?php if($book['user_borrowing']['fine_amount'] > 0): ?>
 
-                                <tr>
-                                    <th>Estimated Fine</th>
-                                    <td class="text-danger fw-bold">
-                                        ₱<?= number_format($book['user_borrowing']['fine_amount'], 2) ?>
-                                    </td>
-                                </tr>
+                                    <div class="col-md-6">
+                                        <div class="small text-muted">
+                                            Estimated Fine
+                                        </div>
+
+                                        <div class="fw-bold text-danger">
+                                            ₱<?= number_format($book['user_borrowing']['fine_amount'], 2) ?>
+                                        </div>
+                                    </div>
 
                                 <?php endif; ?>
 
-                            </table>
+                            </div>
 
                         </div>
 

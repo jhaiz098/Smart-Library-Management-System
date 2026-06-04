@@ -37,6 +37,7 @@
 
                             <tr class="text-muted small">
                                 <th>#</th>
+                                <th>Fine Code</th>
                                 <th>Book</th>
                                 <th>Late By</th>
                                 <th>Rate</th>
@@ -55,6 +56,13 @@
                                     <!-- # -->
                                     <td class="text-muted fw-semibold">
                                         <?= $i++ ?>
+                                    </td>
+
+                                    <!-- FINE REF -->
+                                    <td>
+                                        <span class="badge bg-light text-dark border px-3 py-2">
+                                            <?= esc($fine['fine_ref']) ?>
+                                        </span>
                                     </td>
 
                                     <!-- BOOK -->

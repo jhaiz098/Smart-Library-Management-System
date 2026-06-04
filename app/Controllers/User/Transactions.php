@@ -122,6 +122,7 @@ class Transactions extends BaseController
                 borrowings.book_id,
                 borrowings.created_at,
                 borrowings.status as status,
+                borrowings.borrowing_code as code,
                 books.title,
                 books.author,
                 'borrowing' AS transaction_type
@@ -136,6 +137,7 @@ class Transactions extends BaseController
                 borrow_requests.book_id,
                 borrow_requests.created_at,
                 borrow_requests.status as status,
+                borrow_requests.borrow_request_code as code,
                 books.title,
                 books.author,
                 'borrow_request' AS transaction_type
@@ -150,6 +152,7 @@ class Transactions extends BaseController
                 reservations.book_id,
                 reservations.created_at,
                 reservations.status as status,
+                '—' as code,
                 books.title,
                 books.author,
                 'reservation' AS transaction_type

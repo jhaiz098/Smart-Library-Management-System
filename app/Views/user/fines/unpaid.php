@@ -37,7 +37,7 @@
 
                             <tr class="text-muted small">
                                 <th>#</th>
-                                <th>Fine Ref</th>
+                                <th>Fine Code</th>
                                 <th>Book</th>
                                 <th>Late By</th>
                                 <th>Rate</th>

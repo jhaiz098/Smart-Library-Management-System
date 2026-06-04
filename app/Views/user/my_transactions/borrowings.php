@@ -94,7 +94,16 @@ User | My Transactions
                                     <!-- STATUS -->
                                     <td>
 
-                                        <?php if($borrowing['status'] == 'borrowed'): ?>
+                                        <?php if(
+                                            $borrowing['status'] == 'borrowed' &&
+                                            strtotime($borrowing['due_date']) < time()
+                                        ): ?>
+
+                                            <span class="badge rounded-pill bg-danger px-3 py-2">
+                                                Overdue
+                                            </span>
+
+                                        <?php elseif($borrowing['status'] == 'borrowed'): ?>
 
                                             <span class="badge rounded-pill bg-success px-3 py-2">
                                                 Borrowed
@@ -104,12 +113,6 @@ User | My Transactions
 
                                             <span class="badge rounded-pill bg-secondary px-3 py-2">
                                                 Returned
-                                            </span>
-
-                                        <?php elseif($borrowing['status'] == 'overdue'): ?>
-
-                                            <span class="badge rounded-pill bg-danger px-3 py-2">
-                                                Overdue
                                             </span>
 
                                         <?php else: ?>

@@ -41,7 +41,7 @@
 
                             <tr class="text-muted small">
                                 <th>#</th>
-                                <th>Reference No.</th>
+                                <th>Reference Code</th>
                                 <th>Book</th>
                                 <th>Type</th>
                                 <th>Date</th>
@@ -63,7 +63,15 @@
 
                                     <td>
                                         <span class="badge rounded-pill bg-dark px-3 py-2">
-                                            <?= ucfirst($request['borrow_request_code']) ?>
+                                        <?php if($transaction['transaction_type'] == 'borrowing'): ?>
+                                            <?= ucfirst($transaction['code']) ?>
+                                        <?php endif; ?>
+                                        <?php if($transaction['transaction_type'] == 'borrow_request'): ?>
+                                            <?= ucfirst($transaction['code']) ?>
+                                        <?php endif; ?>
+                                        <?php if($transaction['transaction_type'] == 'reservation'): ?>
+                                            <?= ucfirst($transaction['code']) ?>
+                                        <?php endif; ?>
                                         </span>
                                     </td>
 
