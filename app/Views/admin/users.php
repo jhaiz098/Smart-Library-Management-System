@@ -15,12 +15,14 @@
     <div class="card border-0 shadow-sm">
 
         <!-- HEADER -->
-        <div class="card-header bg-white d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-            <div>
-                <div class="fw-bold fs-5">User Management</div>
-                <div class="text-muted small">
-                    Manage library users, staff, and roles
+        <div class="card-header bg-white">
+            
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+                <div>
+                    <h5 class="fw-bold mb-1">User Management</h5>
+                    <div class="text-muted small">
+                        Manage library users, staff, and roles
+                    </div>
                 </div>
             </div>
 
@@ -581,11 +583,6 @@
 <style>
     .table tbody tr:hover {
         background: #f8f9fa;
-    }
-
-    .card-header {
-        background: #ffffff;
-        border-bottom: 1px solid #eee;
     }
     .filter-toolbar{
         background: #fff;

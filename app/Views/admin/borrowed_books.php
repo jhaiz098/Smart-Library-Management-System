@@ -10,22 +10,25 @@
 
 <?= $this->section('content') ?>
 <div class="p-3">
-    <!-- PAGE HEADER CARD -->
-    <div class="card border-0 shadow-sm mb-3">
-        <div class="card-body d-flex justify-content-between align-items-center flex-wrap gap-2">
-
-            <div>
-                <div class="fw-bold fs-5">Borrowed Books</div>
-                <div class="text-muted small">
-                    Manage borrowed and returned book records
-                </div>
-            </div>
-
-        </div>
-    </div>
+    
 
     <!-- MAIN CARD -->
     <div class="card border-0 shadow-sm">
+        
+        <!-- PAGE HEADER CARD -->
+        <div class="card-header bg-white">
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+                    <h5 class="fw-bold mb-1">Borrowed Books</h5>
+                    <div class="text-muted small">
+                        Manage borrowed and returned book records
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
         <!-- TABS + CONTENT -->
         <div class="card-body">
 
