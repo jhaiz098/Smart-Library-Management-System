@@ -67,6 +67,32 @@ class Book extends BaseController
             ->where('status', 'borrowed')
             ->first();
 
+        if ($user_borrowing) {
+
+            $user_borrowing['fine_amount'] = 0;
+
+            if (strtotime($user_borrowing['due_date']) < time()) {
+
+                $daysLate = ceil(
+                    (time() - strtotime($user_borrowing['due_date']))
+                    / (60 * 60 * 24)
+                );
+
+                $user_borrowing['fine_amount'] =
+                    $daysLate * $library_settings['daily_overdue_fine'];
+
+                if (!empty($library_settings['max_fine_amount'])) {
+
+                    $user_borrowing['fine_amount'] = min(
+                        $user_borrowing['fine_amount'],
+                        $library_settings['max_fine_amount']
+                    );
+                }
+            }
+        }
+        
+        $book['user_borrowing'] = $user_borrowing;
+        
         $book['user_borrowed'] = $user_borrowing ? true : false;
 
         // USER BORROW REQUEST (important)

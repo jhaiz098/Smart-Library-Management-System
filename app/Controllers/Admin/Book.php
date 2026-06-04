@@ -482,8 +482,7 @@ class Book extends BaseController
 
             'borrow_date' => date('Y-m-d H:i:s'),
 
-            'due_date' => date('Y-m-d H:i:s', strtotime("+{$borrow_days} days")),
-
+            'due_date' => date('Y-m-d 23:59:59', strtotime("+{$borrow_days} days")),
             'status' => 'borrowed',
 
             'issued_by' => session()->get('user_id'),

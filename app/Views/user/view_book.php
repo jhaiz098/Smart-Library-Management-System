@@ -464,7 +464,7 @@
             </div>
 
             <!-- USER ACTIVITY -->
-            <?php if($book['has_active_borrow_request'] || $book['user_reservation']): ?>
+            <?php if($book['has_active_borrow_request'] || $book['user_reservation'] || $book['user_borrowed']): ?>
 
                 <div class="card border-0 shadow-sm mb-3">
 
@@ -552,6 +552,76 @@
 
                         <?php endif; ?>
                         
+                        <?php if($book['user_borrowing']): ?>
+
+                        <div class="border rounded p-3 mb-3">
+
+                            <div class="fw-bold text-success mb-2">
+                                Current Borrowing
+                            </div>
+
+                            <div class="small text-muted">
+                                Borrowing Code
+                            </div>
+
+                            <div class="fw-bold fs-5 mb-3">
+                                <?= esc($book['user_borrowing']['borrowing_code']) ?>
+                            </div>
+
+                            <table class="table table-sm mb-0">
+
+                                <tr>
+                                    <th width="35%">Borrow Date</th>
+                                    <td>
+                                        <?= date('F d, Y', strtotime($book['user_borrowing']['borrow_date'])) ?>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Due Date</th>
+                                    <td>
+                                        <?= date('F d, Y', strtotime($book['user_borrowing']['due_date'])) ?>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <th>Status</th>
+                                    <td>
+
+                                        <?php if(strtotime($book['user_borrowing']['due_date']) < time()): ?>
+
+                                            <span class="badge bg-danger">
+                                                Overdue
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="badge bg-success">
+                                                Borrowed
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+                                </tr>
+                                            
+                                <?php if($book['user_borrowing']['fine_amount'] > 0): ?>
+
+                                <tr>
+                                    <th>Estimated Fine</th>
+                                    <td class="text-danger fw-bold">
+                                        ₱<?= number_format($book['user_borrowing']['fine_amount'], 2) ?>
+                                    </td>
+                                </tr>
+
+                                <?php endif; ?>
+
+                            </table>
+
+                        </div>
+
+                        <?php endif; ?>
+
                         <?php if(
                             $book['user_borrow_request'] &&
                             in_array($book['user_borrow_request']['status'], [
@@ -590,7 +660,7 @@
                                         </div>
 
                                         <div class="small text-muted">
-                                            Reference Number
+                                            Request Code
                                         </div>
 
                                         <div class="display-6 fw-bold text-dark">

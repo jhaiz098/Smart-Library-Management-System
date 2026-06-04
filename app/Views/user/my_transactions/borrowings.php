@@ -41,6 +41,7 @@ User | My Transactions
 
                             <tr class="text-muted small">
                                 <th>#</th>
+                                <th>Borrowing Code</th>
                                 <th>Book</th>
                                 <th>Borrowed</th>
                                 <th>Due Date</th>
@@ -58,6 +59,12 @@ User | My Transactions
                                     <!-- # -->
                                     <td class="text-muted fw-semibold">
                                         <?= $i++ ?>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge rounded-pill bg-dark px-3 py-2">
+                                            <?= esc($borrowing['borrowing_code']) ?>
+                                        </span>
                                     </td>
 
                                     <!-- BOOK -->

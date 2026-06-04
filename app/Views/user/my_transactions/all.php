@@ -41,6 +41,7 @@
 
                             <tr class="text-muted small">
                                 <th>#</th>
+                                <th>Reference No.</th>
                                 <th>Book</th>
                                 <th>Type</th>
                                 <th>Date</th>
@@ -58,6 +59,12 @@
                                     <!-- # -->
                                     <td class="text-muted fw-semibold">
                                         <?= $i++ ?>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge rounded-pill bg-dark px-3 py-2">
+                                            <?= ucfirst($request['borrow_request_code']) ?>
+                                        </span>
                                     </td>
 
                                     <!-- BOOK -->

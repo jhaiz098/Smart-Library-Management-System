@@ -41,10 +41,10 @@
 
                             <tr class="text-muted small">
                                 <th>#</th>
+                                <th>Request Code</th>
                                 <th>Book</th>
                                 <th>Request Date</th>
                                 <th>Status</th>
-                                <th>Claim Code</th>
                             </tr>
 
                         </thead>
@@ -58,6 +58,12 @@
                                     <!-- # -->
                                     <td class="text-muted fw-semibold">
                                         <?= $i++ ?>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge rounded-pill bg-dark px-3 py-2">
+                                            <?= ucfirst($request['borrow_request_code']) ?>
+                                        </span>
                                     </td>
 
                                     <!-- BOOK -->
@@ -115,31 +121,6 @@
 
                                             <span class="badge rounded-pill bg-dark px-3 py-2">
                                                 <?= ucfirst($request['status']) ?>
-                                            </span>
-
-                                        <?php endif; ?>
-
-                                    </td>
-
-                                    <!-- CLAIM CODE -->
-                                    <td>
-
-                                        <?php if($request['status'] == 'approved'): ?>
-
-                                            <span class="fw-bold text-success">
-                                                <?= esc($request['claim_code']) ?>
-                                            </span>
-
-                                        <?php elseif($request['status'] == 'claimed'): ?>
-
-                                            <span class="text-muted">
-                                                Used
-                                            </span>
-
-                                        <?php else: ?>
-
-                                            <span class="text-muted">
-                                                -
                                             </span>
 
                                         <?php endif; ?>
