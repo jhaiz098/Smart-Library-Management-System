@@ -13,12 +13,12 @@
             'staff_level_id',
             'can_manage_users',
             'can_manage_books',
-            'can_process_borrow_requests',
             'can_manage_borrowed_books',
-            'can_extend_borrowings',
-            'can_process_returns',
+            'can_manage_borrow_requests',
+            'can_manage_returns',
             'can_manage_fines',
             'can_manage_settings',
+            'can_manage_categories',
             'can_manage_roles_permissions',
         ];
         
