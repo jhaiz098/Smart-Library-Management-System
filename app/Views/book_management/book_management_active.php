@@ -13,7 +13,7 @@
 
             <thead class="table-light">
 
-                <tr class="text-muted small">
+                <tr class="text-muted small text-uppercase">
 
                     <th style="width:60px;">#</th>
                     <th>Category</th>

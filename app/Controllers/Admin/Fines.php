@@ -52,6 +52,10 @@ class Fines extends BaseController
 
         $type = $this->request->getGet('type') ?? 'all';
 
+        $search = trim($this->request->getGet('search') ?? '');
+        $sort = $this->request->getGet('sort') ?? '';
+        $filter = $this->request->getGet('filter') ?? '';
+
         $query = $fines_model
             ->select('
                 fines.*,
@@ -95,6 +99,23 @@ class Fines extends BaseController
                 'books.id = borrowings.book_id'
             );
 
+        if (!empty($search)) {
+
+            $query->groupStart()
+
+                ->like('fines.fine_ref', $search)
+
+                ->orLike('borrowings.borrowing_code', $search)
+
+                ->orLike('borrower.library_id', $search)
+
+                ->orLike('borrower.full_name', $search)
+
+                ->orLike('books.title', $search)
+
+                ->groupEnd();
+        }
+        
         /*
         |--------------------------------------------------------------------------
         | STATUS FILTER
@@ -116,9 +137,78 @@ class Fines extends BaseController
                 break;
         }
 
-        $records = $query
-            ->orderBy('fines.created_at', 'DESC')
-            ->paginate($perPage);
+        switch ($filter) {
+
+            case 'today':
+
+                $query->where(
+                    'DATE(fines.created_at)',
+                    date('Y-m-d')
+                );
+
+                break;
+
+            case 'this_week':
+
+                $query->where(
+                    'YEARWEEK(fines.created_at, 1)',
+                    date('oW')
+                );
+
+                break;
+
+            case 'this_month':
+
+                $query->where(
+                    'DATE_FORMAT(fines.created_at, "%Y-%m")',
+                    date('Y-m')
+                );
+
+                break;
+        }
+
+        switch ($sort) {
+
+            case 'amount_asc':
+
+                $query->orderBy('fines.amount', 'ASC');
+
+                break;
+
+            case 'amount_desc':
+
+                $query->orderBy('fines.amount', 'DESC');
+
+                break;
+
+            case 'title_asc':
+
+                $query->orderBy('books.title', 'ASC');
+
+                break;
+
+            case 'title_desc':
+
+                $query->orderBy('books.title', 'DESC');
+
+                break;
+
+            case 'oldest':
+
+                $query->orderBy('fines.created_at', 'ASC');
+
+                break;
+
+            case 'newest':
+
+            default:
+
+                $query->orderBy('fines.created_at', 'DESC');
+
+                break;
+        }
+
+        $records = $query->paginate($perPage);
 
         /*
         |--------------------------------------------------------------------------
@@ -151,7 +241,10 @@ class Fines extends BaseController
         return view('admin/fines', [
             'records' => $records,
             'pager' => $fines_model->pager,
-            'fine_status' => $type
+            'fine_status' => $type,
+            'search' => $search,
+            'sort' => $sort,
+            'filter' => $filter
         ]);
     }
 
@@ -188,7 +281,7 @@ class Fines extends BaseController
         // UPDATE FINE
         $fines_model->update($fine_id, [
             'status' => 'paid',
-            'paid_at' => date('Y-m-d 23:59:59'),
+            'paid_at' => date('Y-m-d H:i:s'),
             'paid_by' => $user_id,
             'remarks' => $remarks ?: 'Fine paid successfully.'
         ]);

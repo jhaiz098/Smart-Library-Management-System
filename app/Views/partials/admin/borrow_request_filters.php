@@ -16,7 +16,7 @@
             type="search"
             name="search"
             class="form-control"
-            placeholder="Search request code, borrower, library ID, or book title..."
+            placeholder="Search request code, borrower, or book title..."
             value="<?= $_GET['search'] ?? '' ?>"
         >
 

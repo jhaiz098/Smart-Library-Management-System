@@ -169,7 +169,7 @@
                                     <th>#</th>
                                     <th>Borrowing Code</th>
                                     <th>Borrower</th>
-                                    <th>Book</th>
+                                    <th>Book Title</th>
                                     <th>Borrow Date</th>
                                     <th>Due Date</th>
                                     <th>Status</th>

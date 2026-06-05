@@ -31,6 +31,7 @@
             </div>
 
         </div>
+        
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
@@ -111,13 +112,11 @@
                                 <?= ucfirst($request_status) ?> Borrow Requests
                             </p>
 
-                            
-
                             <div class="table-responsive rounded-3 border bg-white shadow-sm">
 
                                 <table class="table table-hover align-middle mb-0">
                                     <thead>
-                                        <tr class="text-center">
+                                        <tr class="text-center text-uppercase">
                                             <th>#</th>
                                             <th>Request Code</th>
                                             <th>Borrower</th>

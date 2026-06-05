@@ -75,12 +75,13 @@
                     action="<?= current_url() ?>"
                     class="row g-2"
                 >
+                    
 
                     <!-- KEEP CURRENT TAB -->
                     <input
                         type="hidden"
                         name="type"
-                        value="<?= $request_status ?? 'all' ?>"
+                        value="<?= $fine_status ?? 'all' ?>"
                     >
 
                     <div class="col-md-6">
@@ -89,7 +90,7 @@
                             type="search"
                             name="search"
                             class="form-control"
-                            placeholder="Search request code, borrower, or book title..."
+                            placeholder="Search fine, borrowing code, borrower, or book title..."
                             value="<?= $_GET['search'] ?? '' ?>"
                         >
 
@@ -195,18 +196,19 @@
 
                             <thead class="text-center">
 
-                                <tr>
+                                <tr class="text-uppercase">
                                     <th>#</th>
                                     <th>Fine Code</th>
                                     <th>Borrowing Code</th>
                                     <th>Borrower</th>
-                                    <th>Book</th>
+                                    <th>Book Title</th>
                                     <th>Amount</th>
                                     <th>Status</th>
                                     <?php if($fine_status == 'all' || $fine_status == 'paid'): ?>
                                     <th>Paid By</th>
                                     <th>Paid At</th>
                                     <?php endif; ?>
+                                    <th>Issued By</th>
                                     <th>Issued At</th>
                                     <?php if($fine_status == 'unpaid'): ?>
                                     <th>Actions</th>
@@ -232,61 +234,57 @@
                                         <tr>
 
                                             <!-- # -->
-                                            <td class="text-center">
+                                            <td class="text-center fw-semibold">
                                                 <?= $i++ ?>
                                             </td>
 
                                             <!-- FINE CODE -->
                                             <td class="text-center">
-
                                                 <span class="badge bg-dark rounded-pill px-3 py-2">
                                                     <?= esc($fine['fine_ref']) ?>
                                                 </span>
-
                                             </td>
 
                                             <!-- BORROWING CODE -->
                                             <td class="text-center">
-
                                                 <span class="badge bg-secondary rounded-pill px-3 py-2">
                                                     <?= esc($fine['borrowing_code']) ?>
                                                 </span>
-
                                             </td>
 
                                             <!-- BORROWER -->
                                             <td>
+                                                <div class="fw-semibold">
+                                                    <?= esc($fine['borrower_full_name']) ?>
+                                                </div>
 
-                                                <?= esc($fine['borrower_library_id']) ?>
-
-                                                <br>
-
-                                                <?= esc($fine['borrower_full_name']) ?>
-
+                                                <small class="text-muted">
+                                                    <?= esc($fine['borrower_library_id']) ?>
+                                                </small>
                                             </td>
 
                                             <!-- BOOK -->
                                             <td>
-
-                                                <?= esc($fine['book_title']) ?>
-
+                                                <div class="fw-semibold">
+                                                    <?= esc($fine['book_title']) ?>
+                                                </div>
                                             </td>
 
                                             <!-- AMOUNT -->
-                                            <td class="text-center">
-                                                
+                                            <td class="text-end">
                                                 <?php if($fine['status'] === 'paid'): ?>
 
                                                     <span class="fw-bold text-success">
+                                                        ₱<?= number_format($fine['amount'], 2) ?>
+                                                    </span>
 
                                                 <?php else: ?>
 
                                                     <span class="fw-bold text-danger">
+                                                        ₱<?= number_format($fine['amount'], 2) ?>
+                                                    </span>
 
                                                 <?php endif; ?>
-                                                    ₱<?= number_format($fine['amount'], 2) ?>
-                                                </span>
-
                                             </td>
 
                                             <!-- STATUS -->
@@ -314,15 +312,17 @@
 
                                                 <?php if(!empty($fine['payer_full_name'])): ?>
 
-                                                    <?= esc($fine['payer_library_id']) ?>
+                                                    <div class="fw-semibold">
+                                                        <?= esc($fine['payer_full_name']) ?>
+                                                    </div>
 
-                                                    <br>
-
-                                                    <?= esc($fine['payer_full_name']) ?>
+                                                    <small class="text-muted">
+                                                        <?= esc($fine['payer_library_id']) ?>
+                                                    </small>
 
                                                 <?php else: ?>
 
-                                                    <span class="text-muted">—</span>
+                                                    <span class="text-muted">Not yet paid</span>
 
                                                 <?php endif; ?>
 
@@ -333,10 +333,13 @@
 
                                                 <?php if(!empty($fine['paid_at'])): ?>
 
-                                                    <?= date(
-                                                        'M d, Y',
-                                                        strtotime($fine['paid_at'])
-                                                    ) ?>
+                                                    <div>
+                                                        <?= date('M d, Y', strtotime($fine['paid_at'])) ?>
+                                                    </div>
+
+                                                    <small class="text-muted">
+                                                        <?= date('h:i A', strtotime($fine['paid_at'])) ?>
+                                                    </small>
 
                                                 <?php else: ?>
 
@@ -346,14 +349,30 @@
 
                                             </td>
                                             <?php endif; ?>
+                                            
+                                            <!-- ISSUED BY -->
+                                            <td>
+
+                                                <div class="fw-semibold">
+                                                    <?= esc($fine['issuer_full_name']) ?>
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    <?= esc($fine['issuer_library_id']) ?>
+                                                </small>
+
+                                            </td>
 
                                             <!-- ISSUED AT -->
                                             <td class="text-center">
 
-                                                <?= date(
-                                                    'M d, Y',
-                                                    strtotime($fine['created_at'])
-                                                ) ?>
+                                                <div>
+                                                    <?= date('M d, Y', strtotime($fine['created_at'])) ?>
+                                                </div>
+
+                                                <small class="text-muted">
+                                                    <?= date('h:i A', strtotime($fine['created_at'])) ?>
+                                                </small>
 
                                             </td>
                                             
@@ -361,8 +380,9 @@
                                             <!-- ACTIONS -->
                                             <td class="text-center">
 
-                                                <button type="button" 
-                                                    class="btn btn-sm btn-success"
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-success btn-sm"
 
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#paymentModal"
@@ -374,10 +394,11 @@
                                                     data-daily-fine="<?= $fine['daily_overdue_fine'] ?>"
                                                     data-days-late="<?= $fine['days_late'] ?>"
                                                     data-total="<?= $fine['amount'] ?>"
-                                                    data-max-fine="<?= $fine['max_fine_amount'] ?>">
-
+                                                    data-max-fine="<?= $fine['max_fine_amount'] ?>"
+                                                >
                                                     Record Payment
                                                 </button>
+
                                             </td>
                                             <?php endif; ?>
 

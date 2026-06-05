@@ -239,7 +239,6 @@ class BorrowedBooks extends BaseController
                 / 86400
             );
 
-            // load settings ONCE (bug fix)
             $settings = $library_settings_model->first();
 
             $fine_per_day = (float) $settings['daily_overdue_fine'];
@@ -247,24 +246,31 @@ class BorrowedBooks extends BaseController
 
             $amount = $days_late * $fine_per_day;
 
-            // enforce max cap
             if ($max_fine_amount > 0) {
                 $amount = min($amount, $max_fine_amount);
             }
 
-            // generate fine reference number
-            $fine_ref = "FIN-" . date('Y') . "-" . str_pad($id, 6, '0', STR_PAD_LEFT);
-
+            // INSERT FIRST
             $fine_model->insert([
                 'borrowing_id' => $id,
                 'user_id' => $borrowing['user_id'],
-                'fine_ref' => $fine_ref,
                 'daily_overdue_fine' => $fine_per_day,
                 'max_fine_amount' => $max_fine_amount,
                 'amount' => $amount,
                 'remarks' => "Overdue by {$days_late} day(s).",
                 'status' => 'unpaid',
                 'issued_by' => session()->get('user_id')
+            ]);
+
+            // GET THE FINE'S OWN ID
+            $fine_id = $fine_model->getInsertID();
+
+            // GENERATE REFERENCE
+            $fine_ref = "FIN-" . date('Y') . "-" . str_pad($fine_id, 6, '0', STR_PAD_LEFT);
+
+            // UPDATE THE RECORD
+            $fine_model->update($fine_id, [
+                'fine_ref' => $fine_ref
             ]);
         }
 
