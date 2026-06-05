@@ -86,6 +86,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="/admin/reservations"
+                   class="nav-link sidebar-link text-white rounded">
+                    <i class="bi bi-bookmark-check-fill me-2"></i></i> Book Reservations
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="/admin/fines"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-cash-coin me-2"></i> Fines

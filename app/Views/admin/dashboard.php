@@ -9,157 +9,226 @@ Dashboard Overview
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<div class="p-3">
-    <!-- WELCOME -->
-    <div class="card shadow-sm border-0 mb-4">
-        <div class="card-body">
 
-            <h3 class="fw-bold mb-1">
-                Welcome back,
-                <?= session()->get('full_name') ?>
-            </h3>
+<div class="py-0 px-3">
 
-            <p class="text-muted mb-0">
-                Smart Library Management System Overview
-            </p>
+    <!-- HERO -->
+    <div class="card border-0 shadow-sm mb-4 bg-light rounded-3">
+
+        <div class="card-body p-4">
+
+            <div>
+
+                <div class="text-uppercase small text-secondary mb-1">
+                    Smart Library Management System
+                </div>
+
+                <h3 class="fw-bold mb-1">
+                    Welcome back, <?= esc(session()->get('full_name')) ?>
+                </h3>
+
+                <div class="text-muted">
+                    Monitor books, borrowings, requests, overdue items, and fines across the library.
+                </div>
+
+            </div>
 
         </div>
+
     </div>
 
     <!-- STATISTICS -->
     <div class="row g-3 mb-4">
 
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
+        <div class="col-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100 rounded-3">
+
                 <div class="card-body">
 
-                    <div class="text-muted small">
-                        Total Books
+                    <div class="text-uppercase text-muted small mb-2">
+                        Books
                     </div>
 
-                    <h2 class="fw-bold">
+                    <h3 class="fw-bold mb-0">
                         <?= $totalBooks ?>
-                    </h2>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
+                    </h3>
 
                     <div class="text-muted small">
-                        Active Borrowings
+                        Total Collection
                     </div>
 
-                    <h2 class="fw-bold text-primary">
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100 rounded-3">
+
+                <div class="card-body">
+
+                    <div class="text-uppercase text-muted small mb-2">
+                        Borrowed
+                    </div>
+
+                    <h3 class="fw-bold mb-0 text-primary">
                         <?= $activeBorrowed ?>
-                    </h2>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
-                <div class="card-body">
+                    </h3>
 
                     <div class="text-muted small">
-                        Overdue Books
+                        Active Loans
                     </div>
 
-                    <h2 class="fw-bold text-danger">
-                        <?= $overdueBorrowed ?>
-                    </h2>
-
                 </div>
+
             </div>
+
         </div>
 
-        <div class="col-md-3">
-            <div class="card border-0 shadow-sm h-100">
+        <div class="col-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100 rounded-3">
+
                 <div class="card-body">
 
+                    <div class="text-uppercase text-muted small mb-2">
+                        Overdue
+                    </div>
+
+                    <h3 class="fw-bold mb-0 text-danger">
+                        <?= $overdueBorrowed ?>
+                    </h3>
+
                     <div class="text-muted small">
+                        Books
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-6 col-lg-3">
+
+            <div class="card border-0 shadow-sm h-100 rounded-3">
+
+                <div class="card-body">
+
+                    <div class="text-uppercase text-muted small mb-2">
                         Unpaid Fines
                     </div>
 
-                    <h2 class="fw-bold text-warning">
+                    <h3 class="fw-bold mb-0 text-warning">
                         <?= $totalFines ?>
-                    </h2>
+                    </h3>
+
+                    <div class="text-muted small">
+                        Outstanding
+                    </div>
 
                 </div>
+
             </div>
+
         </div>
 
     </div>
 
-    <!-- SECOND ROW -->
+    <!-- MAIN CONTENT -->
     <div class="row g-4">
 
         <!-- RECENT BORROWINGS -->
-        <div class="col-lg-7">
+        <div class="col-lg-8">
 
-            <div class="card border-0 shadow-sm h-100">
+            <div class="card border-0 shadow-sm rounded-3">
 
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0 fw-bold">
-                        Recent Borrowings
-                    </h5>
+                <div class="card-header bg-white fw-semibold">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span>
+                            Recent Borrowings
+                        </span>
+
+                    </div>
+
                 </div>
 
                 <div class="card-body p-0">
 
-                    <table class="table table-hover align-middle mb-0">
+                    <?php if(!empty($recentBorrowings)): ?>
 
-                        <thead class="table-light">
-                            <tr>
-                                <th>Borrower</th>
-                                <th>Book</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
+                        <div class="table-responsive">
 
-                        <tbody>
+                            <table class="table table-hover align-middle mb-0">
 
-                            <?php foreach($recentBorrowings as $b): ?>
+                                <thead class="table-light">
 
-                                <tr>
+                                    <tr>
+                                        <th>Borrower</th>
+                                        <th>Book</th>
+                                        <th>Status</th>
+                                    </tr>
 
-                                    <td>
-                                        <?= $b['full_name'] ?>
-                                    </td>
+                                </thead>
 
-                                    <td>
-                                        <?= $b['title'] ?>
-                                    </td>
+                                <tbody>
 
-                                    <td>
+                                    <?php foreach($recentBorrowings as $b): ?>
 
-                                        <?php if($b['status'] === 'borrowed'): ?>
+                                        <tr>
 
-                                            <span class="badge bg-primary">
-                                                Borrowed
-                                            </span>
+                                            <td>
 
-                                        <?php else: ?>
+                                                <div class="fw-semibold">
+                                                    <?= esc($b['full_name']) ?>
+                                                </div>
 
-                                            <span class="badge bg-success">
-                                                Returned
-                                            </span>
+                                            </td>
 
-                                        <?php endif; ?>
+                                            <td>
+                                                <?= esc($b['title']) ?>
+                                            </td>
 
-                                    </td>
+                                            <td>
 
-                                </tr>
+                                                <?php if($b['status'] === 'borrowed'): ?>
 
-                            <?php endforeach; ?>
+                                                    <span class="badge bg-primary rounded-pill px-3 py-2">
+                                                        Borrowed
+                                                    </span>
 
-                        </tbody>
+                                                <?php else: ?>
 
-                    </table>
+                                                    <span class="badge bg-success rounded-pill px-3 py-2">
+                                                        Returned
+                                                    </span>
+
+                                                <?php endif; ?>
+
+                                            </td>
+
+                                        </tr>
+
+                                    <?php endforeach; ?>
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+                    <?php else: ?>
+
+                        <div class="text-center p-4 text-muted">
+                            No borrowing records found.
+                        </div>
+
+                    <?php endif; ?>
 
                 </div>
 
@@ -167,37 +236,50 @@ Dashboard Overview
 
         </div>
 
-        <!-- ALERTS -->
-        <div class="col-lg-5">
+        <!-- RIGHT SIDE -->
+        <div class="col-lg-4">
 
-            <div class="card border-0 shadow-sm h-100">
+            <!-- OVERDUE ALERTS -->
+            <div class="card border-0 shadow-sm rounded-3 mb-3">
 
-                <div class="card-header bg-white border-0">
-                    <h5 class="mb-0 fw-bold text-danger">
-                        Overdue Alerts
-                    </h5>
+                <div class="card-header bg-white fw-semibold">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <span class="text-danger">
+                            Overdue Alerts
+                        </span>
+
+                    </div>
+
                 </div>
 
                 <div class="card-body">
 
                     <?php if(empty($overdueList)): ?>
 
-                        <div class="text-muted">
-                            No overdue books.
+                        <div class="text-center py-4">
+
+                            <i class="bi bi-check-circle text-success fs-1"></i>
+
+                            <div class="mt-2 text-muted">
+                                No overdue books.
+                            </div>
+
                         </div>
 
                     <?php else: ?>
 
                         <?php foreach($overdueList as $o): ?>
 
-                            <div class="border rounded p-2 mb-2">
+                            <div class="border rounded p-3 mb-2">
 
-                                <strong>
-                                    <?= $o['full_name'] ?>
-                                </strong>
+                                <div class="fw-semibold">
+                                    <?= esc($o['full_name']) ?>
+                                </div>
 
                                 <div class="small text-muted">
-                                    <?= $o['title'] ?>
+                                    <?= esc($o['title']) ?>
                                 </div>
 
                             </div>
@@ -210,8 +292,47 @@ Dashboard Overview
 
             </div>
 
+            <!-- QUICK ACCESS -->
+            <div class="card border-0 shadow-sm rounded-3 mb-3">
+
+                <div class="card-header bg-white fw-semibold">
+                    Quick Access
+                </div>
+
+                <div class="list-group list-group-flush">
+                    
+                    <a href="<?= site_url('admin/user_management') ?>" class="list-group-item list-group-item-action">
+                        User Management
+                    </a>
+
+                    <a href="<?= site_url('admin/book_management') ?>" class="list-group-item list-group-item-action">
+                        Book Management
+                    </a>
+
+                    <a href="<?= site_url('admin/borrowed_books') ?>" class="list-group-item list-group-item-action">
+                        Borrowed Books
+                    </a>
+
+                    <a href="<?= site_url('admin/borrow_requests') ?>" class="list-group-item list-group-item-action">
+                        Borrow Requests
+                    </a>
+
+                    <a href="<?= site_url('admin/reservations') ?>" class="list-group-item list-group-item-action">
+                        Reservations
+                    </a>
+
+                    <a href="<?= site_url('admin/fines') ?>" class="list-group-item list-group-item-action">
+                        Fines
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
 
     </div>
+
 </div>
+
 <?= $this->endSection() ?>
