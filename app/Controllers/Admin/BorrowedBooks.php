@@ -8,6 +8,7 @@ use App\Models\BorrowingModel;
 use App\Models\BorrowingHistory;
 use App\Models\LibrarySettingsModel;
 use App\Models\FinesModel;
+use App\Models\ReservationModel;
 use DateTime;
 
 class BorrowedBooks extends BaseController
@@ -176,6 +177,7 @@ class BorrowedBooks extends BaseController
         $library_settings_model = new LibrarySettingsModel();
         $fine_model = new FinesModel();
         $book_model = new BookModel();
+        $reservation_model = new ReservationModel();
 
         $id = $this->request->getPost('borrowing_id');
 
@@ -212,6 +214,33 @@ class BorrowedBooks extends BaseController
         $book_model->update($borrowing['book_id'], [
             'availability' => 'available'
         ]);
+
+        /*
+        |----------------------------------------------------
+        | ACTIVATE NEXT RESERVATION IN QUEUE
+        |----------------------------------------------------
+        */
+
+        $nextReservation = $reservation_model
+            ->where('book_id', $borrowing['book_id'])
+            ->where('status', 'pending')
+            ->orderBy('reservation_date', 'ASC')
+            ->first();
+
+        if ($nextReservation) {
+
+            $expirationDate = date(
+                'Y-m-d H:i:s',
+                strtotime('+3 days')
+            );
+
+            $reservation_model->update(
+                $nextReservation['id'],
+                [
+                    'expiration_date' => $expirationDate
+                ]
+            );
+        }
 
         // history log
         $history_model->insert([
