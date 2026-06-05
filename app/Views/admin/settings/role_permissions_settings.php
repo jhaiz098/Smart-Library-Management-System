@@ -10,10 +10,25 @@
 
 <?= $this->section('content') ?>
 
-
     <div class="p-3">
-        <div class="card">
-            <div class="card-header fw-bold">Settings</div>
+        <div class="card border-0 shadow-sm">
+            <!-- HEADER -->
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Roles & Permissions
+                    </h5>
+
+                    <div class="text-muted small">
+                        Manage system roles, access levels, and permissions for users and staff
+                    </div>
+
+                </div>
+
+            </div>
+
             <div class="card-body">
                 <?= view('partials/admin/settings_nav') ?>
 
@@ -30,10 +45,6 @@
                 <?php endif; ?>
 
                 <div class="card mt-3">
-
-                    <div class="card-header fw-bold">
-                        Roles & Permissions
-                    </div>
 
                     <div class="card-body">
 

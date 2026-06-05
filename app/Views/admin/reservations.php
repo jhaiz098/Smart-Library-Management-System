@@ -5,7 +5,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('header') ?>
-    Reservations
+    Book Reservations
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -160,7 +160,7 @@
                         </select>
 
                     </div>
-
+                    <?php if($reservation_status == 'all'): ?>
                     <!-- STATUS FILTER -->
                     <div class="col-md-2">
 
@@ -195,6 +195,7 @@
                         </select>
 
                     </div>
+                    <?php endif; ?>
 
                 </form>
 
@@ -227,6 +228,10 @@
                             <th>Reserver</th>
 
                             <th>Book</th>
+
+                            <?php if($reservation_status == 'pending'): ?>
+                            <th>Queue Position</th>
+                            <?php endif; ?>
 
                             <th class="text-center">Reserved At</th>
 
@@ -289,6 +294,35 @@
                                         </div>
 
                                     </td>
+
+                                    <?php if($reservation_status == 'pending'): ?>
+                                    <!-- QUEUE POSITION -->
+                                    <td>
+
+                                        <?php if($reservation['status'] === 'pending'): ?>
+
+                                            <?php if($reservation['queue_position'] == 1): ?>
+
+                                                <span class="badge bg-success rounded-pill px-3 py-2">
+                                                    #1 Next
+                                                </span>
+
+                                            <?php else: ?>
+
+                                                <span class="badge bg-secondary rounded-pill px-3 py-2">
+                                                    #<?= $reservation['queue_position'] ?>
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        <?php else: ?>
+
+                                            <span class="text-muted">—</span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+                                    <?php endif; ?>
 
                                     <!-- RESERVED DATE -->
                                     <td class="text-center">

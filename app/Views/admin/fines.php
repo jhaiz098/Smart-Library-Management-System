@@ -10,7 +10,7 @@
 
 <?= $this->section('content') ?>
 <div class="p-3">
-    <div class="card">
+    <div class="card border-0 shadow-sm">
         <div class="card-header bg-white">
 
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
@@ -382,7 +382,7 @@
 
                                                 <button
                                                     type="button"
-                                                    class="btn btn-success btn-sm"
+                                                    class="btn btn-outline-success btn-sm"
 
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#paymentModal"
@@ -396,6 +396,7 @@
                                                     data-total="<?= $fine['amount'] ?>"
                                                     data-max-fine="<?= $fine['max_fine_amount'] ?>"
                                                 >
+                                                    <i class="bi bi-cash-coin me-1"></i>
                                                     Record Payment
                                                 </button>
 

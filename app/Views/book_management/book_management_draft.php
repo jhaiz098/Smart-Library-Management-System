@@ -103,21 +103,26 @@
                                 <div class="dropdown">
 
                                     <button
-                                        class="btn btn-sm btn-light border dropdown-toggle"
-                                        data-bs-toggle="dropdown"
-                                    >
+                                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                        data-bs-toggle="dropdown">
+
+                                        <i class="bi bi-gear-fill me-1"></i>
                                         Actions
+
                                     </button>
 
-                                    <ul class="dropdown-menu">
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
 
+                                        <!-- EDIT -->
                                         <li>
 
                                             <a
                                                 href="/admin/book_management/edit_book/<?= $book['id'] ?>"
-                                                class="dropdown-item"
-                                            >
+                                                class="dropdown-item">
+
+                                                <i class="bi bi-pencil-square me-2"></i>
                                                 Edit
+
                                             </a>
 
                                         </li>
@@ -126,30 +131,38 @@
                                             <hr class="dropdown-divider">
                                         </li>
 
+                                        <!-- PUBLISH -->
                                         <li>
 
                                             <button
                                                 type="button"
                                                 class="dropdown-item text-success"
+
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#publishModal"
-                                                data-id="<?= $book['id'] ?>"
-                                            >
+                                                data-id="<?= $book['id'] ?>">
+
+                                                <i class="bi bi-upload me-2"></i>
                                                 Publish
+
                                             </button>
 
                                         </li>
 
+                                        <!-- DELETE -->
                                         <li>
 
                                             <button
                                                 type="button"
                                                 class="dropdown-item text-danger"
+
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal"
-                                                data-id="<?= $book['id'] ?>"
-                                            >
+                                                data-id="<?= $book['id'] ?>">
+
+                                                <i class="bi bi-trash me-2"></i>
                                                 Delete
+
                                             </button>
 
                                         </li>

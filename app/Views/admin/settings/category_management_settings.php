@@ -10,10 +10,25 @@
 
 <?= $this->section('content') ?>
 
-
     <div class="p-3">
-        <div class="card">
-            <div class="card-header fw-bold">Settings</div>
+        <div class="card border-0 shadow-sm">
+            <!-- HEADER -->
+            <div class="card-header d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Category Management
+                    </h5>
+
+                    <div class="text-muted small">
+                        Organize and manage book categories used throughout the library collection
+                    </div>
+
+                </div>
+
+            </div>
+
             <div class="card-body">
                 <?= view('partials/admin/settings_nav') ?>
 
@@ -30,97 +45,236 @@
                 <?php endif; ?>
 
                 <div class="card mt-3">
-                    <div class="card-header fw-bold d-flex justify-content-between align-items-center">
-                        <span>Category Management</span>
-                    </div>
 
                     <div class="card-body">
+                        <!-- SEARCH + FILTER -->
+                        <div class="filter-toolbar">
+
+                            <form method="get"
+                                action="<?= current_url() ?>"
+                                class="row g-2 align-items-center">
+
+                                <!-- SEARCH -->
+                                <div class="col-md-8">
+
+                                    <div class="search-box">
+
+                                        <i class="bi bi-search"></i>
+
+                                        <input
+                                            type="search"
+                                            name="search"
+                                            class="form-control"
+                                            placeholder="Search category..."
+                                            value="<?= $_GET['search'] ?? '' ?>"
+                                        >
+
+                                    </div>
+
+                                </div>
+
+                                <!-- SEARCH BUTTON -->
+                                <div class="col-md-2">
+
+                                    <button class="btn btn-primary w-100">
+                                        Search
+                                    </button>
+
+                                </div>
+
+                                <!-- SORT -->
+                                <div class="col-md-2">
+
+                                    <select
+                                        name="sort"
+                                        class="form-select filter-select"
+                                        onchange="this.form.submit()">
+
+                                        <option value="">Sort By</option>
+
+                                        <option value="name_asc"
+                                            <?= ($sort ?? '') == 'name_asc' ? 'selected' : '' ?>>
+                                            Name Ascending
+                                        </option>
+
+                                        <option value="name_desc"
+                                            <?= ($sort ?? '') == 'name_desc' ? 'selected' : '' ?>>
+                                            Name Descending
+                                        </option>
+
+                                        <option value="newest"
+                                            <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>
+                                            Recently Created
+                                        </option>
+
+                                        <option value="oldest"
+                                            <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>
+                                            Earliest Created
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                            </form>
+
+                        </div>
                         <!-- SEARCH / FILTER -->
                         <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
-                            <button class="btn btn-sm btn-primary"
+                            <button class="btn btn-primary btn-sm px-3 py-2 my-2"
                                 data-bs-toggle="modal"
                                 data-bs-target="#categoryModal"
                                 onclick="openAddModal()">
                                 + Add Category
                             </button>
-
-                            <div class="text-muted small">
-                                Total Categories: <?= $categories_count ?>
-                            </div>
-
-                            <form method="get" action="<?= current_url() ?>" class="d-flex gap-2">
-
-                                <input
-                                    type="search"
-                                    name="search"
-                                    class="form-control"
-                                    placeholder="Search category..."
-                                    value="<?= $_GET['search'] ?? '' ?>"
-                                >
-
-                                <input type="submit" class="btn btn-secondary" value="Search">
-
-                                <!-- SORT -->
-                                <select name="sort" class="form-select" onchange="this.form.submit()">
-                                    <option value="">Sort By</option>
-                                    <option value="name_asc" <?= ($sort ?? '') == 'name_asc' ? 'selected' : '' ?>>A-Z</option>
-                                    <option value="name_desc" <?= ($sort ?? '') == 'name_desc' ? 'selected' : '' ?>>Z-A</option>
-                                    <option value="newest" <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>Newest</option>
-                                    <option value="oldest" <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>Oldest</option>
-                                </select>
-                            </form>
                         </div>
 
                         <!-- TABLE -->
-                        <div class="table-responsive">
-                            <table class="table table-bordered align-middle fs-7">
-                                <tr class="text-center">
-                                    <th width="80">ID</th>
-                                    <th>Category Name</th>
-                                    <th width="180">Created At</th>
-                                    <th width="180">Updated At</th>
-                                    <th colspan="2">Actions</th>
-                                </tr>
-                                <?php if(!$categories): ?>
+                        <?php
+                        $page = $pager->getCurrentPage();
+                        $perPage = 10;
+
+                        $i = (($page - 1) * $perPage) + 1;
+                        ?>
+
+                        <div class="table-responsive rounded-3 border bg-white shadow-sm">
+
+                            <table class="table table-hover align-middle mb-0">
+
+                                <thead class="table-light">
+
                                     <tr>
-                                        <td colspan="6" class="text-center text-muted">
-                                            No categories found
-                                        </td>
+
+                                        <th width="70" class="text-center">
+                                            #
+                                        </th>
+
+                                        <th>
+                                            Category Name
+                                        </th>
+
+                                        <th width="180" class="text-center">
+                                            Created
+                                        </th>
+
+                                        <th width="180" class="text-center">
+                                            Updated
+                                        </th>
+
+                                        <th width="180" class="text-center">
+                                            Actions
+                                        </th>
+
                                     </tr>
-                                <?php else: ?>
-                                    <?php foreach($categories as $cat): ?>
+
+                                </thead>
+
+                                <tbody>
+
+                                    <?php if(empty($categories)): ?>
+
                                         <tr>
-                                            <td><?= $cat['id'] ?></td>
-                                            <td><?= $cat['name'] ?></td>
-                                            <td><?= $cat['created_at'] ?></td>
-                                            <td><?= $cat['updated_at'] ?></td>
-                                            <td>
-                                                <button class="w-100 btn btn-sm btn-secondary"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#categoryModal"
-                                                    onclick="openEditModal(<?= $cat['id'] ?>, '<?= esc($cat['name']) ?>')">
-                                                    Edit
-                                                </button>
+
+                                            <td colspan="5"
+                                                class="text-center py-4 text-muted">
+
+                                                No categories found.
+
                                             </td>
-                                            <td>
-                                                <button 
-                                                    class="w-100 btn btn-sm btn-danger"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#deleteCategoryModal"
-                                                    data-id="<?= $cat['id'] ?>"
-                                                >
-                                                    Delete
-                                                </button>
-                                            </td>
+
                                         </tr>
-                                    <?php endforeach; ?>
-                                <?php endif; ?>
-                                
+
+                                    <?php else: ?>
+
+                                        <?php foreach($categories as $cat): ?>
+
+                                            <tr>
+
+                                                <!-- NUMBER -->
+                                                <td class="text-center fw-semibold">
+
+                                                    <?= $i++ ?>
+
+                                                </td>
+
+                                                <!-- CATEGORY -->
+                                                <td>
+
+                                                    <div class="fw-semibold">
+
+                                                        <?= esc($cat['name']) ?>
+
+                                                    </div>
+
+                                                </td>
+
+                                                <!-- CREATED -->
+                                                <td class="text-center text-muted small">
+
+                                                    <?= date(
+                                                        'M d, Y',
+                                                        strtotime($cat['created_at'])
+                                                    ) ?>
+
+                                                </td>
+
+                                                <!-- UPDATED -->
+                                                <td class="text-center text-muted small">
+
+                                                    <?= date(
+                                                        'M d, Y',
+                                                        strtotime($cat['updated_at'])
+                                                    ) ?>
+
+                                                </td>
+
+                                                <!-- ACTIONS -->
+                                                <td>
+
+                                                    <div class="d-flex gap-2 justify-content-center">
+
+                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                                data-bs-toggle="dropdown">
+                                                            <i class="bi bi-gear-fill me-1"></i>
+                                                            Actions
+                                                        </button>
+
+                                                        <ul class="dropdown-menu">
+
+                                                            <li>
+                                                                <button class="dropdown-item">
+                                                                    <i class="bi bi-pencil-square me-2"></i>
+                                                                    Edit
+                                                                </button>
+                                                            </li>
+
+                                                            <li>
+                                                                <button class="dropdown-item text-danger">
+                                                                    <i class="bi bi-trash me-2"></i>
+                                                                    Delete
+                                                                </button>
+                                                            </li>
+
+                                                        </ul>
+
+                                                    </div>
+
+                                                </td>
+
+                                            </tr>
+
+                                        <?php endforeach; ?>
+
+                                    <?php endif; ?>
+
+                                </tbody>
+
                             </table>
 
-                            <div class="mt-3 d-flex justify-content-center">
-                                <?= $pager->links('default', 'bootstrap_full') ?>
-                            </div>
+                        </div>
+
+                        <div class="mt-3 d-flex justify-content-center">
+                            <?= $pager->links('default', 'bootstrap_full') ?>
                         </div>
                     </div>
                 </div>
@@ -246,5 +400,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 </script>
+<style>
+    .table tbody tr:hover {
+        background: #f8f9fa;
+    }
+    .filter-toolbar{
+        background: #fff;
+        padding: 14px;
+        border: 1px solid #e9ecef;
+        border-radius: 14px;
+    }
 
+    .search-box{
+        position: relative;
+    }
+
+    .search-box i{
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #6c757d;
+        z-index: 2;
+    }
+
+    .search-box .form-control{
+        padding-left: 40px;
+        border-radius: 10px;
+        border: 1px solid #dee2e6;
+        height: 42px;
+    }
+
+    .filter-select{
+        border-radius: 10px;
+        height: 42px;
+    }
+
+    .filter-select:focus,
+    .search-box .form-control:focus{
+        border-color: #86b7fe;
+        box-shadow: 0 0 0 .15rem rgba(13,110,253,.15);
+    }
+
+    .filter-toolbar .btn-primary{
+        height: 42px;
+        border-radius: 10px;
+        font-weight: 600;
+    }
+</style>
 <?= $this->endSection() ?>

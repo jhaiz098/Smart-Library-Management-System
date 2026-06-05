@@ -274,57 +274,82 @@
 
                                             <button
                                                 class="btn btn-sm btn-outline-secondary dropdown-toggle px-3"
-                                                data-bs-toggle="dropdown"
-                                            >
+                                                data-bs-toggle="dropdown">
+
+                                                <i class="bi bi-gear-fill me-1"></i>
                                                 Actions
+
                                             </button>
 
-                                            <ul class="dropdown-menu">
+                                            <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
 
                                                 <!-- VIEW -->
                                                 <li>
+
                                                     <a class="dropdown-item"
                                                     href="/admin/users/view/<?= $user['id'] ?>">
+
+                                                        <i class="bi bi-eye me-2"></i>
                                                         View
+
                                                     </a>
+
                                                 </li>
 
                                                 <?php if($user['role_id'] != 1): ?>
 
                                                     <!-- EDIT -->
                                                     <li>
+
                                                         <a class="dropdown-item"
                                                         href="/admin/users/edit/<?= $user['id'] ?>">
+
+                                                            <i class="bi bi-pencil-square me-2"></i>
                                                             Edit
+
                                                         </a>
+
                                                     </li>
 
                                                     <!-- RESET PASSWORD -->
                                                     <li>
+
                                                         <button
                                                             type="button"
                                                             class="dropdown-item text-info"
+
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#resetPasswordModal<?= $user['id'] ?>">
+
+                                                            <i class="bi bi-key me-2"></i>
                                                             Reset Password
+
                                                         </button>
+
                                                     </li>
 
-                                                    <li><hr class="dropdown-divider"></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
 
                                                     <!-- ACTIVATE / DEACTIVATE -->
                                                     <li>
+
                                                         <button
                                                             type="button"
                                                             class="dropdown-item text-warning"
+
                                                             data-bs-toggle="modal"
                                                             data-bs-target="#statusModal<?= $user['id'] ?>">
-                                                            
+
+                                                            <i class="bi bi-toggle-on me-2"></i>
+
                                                             <?= $user['status'] == 'activated'
                                                                 ? 'Deactivate'
                                                                 : 'Activate' ?>
 
                                                         </button>
+
                                                     </li>
 
                                                 <?php endif; ?>

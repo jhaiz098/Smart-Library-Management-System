@@ -13,14 +13,14 @@
 <div class="p-3">
 
     <!-- SETTINGS CARD -->
-    <div class="card shadow-sm">
+    <div class="card border-0 shadow-sm">
 
         <!-- HEADER -->
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <span class="fw-bold fs-5">
+                <h5 class="fw-bold mb-1">
                     Library Settings
-                </span>
+                </h5>
 
                 <div class="text-muted small">
                     Configure borrowing, reservation, and fine policies

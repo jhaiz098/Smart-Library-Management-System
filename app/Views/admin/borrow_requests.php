@@ -10,7 +10,7 @@
 
 <?= $this->section('content') ?>
 <div class="p-3">
-    <div class="card">
+    <div class="card border-0 shadow-sm">
         <!-- HEADER -->
         <div class="card-header bg-white">
 
@@ -195,63 +195,97 @@
 
                                                     <div class="dropdown">
 
-                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                                                data-bs-toggle="dropdown">
+                                                        <button
+                                                            class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                            data-bs-toggle="dropdown">
+
+                                                            <i class="bi bi-gear me-1"></i>
                                                             Actions
+
                                                         </button>
 
-                                                        <ul class="dropdown-menu">
+                                                        <ul class="dropdown-menu dropdown-menu-end">
 
                                                             <?php if($pr['status'] === 'pending'): ?>
 
                                                                 <li>
-                                                                    <button class="dropdown-item text-success"
+
+                                                                    <button
+                                                                        class="dropdown-item text-success"
+
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#approveModal"
+
                                                                         data-id="<?= $pr['id'] ?>">
+
+                                                                        <i class="bi bi-check-circle-fill me-2"></i>
                                                                         Approve
+
                                                                     </button>
+
                                                                 </li>
 
                                                                 <li>
-                                                                    <button class="dropdown-item text-danger"
+
+                                                                    <button
+                                                                        class="dropdown-item text-danger"
+
                                                                         data-bs-toggle="modal"
                                                                         data-bs-target="#rejectModal"
+
                                                                         data-id="<?= $pr['id'] ?>">
+
+                                                                        <i class="bi bi-x-circle-fill me-2"></i>
                                                                         Reject
+
                                                                     </button>
+
                                                                 </li>
+
                                                             <?php elseif($pr['status'] === 'approved'): ?>
-                                                            
-                                                            <li>
-                                                                <button
-                                                                    type="button"
-                                                                    class="dropdown-item text-success"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#claimModal"
-                                                                    data-id="<?= $pr['id'] ?>"
-                                                                    data-user="<?= $pr['full_name'] ?>"
-                                                                    data-book="<?= $pr['book_title'] ?>"
-                                                                    data-code="<?= $pr['borrow_request_code'] ?>"
-                                                                >
-                                                                    Mark as Claimed
-                                                                </button>
-                                                            </li>
 
-                                                            <li>
-                                                                <button 
-                                                                    class="dropdown-item text-danger"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#cancelModal"
-                                                                    data-id="<?= $pr['id'] ?>"
-                                                                    data-user="<?= $pr['full_name'] ?>"
-                                                                    data-book="<?= $pr['book_title'] ?>"
-                                                                    data-status="<?= $pr['status'] ?>">
-                                                                    Cancel Approved Request
-                                                                </button>
-                                                            </li>
+                                                                <li>
+
+                                                                    <button
+                                                                        type="button"
+                                                                        class="dropdown-item text-success"
+
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#claimModal"
+
+                                                                        data-id="<?= $pr['id'] ?>"
+                                                                        data-user="<?= $pr['full_name'] ?>"
+                                                                        data-book="<?= $pr['book_title'] ?>"
+                                                                        data-code="<?= $pr['borrow_request_code'] ?>">
+
+                                                                        <i class="bi bi-box-arrow-in-down me-2"></i>
+                                                                        Mark as Claimed
+
+                                                                    </button>
+
+                                                                </li>
+
+                                                                <li>
+
+                                                                    <button
+                                                                        class="dropdown-item text-danger"
+
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#cancelModal"
+
+                                                                        data-id="<?= $pr['id'] ?>"
+                                                                        data-user="<?= $pr['full_name'] ?>"
+                                                                        data-book="<?= $pr['book_title'] ?>"
+                                                                        data-status="<?= $pr['status'] ?>">
+
+                                                                        <i class="bi bi-x-octagon-fill me-2"></i>
+                                                                        Cancel Approved Request
+
+                                                                    </button>
+
+                                                                </li>
+
                                                             <?php endif; ?>
-
 
                                                         </ul>
 

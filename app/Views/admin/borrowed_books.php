@@ -5,7 +5,7 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('header') ?>
-    Borrowed Books Management
+    Borrowed Books
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
@@ -306,50 +306,83 @@
 
                                                 <div class="dropdown">
 
-                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                                            data-bs-toggle="dropdown">
+                                                    <button
+                                                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+
+                                                        <i class="bi bi-gear-fill me-1"></i>
                                                         Actions
+
                                                     </button>
 
-                                                    <ul class="dropdown-menu">
+                                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm border-0">
 
+                                                        <!-- RETURN -->
                                                         <li>
-                                                            <button class="dropdown-item text-success"
+
+                                                            <button
+                                                                class="dropdown-item text-success"
+
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#returnModal"
+
                                                                 data-id="<?= $bb['id'] ?>"
                                                                 data-user="<?= $bb['borrower_name'] ?>"
                                                                 data-book="<?= $bb['book_title'] ?>"
                                                                 data-due="<?= $bb['due_date'] ?>"
                                                                 data-daily_overdue_fine="<?= $daily_overdue_fine ?>"
                                                                 data-max_fine_amount="<?= $max_fine_amount ?>">
+
+                                                                <i class="bi bi-arrow-return-left me-2"></i>
                                                                 Return Book
+
                                                             </button>
+
                                                         </li>
 
+                                                        <!-- EXTEND -->
                                                         <li>
-                                                            <button class="dropdown-item text-primary"
+
+                                                            <button
+                                                                class="dropdown-item text-primary"
+
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#extendModal"
+
                                                                 data-id="<?= $bb['id'] ?>"
                                                                 data-user="<?= $bb['borrower_name'] ?>"
                                                                 data-book="<?= $bb['book_title'] ?>"
                                                                 data-due="<?= $bb['due_date'] ?>">
+
+                                                                <i class="bi bi-calendar-plus me-2"></i>
                                                                 Extend Due Date
+
                                                             </button>
+
                                                         </li>
 
-                                                        <li><hr class="dropdown-divider"></li>
-
                                                         <li>
-                                                            <button class="dropdown-item text-dark"
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+
+                                                        <!-- HISTORY -->
+                                                        <li>
+
+                                                            <button
+                                                                class="dropdown-item text-dark"
+
                                                                 data-bs-toggle="modal"
                                                                 data-bs-target="#historyModal"
+
                                                                 data-id="<?= $bb['id'] ?>"
                                                                 data-user="<?= $bb['borrower_name'] ?>"
                                                                 data-book="<?= $bb['book_title'] ?>">
+
+                                                                <i class="bi bi-clock-history me-2"></i>
                                                                 View History
+
                                                             </button>
+
                                                         </li>
 
                                                     </ul>

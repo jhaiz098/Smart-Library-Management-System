@@ -212,6 +212,35 @@ class Reservations extends BaseController
 
         $records = $query->paginate($perPage);
 
+        /*
+        |--------------------------------------------------------------------------
+        | QUEUE POSITION
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($records as &$reservation) {
+
+            // only pending reservations belong to queue
+            if ($reservation['status'] !== 'pending') {
+
+                $reservation['queue_position'] = null;
+                continue;
+            }
+
+            $position = $reservation_model
+
+                ->where('book_id', $reservation['book_id'])
+
+                ->where('status', 'pending')
+
+                ->where('reservation_date <=', $reservation['reservation_date'])
+
+                ->countAllResults();
+
+            $reservation['queue_position'] = $position;
+        }
+
+        unset($reservation);
         return view('admin/reservations', [
 
             'records' => $records,
