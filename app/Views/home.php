@@ -62,20 +62,39 @@
                     
                     <!-- HERO -->
                     <h1 class="hero-title">LibraGo</h1>
-                    <p class="hero-sub">Smart Library Reservation and Borrowing Management System</p>
-                    <p>Reserve books, select your borrow dates, and manage your library visits easily.</p>
-                
-                    <a href="/login" class="btn btn-lg text-white m-5 bg-dark-brown">Get Started</a>
+
+                    <p class="hero-sub">
+                        Smart Library Reservation and Borrowing Management System
+                    </p>
+
+                    <p>
+                        Search books, submit borrow requests, reserve unavailable books,
+                        and manage your library activities online.
+                    </p>
+
+                    <a href="/login" class="btn btn-lg text-white m-5 bg-dark-brown">
+                        Get Started
+                    </a>
                 
                     <!-- FEATURES -->
 
-                    <h2 class="text-center mb-3 mt-3">User Features</h2>
+                    <h2 class="text-center mb-3 mt-3">
+                        User Features
+                    </h2>
+
                     <div class="row">
+
                         <div class="col-md-4">
                             <div class="card mb-2 shadow-lg">
                                 <div class="card-body p-4">
-                                    <h5><i class="bi bi-book me-2"></i>Book Reservation</h5>
-                                    <p>Reserve available books based on your preferred dates.</p>
+                                    <h5>
+                                        <i class="bi bi-journal-check me-2"></i>
+                                        Borrow Requests
+                                    </h5>
+
+                                    <p>
+                                        Request available books and wait for staff approval.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -83,8 +102,14 @@
                         <div class="col-md-4">
                             <div class="card mb-2 shadow-lg">
                                 <div class="card-body p-4">
-                                    <h5><i class="bi bi-clock me-2"></i>Flexible Borrowing</h5>
-                                    <p>Select your borrow start date and return date based on availability.</p>
+                                    <h5>
+                                        <i class="bi bi-people me-2"></i>
+                                        Reservation Queue
+                                    </h5>
+
+                                    <p>
+                                        Reserve unavailable books and automatically join the queue.
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -92,11 +117,18 @@
                         <div class="col-md-4">
                             <div class="card mb-2 shadow-lg">
                                 <div class="card-body p-4">
-                                    <h5><i class="bi bi-calendar-check me-2"></i>Date Availability</h5>
-                                    <p>See which dates are available before reserving a book.</p>
+                                    <h5>
+                                        <i class="bi bi-clock-history me-2"></i>
+                                        Track Requests
+                                    </h5>
+
+                                    <p>
+                                        Monitor request status, reservations, and borrowing history.
+                                    </p>
                                 </div>
                             </div>
                         </div>
+
                     </div>
 
                 </div>
@@ -105,110 +137,128 @@
 
         <!-- HOW IT WORKS -->
         <section class="front bg-light text-dark">
+
             <div class="container">
-                <h2 class="text-center mt-5 mb-3">How It Works</h2>
-                
+
+                <h2 class="text-center mt-5 mb-3">
+                    How It Works
+                </h2>
+
                 <div class="row text-center">
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
                                 <i class="bi bi-person-plus fs-1 text-dark-brown"></i>
-                                <h5>1. Register & Login</h5>
-                                <p>Create your account and access the system.</p>
+
+                                <h5>1. Register</h5>
+
+                                <p>
+                                    Create your library account.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
                                 <i class="bi bi-search fs-1 text-dark-brown"></i>
-                                <h5>2. Search Books</h5>
-                                <p>Browse books and check their availability.</p>
+
+                                <h5>2. Find Books</h5>
+
+                                <p>
+                                    Search books in the library catalog.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-calendar-event fs-1 text-dark-brown"></i>
-                                <h5>3. View Available Dates</h5>
-                                <p>See which dates are available (unreserved dates are highlighted).</p>
+                                <i class="bi bi-journal-arrow-up fs-1 text-dark-brown"></i>
+
+                                <h5>3. Submit Request</h5>
+
+                                <p>
+                                    Send a borrow request or reserve the book.
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
                             <div class="card-body">
-                                <i class="bi bi-calendar-check fs-1 text-dark-brown"></i>
-                                <h5>4. Select Borrow Dates</h5>
-                                <p>Select your preferred start and end dates. The system ensures your borrowing period does not exceed the maximum allowed duration.</p>
-                            </div>
-                        </div>
-                    </div>
+                                <i class="bi bi-check-circle fs-1 text-dark-brown"></i>
 
-                    <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
-                            <div class="card-body">
-                                <i class="bi bi-bookmark-check fs-1 text-dark-brown"></i>
-                                <h5>5. Confirm Reservation</h5>
-                                <p>Reserve the book based on your selected schedule.</p>
-                            </div>
-                        </div>
-                    </div>
+                                <h5>4. Claim Book</h5>
 
-                    <div class="col-md-4">
-                        <div class="card shadow-sm p-3 mb-3 bg-light-brown-yellow">
-                            <div class="card-body">
-                                <i class="bi bi-box-arrow-down fs-1 text-dark-brown"></i>
-                                <h5>6. Borrow & Return</h5>
-                                <p>Pick up on your start date and return before the due date. Late returns will incur fines.</p>
+                                <p>
+                                    Visit the library and claim approved requests.
+                                </p>
                             </div>
                         </div>
                     </div>
 
                 </div>
 
-                <p class="text-center mt-3 text-muted">
-                    Note: Maximum borrowing duration is set by the library administrator.
-                </p>
             </div>
+
         </section>
 
-        <!-- FEEDBACKS -->
-        <section class="front bg-light-yellow text-dark">
+        <!-- STATISTICS -->
+        <section class="front py-5 bg-light-yellow">
+
             <div class="container">
-                <h2 class="text-center mt-5 mb-3">User Feedback</h2>
+
                 <div class="row text-center">
-                    <div class="col-md-4">
-                        <div class="card p-3 mb-3">
-                            <div class="card-body">
-                                <p class="fst-italic">"LibraGo made borrowing books so easy! No more waiting in long lines."</p>
-                                <p class="fw-bold">- Maria D.</p>
-                            </div>
-                        </div>
+
+                    <div class="col-md-3">
+                        <h2 class="fw-bold text-dark-brown">
+                            <?= $total_books ?? '1000+' ?>
+                        </h2>
+
+                        <p class="text-muted">
+                            Books Available
+                        </p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card p-3 mb-3">
-                            <div class="card-body">
-                                <p class="fst-italic">"Scheduling my library visit online saved me so much time."</p>
-                                <p class="fw-bold">- John P.</p>
-                            </div>
-                        </div>
+
+                    <div class="col-md-3">
+                        <h2 class="fw-bold text-dark-brown">
+                            <?= $total_members ?? '500+' ?>
+                        </h2>
+
+                        <p class="text-muted">
+                            Library Members
+                        </p>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card p-3 mb-3">
-                            <div class="card-body">
-                                <p class="fst-italic">"I love how easy it is to choose my borrow dates. So convenient!"</p>
-                                <p class="fw-bold">- Aileen R.</p>
-                            </div>
-                        </div>
+
+                    <div class="col-md-3">
+                        <h2 class="fw-bold text-dark-brown">
+                            <?= $total_borrowed ?? '300+' ?>
+                        </h2>
+
+                        <p class="text-muted">
+                            Books Borrowed
+                        </p>
                     </div>
+
+                    <div class="col-md-3">
+                        <h2 class="fw-bold text-dark-brown">
+                            <?= $total_reservations ?? '150+' ?>
+                        </h2>
+
+                        <p class="text-muted">
+                            Reservations
+                        </p>
+                    </div>
+
                 </div>
+
             </div>
+
         </section>
     </div>
 

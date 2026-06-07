@@ -445,6 +445,7 @@ class Book extends BaseController
     {
         $borrow_requests_model = new BorrowRequestModel();
         $borrow_requests_history_model = new BorrowRequestHistoryModel();
+        $library_settings_model = new LibrarySettingsModel();
 
         $role_id = (int) session()->get('role_id');
         $user_id = session()->get('user_id');
@@ -462,13 +463,19 @@ class Book extends BaseController
             default => 'Unknown'
         };
 
+        $settings = $library_settings_model->first();
+
+        $reservation_expiry_days = (int) ($settings['reservation_expiry_days'] ?? 3);
+
         $borrow_requests_model->update($id, [
             'status' => 'approved',
             'processed_at' => date('Y-m-d H:i:s'),
             'processed_by' => $user_id,
             'remarks' => "Approved by {$role_label}",
-            // expires after 3 days
-            'expires_at' => date('Y-m-d 23:59:59', strtotime('+3 days'))
+            'expires_at' => date(
+                'Y-m-d 23:59:59',
+                strtotime("+{$reservation_expiry_days} days")
+            )
         ]);
 
         $borrow_requests_history_model->insert([

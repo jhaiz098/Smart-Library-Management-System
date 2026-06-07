@@ -390,9 +390,38 @@ class Book extends BaseController
     public function send_borrow_request()
     {
         $borrow_request_model = new BorrowRequestModel();
+        $library_settings_model = new LibrarySettingsModel();
+        $borrowing_model = new BorrowingModel();
+
+        $settings = $library_settings_model->first();
+
+        $max_borrow_books = (int) ($settings['max_borrow_books'] ?? 0);
 
         $user_id = $this->request->getPost('user_id');
         $book_id = $this->request->getPost('book_id');
+
+        /*
+        |--------------------------------------------------------------------------
+        | CHECK CURRENT BORROWED BOOKS
+        |--------------------------------------------------------------------------
+        */
+        $currentBorrowed = $borrowing_model
+
+            ->where('user_id', $user_id)
+
+            ->where('status', 'borrowed')
+
+            ->countAllResults();
+
+        if ($currentBorrowed >= $max_borrow_books) {
+
+            return redirect()->back()
+
+                ->with(
+                    'error',
+                    "You have already reached the maximum borrowing limit of {$max_borrow_books} books."
+                );
+        }
 
         // Prevent duplicate pending requests
         $existing = $borrow_request_model
@@ -495,6 +524,10 @@ class Book extends BaseController
     {
         $reservation_model = new ReservationModel();
         $borrowing_model = new BorrowingModel();
+        $library_settings_model = new LibrarySettingsModel();
+        
+        $settings = $library_settings_model->first();
+        $max_reservation_books = (int) ($settings['max_reservation_books'] ?? 0);
 
         $user_id = session()->get('user_id');
 
@@ -514,6 +547,33 @@ class Book extends BaseController
         if ($existing) {
             return redirect()->back()
                 ->with('error', 'You already reserved this book.');
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | CHECK ACTIVE RESERVATIONS
+        |--------------------------------------------------------------------------
+        */
+
+        $currentReservations = $reservation_model
+
+            ->where('user_id', $user_id)
+
+            ->whereIn('status', [
+                'pending',
+                'fulfilled'
+            ])
+
+            ->countAllResults();
+
+        if ($currentReservations >= $max_reservation_books) {
+
+            return redirect()->back()
+
+                ->with(
+                    'error',
+                    "You have already reached the maximum reservation limit of {$max_reservation_books} books."
+                );
         }
 
         // create reservation
