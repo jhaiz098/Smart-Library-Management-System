@@ -14,6 +14,11 @@ class Setting extends BaseController
 {
     public function library_settings()
     {
+        if (!session()->get('can_manage_settings') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $library_settings_model = new LibrarySettingsModel();
 
         $settings = $library_settings_model->first();
@@ -104,22 +109,49 @@ class Setting extends BaseController
 
         $settings_type = "role_permissions_settings";
 
+        $roles_permissions = $role_perm_model->findAll();
+
         /*
         |--------------------------------------------------------------------------
-        | GET ALL ROLE PERMISSIONS
+        | ADD ADMIN MANUALLY
         |--------------------------------------------------------------------------
         */
 
-        $roles_permissions = $role_perm_model->findAll();
+        $adminPermissions = [
+
+            'id' => 0,
+            'role_id' => 1,
+            'staff_level_id' => null,
+
+            'label' => 'Admin',
+
+            'can_manage_users' => 1,
+            'can_manage_books' => 1,
+            'can_manage_borrowed_books' => 1,
+            'can_manage_borrow_requests' => 1,
+            'can_manage_reservations' => 1,
+            'can_manage_fines' => 1,
+            'can_manage_settings' => 1,
+        ];
+
+        array_unshift($roles_permissions, $adminPermissions);
+
+        /*
+        |--------------------------------------------------------------------------
+        | STAFF LEVEL LABELS
+        |--------------------------------------------------------------------------
+        */
 
         foreach ($roles_permissions as $key => $perm) {
 
-            if ($perm['role_id'] == 1) {
-                $roles_permissions[$key]['label'] = 'Admin';
-            } else {
-                $staff = $staff_level_model->find($perm['staff_level_id']);
-                $roles_permissions[$key]['label'] = $staff['name'] ?? 'Unknown';
+            if (($perm['role_id'] ?? null) == 1) {
+                continue;
             }
+
+            $staff = $staff_level_model->find($perm['staff_level_id']);
+
+            $roles_permissions[$key]['label'] =
+                $staff['name'] ?? 'Unknown';
         }
 
         return view('admin/settings/role_permissions_settings', [
@@ -143,11 +175,9 @@ class Setting extends BaseController
             'can_manage_books',
             'can_manage_borrowed_books',
             'can_manage_borrow_requests',
-            'can_manage_returns',
+            'can_manage_reservations',
             'can_manage_fines',
             'can_manage_settings',
-            'can_manage_categories',
-            'can_manage_roles_permissions',
         ];
 
         if (!in_array($key, $allowedKeys)) {

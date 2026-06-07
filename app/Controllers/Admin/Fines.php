@@ -46,6 +46,11 @@ class Fines extends BaseController
 
     public function fines_list()
     {
+        if (!session()->get('can_manage_fines') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $fines_model = new FinesModel();
 
         $perPage = 10;

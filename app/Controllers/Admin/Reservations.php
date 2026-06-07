@@ -9,6 +9,11 @@ class Reservations extends BaseController
 {
     public function list()
     {
+        if (!session()->get('can_manage_reservations') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $reservation_model = new ReservationModel();
 
         /*

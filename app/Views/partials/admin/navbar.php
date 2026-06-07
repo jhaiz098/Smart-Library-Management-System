@@ -57,54 +57,69 @@
                 </a>
             </li>
 
+            <?php if(session()->get('can_manage_users')): ?>
             <li class="nav-item">
                 <a href="/admin/users"
-                   class="nav-link sidebar-link text-white rounded">
-                    <i class="bi bi-people-fill me-2"></i> User Management
+                class="nav-link sidebar-link text-white rounded">
+                    <i class="bi bi-people-fill me-2"></i>
+                    User Management
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_books')): ?>
             <li class="nav-item">
                 <a href="/admin/book_management_active"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-journal-bookmark-fill me-2"></i> Book Management
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_borrowed_books')): ?>
             <li class="nav-item">
                 <a href="/admin/borrowed_books"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-arrow-left-right me-2"></i> Borrowed Books
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_borrow_requests')): ?>
             <li class="nav-item">
                 <a href="/admin/borrow_requests"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-inbox-fill me-2"></i> Borrow Requests
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_reservations')): ?>
             <li class="nav-item">
                 <a href="/admin/reservations"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-bookmark-check-fill me-2"></i></i> Book Reservations
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_fines')): ?>
             <li class="nav-item">
                 <a href="/admin/fines"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-cash-coin me-2"></i> Fines
                 </a>
             </li>
+            <?php endif; ?>
 
+            <?php if(session()->get('can_manage_settings')): ?>
             <li class="nav-item">
                 <a href="/admin/library_settings"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-gear-fill me-2"></i> Settings
                 </a>
             </li>
+            <?php endif; ?>
 
         </ul>
 

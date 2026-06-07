@@ -57,6 +57,11 @@ class Admin extends BaseController
 
     public function book_management_active()
     {
+        if (!session()->get('can_manage_books') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $book_model = new BookModel();
         $category_model = new CategoryModel();
 

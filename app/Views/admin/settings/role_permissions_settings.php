@@ -91,19 +91,18 @@
                                     $permission_keys = [
                                         'can_manage_users' => 'Manage Users',
                                         'can_manage_books' => 'Manage Books',
-                                        'can_manage_borrowed_books' => 'Borrow Books',
-                                        'can_manage_borrow_requests' => 'Borrowed Requests',
-                                        'can_manage_returns' => 'Process Returns',
+                                        'can_manage_borrowed_books' => 'Manage Borrowed Books',
+                                        'can_manage_borrow_requests' => 'Manage Borrow Requests',
+                                        'can_manage_reservations' => 'Manage Reservations',
                                         'can_manage_fines' => 'Manage Fines',
-                                        'can_manage_settings' => 'System Settings',
-                                        'can_manage_categories' => 'Manage Categories',
-                                        'can_manage_roles_permissions' => 'Roles & Permissions'
+                                        'can_manage_settings' => 'Manage Settings',
                                     ];
                                     ?>
 
                                     <?php foreach($permission_keys as $key => $label): ?>
                                         <th><?= esc($label) ?></th>
                                     <?php endforeach; ?>
+                                        <th>Actions</th>
                                 </tr>
                             </thead>
 
@@ -128,16 +127,81 @@
                                                     data-id="<?= $perm['id'] ?>"
                                                     data-key="<?= $key ?>"
                                                     <?= $perm[$key] ? 'checked' : '' ?>
+                                                    <?= ($perm['label'] == 'Admin') ? 'disabled' : '' ?>
                                                 >
 
                                             </td>
 
                                         <?php endforeach; ?>
+                                            <td class="text-center">
 
+                                                <?php if($perm['label'] != 'Admin'): ?>
+                                                <div class="dropdown">
+
+                                                    <button
+                                                        class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+
+                                                        Actions
+
+                                                    </button>
+
+                                                    <ul class="dropdown-menu">
+
+                                                        <!-- EDIT -->
+                                                        <li>
+
+                                                            <button
+                                                                class="dropdown-item"
+
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#editRoleModal"
+
+                                                                data-id="<?= $perm['staff_level_id'] ?>"
+                                                                data-name="<?= esc($perm['label']) ?>">
+
+                                                                <i class="bi bi-pencil-square me-2"></i>
+                                                                Edit Role
+
+                                                            </button>
+
+                                                        </li>
+
+                                                        <li>
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+
+                                                        <!-- DELETE -->
+                                                        <li>
+
+                                                            <button
+                                                                class="dropdown-item text-danger"
+
+                                                                data-bs-toggle="modal"
+                                                                data-bs-target="#deleteRoleModal"
+
+                                                                data-id="<?= $perm['staff_level_id'] ?>"
+                                                                data-name="<?= esc($perm['label']) ?>">
+
+                                                                <i class="bi bi-trash me-2"></i>
+                                                                Delete Role
+
+                                                            </button>
+
+                                                        </li>
+
+                                                    </ul>
+
+                                                </div>
+                                                <?php else: ?>
+                                                    —
+                                                <?php endif; ?>
+
+                                            </td>
                                     </tr>
 
                                 <?php endforeach; ?>
-
+                                            
                             </tbody>
 
                         </table>
@@ -187,6 +251,142 @@
     </div>
 </div>
 
+<div class="modal fade" id="editRoleModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <form method="post"
+              action="<?= base_url('admin/roles/edit') ?>"
+              class="modal-content">
+
+            <input type="hidden"
+                   name="id"
+                   id="edit_role_id">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Edit Role
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Role Name
+                    </label>
+
+                    <input type="text"
+                           name="name"
+                           id="edit_role_name"
+                           class="form-control"
+                           required>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    Save Changes
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="deleteRoleModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <form method="post"
+              action="<?= base_url('admin/roles/delete') ?>"
+              class="modal-content">
+
+            <input type="hidden"
+                   name="id"
+                   id="delete_role_id">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-danger">
+                    Delete Role
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p class="mb-0">
+
+                    Are you sure you want to delete the role
+
+                    <strong id="delete_role_name"></strong>?
+
+                </p>
+
+                <div class="alert alert-warning mt-3 mb-0">
+
+                    This action cannot be undone.
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+
+                    Cancel
+
+                </button>
+
+                <button type="submit"
+                        class="btn btn-danger">
+
+                    Delete Role
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
 <script>
 document.querySelectorAll('.permission-toggle').forEach(cb => {
 
@@ -228,6 +428,37 @@ document.querySelectorAll('.permission-toggle').forEach(cb => {
             alert('Request failed');
         });
 
+    });
+
+});
+
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const editRoleModal = document.getElementById('editRoleModal');
+
+    editRoleModal.addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+
+        document.getElementById('edit_role_id').value =
+            button.getAttribute('data-id');
+
+        document.getElementById('edit_role_name').value =
+            button.getAttribute('data-name');
+    });
+
+    const deleteRoleModal = document.getElementById('deleteRoleModal');
+
+    deleteRoleModal.addEventListener('show.bs.modal', function (event) {
+
+        const button = event.relatedTarget;
+
+        document.getElementById('delete_role_id').value =
+            button.getAttribute('data-id');
+
+        document.getElementById('delete_role_name').textContent =
+            button.getAttribute('data-name');
     });
 
 });

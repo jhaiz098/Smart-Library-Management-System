@@ -10,7 +10,19 @@ Dashboard Overview
 
 <?= $this->section('content') ?>
 
-<div class="py-0 px-3">
+<div class="py-3 px-3">
+
+    <?php if(session()->getFlashdata('success')): ?>
+        <div class="alert alert-success">
+            <?= session()->getFlashdata('success') ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if(session()->getFlashdata('error')): ?>
+        <div class="alert alert-danger">
+            <?= session()->getFlashdata('error') ?>
+        </div>
+    <?php endif; ?>
 
     <!-- HERO -->
     <div class="card border-0 shadow-sm mb-4 bg-light rounded-3">
@@ -169,6 +181,8 @@ Dashboard Overview
                                 <thead class="table-light">
 
                                     <tr>
+                                        <th>#</th>
+                                        <th>Borrower Code</th>
                                         <th>Borrower</th>
                                         <th>Book</th>
                                         <th>Status</th>
@@ -178,9 +192,19 @@ Dashboard Overview
 
                                 <tbody>
 
-                                    <?php foreach($recentBorrowings as $b): ?>
+                                    <?php $i = 1; foreach($recentBorrowings as $b): ?>
 
                                         <tr>
+
+                                            <td>
+                                                <?= $i++ ?>
+                                            </td>
+
+                                            <td>
+                                                <span class="badge bg-dark rounded-pill px-3 py-2">
+                                                    <?= $b['borrowing_code'] ?>
+                                                </span>
+                                            </td>
 
                                             <td>
 
@@ -293,7 +317,7 @@ Dashboard Overview
             </div>
 
             <!-- QUICK ACCESS -->
-            <div class="card border-0 shadow-sm rounded-3 mb-3">
+            <div class="card border-0 shadow-sm rounded-3">
 
                 <div class="card-header bg-white fw-semibold">
                     Quick Access
@@ -301,11 +325,11 @@ Dashboard Overview
 
                 <div class="list-group list-group-flush">
                     
-                    <a href="<?= site_url('admin/user_management') ?>" class="list-group-item list-group-item-action">
+                    <a href="<?= site_url('admin/users') ?>" class="list-group-item list-group-item-action">
                         User Management
                     </a>
 
-                    <a href="<?= site_url('admin/book_management') ?>" class="list-group-item list-group-item-action">
+                    <a href="<?= site_url('admin/book_management_active') ?>" class="list-group-item list-group-item-action">
                         Book Management
                     </a>
 
@@ -323,6 +347,10 @@ Dashboard Overview
 
                     <a href="<?= site_url('admin/fines') ?>" class="list-group-item list-group-item-action">
                         Fines
+                    </a>
+
+                    <a href="<?= site_url('admin/library_settings') ?>" class="list-group-item list-group-item-action">
+                        Settings
                     </a>
 
                 </div>

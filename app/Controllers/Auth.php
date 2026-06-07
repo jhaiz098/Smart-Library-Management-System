@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\UserModel;
 use App\Models\StaffLevelModel;
+use App\Models\RolePermissionsModel;
 
 class Auth extends BaseController
 {
@@ -86,6 +87,55 @@ class Auth extends BaseController
 
             $sessionData['staff_level_id'] = $user['staff_level_id'] ?? null;
             $sessionData['staff_level_name'] = $staffLevelName;
+        }
+
+        $rolePermissionsModel = new RolePermissionsModel();
+        
+        if ($user['role_id'] == 1) {
+
+            // Admin = everything
+            $sessionData += [
+
+                'can_manage_users' => 1,
+                'can_manage_books' => 1,
+                'can_manage_borrowed_books' => 1,
+                'can_manage_borrow_requests' => 1,
+                'can_manage_reservations' => 1,
+                'can_manage_fines' => 1,
+                'can_manage_settings' => 1,
+
+            ];
+
+        }
+        elseif ($user['role_id'] == 2 && !empty($user['staff_level_id'])) {
+
+            $permissions = $rolePermissionsModel
+                ->where('staff_level_id', $user['staff_level_id'])
+                ->first();
+
+            $sessionData += [
+
+                'can_manage_users' =>
+                    $permissions['can_manage_users'] ?? 0,
+
+                'can_manage_books' =>
+                    $permissions['can_manage_books'] ?? 0,
+
+                'can_manage_borrowed_books' =>
+                    $permissions['can_manage_borrowed_books'] ?? 0,
+
+                'can_manage_borrow_requests' =>
+                    $permissions['can_manage_borrow_requests'] ?? 0,
+
+                'can_manage_returns' =>
+                    $permissions['can_manage_reservations'] ?? 0,
+
+                'can_manage_fines' =>
+                    $permissions['can_manage_fines'] ?? 0,
+
+                'can_manage_settings' =>
+                    $permissions['can_manage_settings'] ?? 0,
+            ];
         }
 
         $session->set($sessionData);

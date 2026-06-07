@@ -91,6 +91,9 @@ $routes->post('category_management_settings/delete_category/(:num)', 'Admin\Sett
 
 $routes->get('role_permissions_settings', 'Admin\Setting::role_permissions_settings');
 $routes->post('role_permissions_settings/update', 'Admin\Setting::update_permission');
+$routes->post('roles/create', 'Admin\Roles::add_role');
+$routes->post('roles/edit', 'Admin\Roles::edit_role');
+$routes->post('roles/delete', 'Admin\Roles::delete_role');
 });
 
 

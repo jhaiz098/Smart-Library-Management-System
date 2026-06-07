@@ -15,6 +15,11 @@ class BorrowedBooks extends BaseController
 {
     public function borrowed_books_list()
     {
+        if (!session()->get('can_manage_borrowed_books') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $borrowing_model = new BorrowingModel();
         $library_settings_model = new LibrarySettingsModel();
 

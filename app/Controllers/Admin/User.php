@@ -6,11 +6,17 @@ use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\RoleModel;
 use App\Models\StaffLevelModel;
+use App\Models\RolePermissionsModel;
 
 class User extends BaseController
 {
     public function list()
     {
+        if (!session()->get('can_manage_users') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $user_model = new UserModel();
         $role_model = new RoleModel();
 

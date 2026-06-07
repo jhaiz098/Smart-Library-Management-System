@@ -183,6 +183,11 @@ class Book extends BaseController
 
     public function borrow_requests_list()
     {
+        if (!session()->get('can_manage_borrow_requests') == 1) {
+            return redirect()->back()
+                ->with('error', 'Access denied.');
+        }
+
         $borrow_requests_model = new BorrowRequestModel();
 
         $perPage = 10;
