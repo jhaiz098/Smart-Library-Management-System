@@ -22,7 +22,8 @@ class Transactions extends BaseController
             ->select('
                 borrowings.*,
                 books.title,
-                books.author
+                books.author,
+                books.description,
             ')
             ->join('books', 'books.id = borrowings.book_id')
             ->where('borrowings.user_id', $user_id)
@@ -49,7 +50,8 @@ class Transactions extends BaseController
             ->select('
                 borrow_requests.*,
                 books.title,
-                books.author
+                books.author,
+                books.description
             ')
             ->join('books', 'books.id = borrow_requests.book_id')
             ->where('borrow_requests.user_id', $user_id)
@@ -77,6 +79,7 @@ class Transactions extends BaseController
                 reservations.*,
                 books.title,
                 books.author,
+                books.description,
                 books.availability
             ')
             ->join('books', 'books.id = reservations.book_id')
@@ -125,6 +128,7 @@ class Transactions extends BaseController
                 borrowings.borrowing_code as code,
                 books.title,
                 books.author,
+                books.description,
                 'borrowing' AS transaction_type
             FROM borrowings
             JOIN books ON books.id = borrowings.book_id
@@ -140,6 +144,7 @@ class Transactions extends BaseController
                 borrow_requests.borrow_request_code as code,
                 books.title,
                 books.author,
+                books.description,
                 'borrow_request' AS transaction_type
             FROM borrow_requests
             JOIN books ON books.id = borrow_requests.book_id
@@ -155,6 +160,7 @@ class Transactions extends BaseController
                 '—' as code,
                 books.title,
                 books.author,
+                books.description,
                 'reservation' AS transaction_type
             FROM reservations
             JOIN books ON books.id = reservations.book_id

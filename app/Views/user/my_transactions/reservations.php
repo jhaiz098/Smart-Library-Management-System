@@ -35,11 +35,11 @@
 
                 <div class="table-responsive">
 
-                    <table class="table align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 fs-7">
 
-                        <thead class="table-light">
+                        <thead class="table-light text-uppercase">
 
-                            <tr class="text-muted small">
+                            <tr>
                                 <th>#</th>
                                 <th>Book</th>
                                 <th>Reserved Date</th>
@@ -50,96 +50,106 @@
                         </thead>
 
                         <tbody>
-
-                            <?php foreach($reservations as $reservation): ?>
+                            <?php if(empty($reservations)): ?>
 
                                 <tr>
-
-                                    <!-- # -->
-                                    <td class="text-muted fw-semibold">
-                                        <?= $i++ ?>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        No reservations recorded
                                     </td>
-
-                                    <!-- BOOK -->
-                                    <td>
-                                        <div class="fw-semibold">
-                                            <?= esc($reservation['title']) ?>
-                                        </div>
-                                        <div class="text-muted small">
-                                            <?= esc($reservation['author']) ?>
-                                        </div>
-                                    </td>
-
-                                    <!-- RESERVED DATE -->
-                                    <td class="text-muted">
-                                        <?= !empty($reservation['created_at'])
-                                            ? date('M d, Y', strtotime($reservation['created_at']))
-                                            : '-' ?>
-                                    </td>
-
-                                    <!-- QUEUE -->
-                                    <td>
-
-                                        <?php if($reservation['status'] === 'pending'): ?>
-
-                                            <span class="badge rounded-pill bg-info text-dark px-3 py-2">
-                                                #<?= esc($reservation['queue_position']) ?>
-                                            </span>
-
-                                        <?php else: ?>
-
-                                            <span class="text-muted">
-                                                —
-                                            </span>
-
-                                        <?php endif; ?>
-
-                                    </td>
-
-                                    <!-- STATUS -->
-                                    <td>
-
-                                        <?php if(
-                                            $reservation['queue_position'] == 1 &&
-                                            $reservation['status'] == 'pending' &&
-                                            $reservation['availability'] == 'available'
-                                        ): ?>
-
-                                            <span class="badge rounded-pill bg-success px-3 py-2">
-                                                Ready
-                                            </span>
-
-                                        <?php elseif($reservation['status'] == 'pending'): ?>
-
-                                            <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
-                                                Waiting
-                                            </span>
-
-                                        <?php elseif($reservation['status'] == 'cancelled'): ?>
-
-                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
-                                                Cancelled
-                                            </span>
-
-                                        <?php elseif($reservation['status'] == 'completed'): ?>
-
-                                            <span class="badge rounded-pill bg-primary px-3 py-2">
-                                                Completed
-                                            </span>
-
-                                        <?php else: ?>
-
-                                            <span class="badge rounded-pill bg-dark px-3 py-2">
-                                                <?= ucfirst($reservation['status']) ?>
-                                            </span>
-
-                                        <?php endif; ?>
-
-                                    </td>
-
                                 </tr>
 
-                            <?php endforeach; ?>
+                            <?php else: ?>
+
+                                <?php foreach($reservations as $reservation): ?>
+
+                                    <tr>
+
+                                        <!-- # -->
+                                        <td class="text-muted fw-semibold">
+                                            <?= $i++ ?>
+                                        </td>
+
+                                        <!-- BOOK -->
+                                        <td>
+                                            <div class="fw-semibold">
+                                                <?= esc($reservation['title']) ?>
+                                            </div>
+                                            <div class="text-muted small">
+                                                <?= esc($reservation['author']) ?>
+                                            </div>
+                                        </td>
+
+                                        <!-- RESERVED DATE -->
+                                        <td class="text-muted">
+                                            <?= !empty($reservation['created_at'])
+                                                ? date('M d, Y', strtotime($reservation['created_at']))
+                                                : '-' ?>
+                                        </td>
+
+                                        <!-- QUEUE -->
+                                        <td>
+
+                                            <?php if($reservation['status'] === 'pending'): ?>
+
+                                                <span class="badge rounded-pill bg-info text-dark px-3 py-2">
+                                                    #<?= esc($reservation['queue_position']) ?>
+                                                </span>
+
+                                            <?php else: ?>
+
+                                                <span class="text-muted">
+                                                    —
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
+                                        <!-- STATUS -->
+                                        <td>
+
+                                            <?php if(
+                                                $reservation['queue_position'] == 1 &&
+                                                $reservation['status'] == 'pending' &&
+                                                $reservation['availability'] == 'available'
+                                            ): ?>
+
+                                                <span class="badge rounded-pill bg-success px-3 py-2">
+                                                    Ready
+                                                </span>
+
+                                            <?php elseif($reservation['status'] == 'pending'): ?>
+
+                                                <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                                                    Waiting
+                                                </span>
+
+                                            <?php elseif($reservation['status'] == 'cancelled'): ?>
+
+                                                <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                                    Cancelled
+                                                </span>
+
+                                            <?php elseif($reservation['status'] == 'completed'): ?>
+
+                                                <span class="badge rounded-pill bg-primary px-3 py-2">
+                                                    Completed
+                                                </span>
+
+                                            <?php else: ?>
+
+                                                <span class="badge rounded-pill bg-dark px-3 py-2">
+                                                    <?= ucfirst($reservation['status']) ?>
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
                         </tbody>
 

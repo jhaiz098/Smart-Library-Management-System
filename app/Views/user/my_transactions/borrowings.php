@@ -35,11 +35,11 @@ User | My Transactions
 
                 <div class="table-responsive">
 
-                    <table class="table align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 fs-7">
 
-                        <thead class="table-light">
+                        <thead class="table-light text-uppercase">
 
-                            <tr class="text-muted small">
+                            <tr>
                                 <th>#</th>
                                 <th>Borrowing Code</th>
                                 <th>Book</th>
@@ -51,83 +51,101 @@ User | My Transactions
                         </thead>
 
                         <tbody>
-
-                            <?php foreach($borrowings as $borrowing): ?>
+                            <?php if(empty($borrowings)): ?>
 
                                 <tr>
-
-                                    <!-- # -->
-                                    <td class="text-muted fw-semibold">
-                                        <?= $i++ ?>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        No borrowings recorded
                                     </td>
-
-                                    <td>
-                                        <span class="badge rounded-pill bg-dark px-3 py-2">
-                                            <?= esc($borrowing['borrowing_code']) ?>
-                                        </span>
-                                    </td>
-
-                                    <!-- BOOK -->
-                                    <td>
-                                        <div class="fw-semibold">
-                                            <?= esc($borrowing['title']) ?>
-                                        </div>
-                                        <div class="text-muted small">
-                                            <?= esc($borrowing['author']) ?>
-                                        </div>
-                                    </td>
-
-                                    <!-- BORROW DATE -->
-                                    <td class="text-muted">
-                                        <?= !empty($borrowing['borrow_date'])
-                                            ? date('M d, Y', strtotime($borrowing['borrow_date']))
-                                            : '-' ?>
-                                    </td>
-
-                                    <!-- DUE DATE -->
-                                    <td class="text-muted">
-                                        <?= !empty($borrowing['due_date'])
-                                            ? date('M d, Y', strtotime($borrowing['due_date']))
-                                            : '-' ?>
-                                    </td>
-
-                                    <!-- STATUS -->
-                                    <td>
-
-                                        <?php if(
-                                            $borrowing['status'] == 'borrowed' &&
-                                            strtotime($borrowing['due_date']) < time()
-                                        ): ?>
-
-                                            <span class="badge rounded-pill bg-danger px-3 py-2">
-                                                Overdue
-                                            </span>
-
-                                        <?php elseif($borrowing['status'] == 'borrowed'): ?>
-
-                                            <span class="badge rounded-pill bg-success px-3 py-2">
-                                                Borrowed
-                                            </span>
-
-                                        <?php elseif($borrowing['status'] == 'returned'): ?>
-
-                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
-                                                Returned
-                                            </span>
-
-                                        <?php else: ?>
-
-                                            <span class="badge rounded-pill bg-dark px-3 py-2">
-                                                <?= ucfirst($borrowing['status']) ?>
-                                            </span>
-
-                                        <?php endif; ?>
-
-                                    </td>
-
                                 </tr>
 
-                            <?php endforeach; ?>
+                            <?php else: ?>
+
+                                <?php foreach($borrowings as $borrowing): ?>
+
+                                    <tr>
+
+                                        <!-- # -->
+                                        <td>
+                                            <?= $i++ ?>
+                                        </td>
+
+                                        <td>
+                                            <span class="badge rounded-pill bg-dark px-3 py-2">
+                                                <?= esc($borrowing['borrowing_code']) ?>
+                                            </span>
+                                        </td>
+
+                                        <!-- BOOK -->
+                                        <td>
+                                            <div>
+                                                <?= esc($borrowing['title']) ?>
+                                            </div>
+
+                                            <div class="small text-muted">
+
+                                                <?php
+                                                    $description = strip_tags($borrowing['description']);
+                                                    echo strlen($description) > 60
+                                                        ? substr($description, 0, 60) . '...'
+                                                        : $description;
+                                                ?>
+
+                                            </div>
+                                        </td>
+
+                                        <!-- BORROW DATE -->
+                                        <td>
+                                            <?= !empty($borrowing['borrow_date'])
+                                                ? date('M d, Y', strtotime($borrowing['borrow_date']))
+                                                : '-' ?>
+                                        </td>
+
+                                        <!-- DUE DATE -->
+                                        <td>
+                                            <?= !empty($borrowing['due_date'])
+                                                ? date('M d, Y', strtotime($borrowing['due_date']))
+                                                : '-' ?>
+                                        </td>
+
+                                        <!-- STATUS -->
+                                        <td>
+
+                                            <?php if(
+                                                $borrowing['status'] == 'borrowed' &&
+                                                strtotime($borrowing['due_date']) < time()
+                                            ): ?>
+
+                                                <span class="badge rounded-pill bg-danger px-3 py-2">
+                                                    Overdue
+                                                </span>
+
+                                            <?php elseif($borrowing['status'] == 'borrowed'): ?>
+
+                                                <span class="badge rounded-pill bg-success px-3 py-2">
+                                                    Borrowed
+                                                </span>
+
+                                            <?php elseif($borrowing['status'] == 'returned'): ?>
+
+                                                <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                                    Returned
+                                                </span>
+
+                                            <?php else: ?>
+
+                                                <span class="badge rounded-pill bg-dark px-3 py-2">
+                                                    <?= ucfirst($borrowing['status']) ?>
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
                         </tbody>
 

@@ -35,11 +35,11 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table table-hover align-middle mb-0 fs-7">
 
-                        <thead class="table-light">
+                        <thead class="table-light text-uppercase">
 
-                            <tr class="text-muted small">
+                            <tr>
                                 <th>#</th>
                                 <th>Request Code</th>
                                 <th>Book</th>
@@ -50,86 +50,103 @@
                         </thead>
 
                         <tbody>
-
-                            <?php foreach($borrow_requests as $request): ?>
+                            <?php if(empty($borrow_requests)): ?>
 
                                 <tr>
-
-                                    <!-- # -->
-                                    <td class="text-muted fw-semibold">
-                                        <?= $i++ ?>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        No borrow requests recorded
                                     </td>
-
-                                    <td>
-                                        <span class="badge rounded-pill bg-dark px-3 py-2">
-                                            <?= ucfirst($request['borrow_request_code']) ?>
-                                        </span>
-                                    </td>
-
-                                    <!-- BOOK -->
-                                    <td>
-
-                                        <div class="fw-semibold">
-                                            <?= esc($request['title']) ?>
-                                        </div>
-
-                                        <div class="small text-muted">
-                                            <?= esc($request['author']) ?>
-                                        </div>
-
-                                    </td>
-
-                                    <!-- REQUEST DATE -->
-                                    <td class="text-muted">
-
-                                        <?= 
-                                            !empty($request['created_at'])
-                                            ? date('M d, Y', strtotime($request['created_at']))
-                                            : '-'
-                                        ?>
-
-                                    </td>
-
-                                    <!-- STATUS (ALL ROUNDED PILLS) -->
-                                    <td>
-
-                                        <?php if($request['status'] == 'pending'): ?>
-
-                                            <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
-                                                Pending
-                                            </span>
-
-                                        <?php elseif($request['status'] == 'approved'): ?>
-
-                                            <span class="badge rounded-pill bg-success px-3 py-2">
-                                                Approved
-                                            </span>
-
-                                        <?php elseif($request['status'] == 'rejected'): ?>
-
-                                            <span class="badge rounded-pill bg-danger px-3 py-2">
-                                                Rejected
-                                            </span>
-
-                                        <?php elseif($request['status'] == 'cancelled'): ?>
-
-                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
-                                                Cancelled
-                                            </span>
-
-                                        <?php else: ?>
-
-                                            <span class="badge rounded-pill bg-dark px-3 py-2">
-                                                <?= ucfirst($request['status']) ?>
-                                            </span>
-
-                                        <?php endif; ?>
-
-                                    </td>
-
                                 </tr>
 
-                            <?php endforeach; ?>
+                            <?php else: ?>
+
+                                <?php foreach($borrow_requests as $request): ?>
+
+                                    <tr>
+
+                                        <!-- # -->
+                                        <td>
+                                            <?= $i++ ?>
+                                        </td>
+
+                                        <td>
+                                            <span class="badge rounded-pill bg-dark px-3 py-2">
+                                                <?= ucfirst($request['borrow_request_code']) ?>
+                                            </span>
+                                        </td>
+
+                                        <!-- BOOK -->
+                                        <td>
+
+                                            <div>
+                                                <?= esc($request['title']) ?>
+                                            </div>
+
+                                            <div class="small text-muted">
+
+                                                <?php
+                                                    $description = strip_tags($request['description']);
+                                                    echo strlen($description) > 60
+                                                        ? substr($description, 0, 60) . '...'
+                                                        : $description;
+                                                ?>
+
+                                            </div>
+
+                                        </td>
+
+                                        <!-- REQUEST DATE -->
+                                        <td>
+
+                                            <?= 
+                                                !empty($request['created_at'])
+                                                ? date('M d, Y', strtotime($request['created_at']))
+                                                : '-'
+                                            ?>
+
+                                        </td>
+
+                                        <!-- STATUS (ALL ROUNDED PILLS) -->
+                                        <td>
+
+                                            <?php if($request['status'] == 'pending'): ?>
+
+                                                <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
+                                                    Pending
+                                                </span>
+
+                                            <?php elseif($request['status'] == 'approved'): ?>
+
+                                                <span class="badge rounded-pill bg-success px-3 py-2">
+                                                    Approved
+                                                </span>
+
+                                            <?php elseif($request['status'] == 'rejected'): ?>
+
+                                                <span class="badge rounded-pill bg-danger px-3 py-2">
+                                                    Rejected
+                                                </span>
+
+                                            <?php elseif($request['status'] == 'cancelled'): ?>
+
+                                                <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                                    Cancelled
+                                                </span>
+
+                                            <?php else: ?>
+
+                                                <span class="badge rounded-pill bg-dark px-3 py-2">
+                                                    <?= ucfirst($request['status']) ?>
+                                                </span>
+
+                                            <?php endif; ?>
+
+                                        </td>
+
+                                    </tr>
+
+                                <?php endforeach; ?>
+                            <?php endif; ?>
 
                         </tbody>
 

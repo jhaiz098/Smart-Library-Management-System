@@ -42,20 +42,19 @@ Books
 
             <div class="table-responsive">
 
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 fs-7">
 
-                    <thead class="table-light">
+                    <thead class="table-light text-uppercase">
 
-                        <tr class="text-muted small">
+                        <tr>
                             <th>#</th>
                             <th>Category</th>
                             <th>Title</th>
                             <th>Author</th>
-                            <th>Description</th>
                             <th>Availability</th>
                             <th>Year</th>
                             <th>Publisher</th>
-                            <th class="text-center">Action</th>
+                            <th>Action</th>
                         </tr>
 
                     </thead>
@@ -82,37 +81,48 @@ Books
                                 <tr>
 
                                     <!-- ROW NUMBER -->
-                                    <td class="text-muted fw-semibold">
+                                    <td>
                                         <?= $i++ ?>
                                     </td>
 
-                                    <td class="text-muted small">
+                                    <td>
+                                        <span class="badge rounded-pill bg-light border text-black px-3 py-2">
                                         <?= $book['category_name'] ?>
+                                        </span>
                                     </td>
 
-                                    <td class="fw-semibold">
-                                        <?= $book['title'] ?>
+                                    <td>
+                                        <div>
+                                            <?= esc($book['title']) ?>
+                                        </div>
+
+                                        <div class="small text-muted">
+
+                                            <?php
+                                                $description = strip_tags($book['description']);
+                                                echo strlen($description) > 60
+                                                    ? substr($description, 0, 60) . '...'
+                                                    : $description;
+                                            ?>
+
+                                        </div>
                                     </td>
 
                                     <td>
                                         <?= $book['author'] ?>
                                     </td>
 
-                                    <td class="text-muted small" style="max-width:260px;">
-                                        <?= $book['description'] ?>
-                                    </td>
-
                                     <td>
 
                                         <?php if($book['availability'] === 'available'): ?>
 
-                                            <span class="badge bg-success px-3 py-2">
+                                            <span class="badge rounded-pill bg-success px-3 py-2">
                                                 Available
                                             </span>
 
                                         <?php else: ?>
 
-                                            <span class="badge bg-secondary px-3 py-2">
+                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
                                                 Borrowed
                                             </span>
 
@@ -120,15 +130,15 @@ Books
 
                                     </td>
 
-                                    <td class="text-muted">
+                                    <td>
                                         <?= $book['published_year'] ?>
                                     </td>
 
-                                    <td class="text-muted">
+                                    <td>
                                         <?= $book['publisher'] ?>
                                     </td>
 
-                                    <td class="text-center">
+                                    <td>
 
                                         <a href="books/view/<?= $book['id'] ?>"
                                            class="btn btn-sm btn-outline-primary px-3">
