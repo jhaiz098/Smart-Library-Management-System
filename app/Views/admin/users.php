@@ -160,27 +160,27 @@
             <!-- TABLE -->
             <div class="table-responsive rounded-3 border bg-white shadow-sm">
 
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 fs-6">
 
                     <thead class="bg-light border-bottom">
-                        <tr class="text-muted small text-uppercase" style="letter-spacing: .5px;">
-                            <th class="py-3">#</th>
-                            <th class="py-3">Library ID</th>
-                            <th class="py-3">Full Name</th>
-                            <th class="py-3">Email</th>
-                            <th class="py-3">Contact</th>
+                        <tr class="text-muted small">
+                            <th>#</th>
+                            <th>Library ID</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Contact</th>
 
                             <?php if($type != 'user' && $type != 'admin' && $type != 'staff'): ?>
-                            <th class="py-3">Role</th>
+                            <th>Role</th>
                             <?php endif; ?>
 
                             <?php if($type != 'user' && $type != 'admin'): ?>
-                            <th class="py-3">Staff Position</th>
+                            <th>Staff Position</th>
                             <?php endif; ?>
 
-                            <th class="py-3">Status</th>
-                            <th class="py-3">Created</th>
-                            <th class="py-3 text-center">Actions</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -196,7 +196,14 @@
 
                         <?php else: ?>
 
-                            <?php $i = 1; foreach($users as $user): ?>
+                            <?php
+                            $currentPage = $pager->getCurrentPage();
+                            $perPage = 10;
+
+                            $i = (($currentPage - 1) * $perPage) + 1;
+                            ?>
+                            
+                            <?php foreach($users as $user): ?>
 
                                 <tr>
 

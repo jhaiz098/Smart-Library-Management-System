@@ -74,7 +74,7 @@
 
 </head>
 
-<body class="bg-light-yellow">
+<body class="bg-light-yellow sidebar-collapse sidebar-expand-lg">
 
     <div class="app-wrapper">
 
@@ -82,13 +82,14 @@
         <?= $this->include('partials/user/header') ?>
         <?= $this->include('partials/user/navbar') ?>
 
-        <!-- PAGE HEADER -->
-        <div class="app-header m-3 p-3 rounded">
-            <?= $this->renderSection('header') ?>
-        </div>
-
         <!-- MAIN -->
         <main>
+            <!-- PAGE HEADER -->
+            <div class="app-header m-3 p-1 rounded d-flex flex-row align-items-center">
+                <a href="#" class="btn btn-link text-black ms-2 me-2 my-1 fs-5" data-lte-toggle="sidebar"><i class="bi bi-list"></i></a>
+                <?= $this->renderSection('header') ?>
+            </div>
+
             <?= $this->renderSection('content') ?>
         </main>
 

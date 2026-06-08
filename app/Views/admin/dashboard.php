@@ -176,7 +176,7 @@ Dashboard Overview
 
                         <div class="table-responsive">
 
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0 fs-6">
 
                                 <thead class="table-light">
 
@@ -311,47 +311,6 @@ Dashboard Overview
                         <?php endforeach; ?>
 
                     <?php endif; ?>
-
-                </div>
-
-            </div>
-
-            <!-- QUICK ACCESS -->
-            <div class="card border-0 shadow-sm rounded-3">
-
-                <div class="card-header bg-white fw-semibold">
-                    Quick Access
-                </div>
-
-                <div class="list-group list-group-flush">
-                    
-                    <a href="<?= site_url('admin/users') ?>" class="list-group-item list-group-item-action">
-                        User Management
-                    </a>
-
-                    <a href="<?= site_url('admin/book_management_active') ?>" class="list-group-item list-group-item-action">
-                        Book Management
-                    </a>
-
-                    <a href="<?= site_url('admin/borrowed_books') ?>" class="list-group-item list-group-item-action">
-                        Borrowed Books
-                    </a>
-
-                    <a href="<?= site_url('admin/borrow_requests') ?>" class="list-group-item list-group-item-action">
-                        Borrow Requests
-                    </a>
-
-                    <a href="<?= site_url('admin/reservations') ?>" class="list-group-item list-group-item-action">
-                        Reservations
-                    </a>
-
-                    <a href="<?= site_url('admin/fines') ?>" class="list-group-item list-group-item-action">
-                        Fines
-                    </a>
-
-                    <a href="<?= site_url('admin/library_settings') ?>" class="list-group-item list-group-item-action">
-                        Settings
-                    </a>
 
                 </div>
 

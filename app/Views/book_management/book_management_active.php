@@ -43,7 +43,12 @@
 
                 <?php else: ?>
 
-                    <?php $i = 1; ?>
+                    <?php
+                    $currentPage = $active_pager->getCurrentPage();
+                    $perPage = 10;
+
+                    $i = (($currentPage - 1) * $perPage) + 1;
+                    ?>
 
                     <?php foreach($active_books as $book): ?>
 
