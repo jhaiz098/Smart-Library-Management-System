@@ -16,11 +16,9 @@
         <?= $this->include('partials/admin/navbar') ?>
 
         <main>
-            <div class="card rounded-0 d-flex flex-row align-items-center">
-                <a href="#" class="btn btn-link text-black ms-2 fs-5" data-lte-toggle="sidebar"><i class="bi bi-list"></i></a>
-                <div class="card-header fw-bold">
-                    <?= $this->renderSection('header') ?>
-                </div>
+            <div class="app-header bg-light mx-3 mt-3 p-1 rounded d-flex flex-row align-items-center fw-bold">
+                <a href="#" class="btn btn-link text-black ms-2 me-2 my-1 fs-5" data-lte-toggle="sidebar"><i class="bi bi-list"></i></a>
+                <?= $this->renderSection('header') ?>
             </div>
 
             <?= $this->renderSection('content') ?>

@@ -12,6 +12,10 @@ Add User
 
 <div class="p-3">
 
+<a href="/admin/users" class="btn btn-secondary mb-3">
+    Back
+</a>
+
     <div class="row justify-content-center">
 
         <div class="col-lg-8">
@@ -27,10 +31,6 @@ Add User
                             Fill in the information below to add a new account
                         </div>
                     </div>
-
-                    <a href="/admin/users" class="btn btn-outline-secondary btn-sm">
-                        Back
-                    </a>
 
                 </div>
 

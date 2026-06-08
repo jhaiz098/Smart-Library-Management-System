@@ -155,7 +155,7 @@ Edit User
                             </div>
 
                             <!-- Contact Number -->
-                            <div class="col-md-12">
+                            <div class="col-md-6">
 
                                 <label class="form-label fw-semibold">
                                     Contact Number
@@ -168,6 +168,36 @@ Edit User
                                     value="<?= old('contact_number', $user['contact_number']) ?>"
                                 >
 
+                            </div>
+
+                            <!-- ROLE -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">Role</label>
+                                <select name="role_id" id="roleSelect" class="form-select" required>
+                                    <option value="">Select Role</option>
+
+                                    <?php foreach($roles as $role): ?>
+                                        <?php if($role['id'] != 1): ?> <!-- ❌ hide Admin -->
+                                            <option value="<?= $role['id'] ?>" <?= $user['role_id'] == $role['id'] ? 'selected' : '' ?>>
+                                                <?= ucfirst($role['name']) ?>
+                                            </option>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+
+                                </select>
+                            </div>
+
+                            <!-- STAFF POSITION (hidden by default) -->
+                            <div class="col-md-6 d-none" id="staffPositionBox">
+                                <label class="form-label fw-semibold">Staff Position</label>
+                                <select name="staff_level_id" class="form-select">
+                                    <option value="">Select Position</option>
+                                    <?php foreach($staff_levels as $level): ?>
+                                        <option value="<?= $level['id'] ?>" <?= $user['staff_level_id'] == $level['id'] ? 'selected' : '' ?>>
+                                            <?= esc($level['name']) ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                             </div>
 
                         </div>
@@ -203,5 +233,25 @@ Edit User
     </div>
 
 </div>
+
+<script>
+function toggleStaffPosition() {
+
+    let roleSelect = document.getElementById('roleSelect');
+    let staffBox = document.getElementById('staffPositionBox');
+
+    if (roleSelect.value == 2) {
+        staffBox.classList.remove('d-none');
+    } else {
+        staffBox.classList.add('d-none');
+    }
+}
+
+toggleStaffPosition();
+
+document
+    .getElementById('roleSelect')
+    .addEventListener('change', toggleStaffPosition);
+</script>
 
 <?= $this->endSection() ?>

@@ -176,10 +176,18 @@ class User extends BaseController
 
         try {
 
+            $role_id = trim($this->request->getPost('role_id'));
+
+            $staff_level_id = ($role_id == 3)
+                ? null
+                : trim($this->request->getPost('staff_level_id'));
+
             $updated = $userModel->update($id, [
                 'full_name'      => trim($this->request->getPost('full_name')),
                 'email'          => trim($this->request->getPost('email')),
                 'contact_number' => trim($this->request->getPost('contact_number')),
+                'role_id' => $role_id,
+                'staff_level_id' => $staff_level_id,
             ]);
 
             if (!$updated) {
