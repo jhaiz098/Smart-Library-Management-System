@@ -108,7 +108,7 @@
                             <input
                                 type="search"
                                 name="search"
-                                placeholder="Search reservation code, user, or book..."
+                                placeholder="Search reserver, book..."
                                 class="form-control"
                                 value="<?= $_GET['search'] ?? '' ?>"
                             >

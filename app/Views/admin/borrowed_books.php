@@ -69,7 +69,7 @@
                     <input
                         type="search"
                         name="search"
-                        placeholder="Search title..."
+                        placeholder="Search borrowing code, borrower name, library ID, book title..."
                         class="form-control"
                         value="<?= $_GET['search'] ?? '' ?>"
                     >

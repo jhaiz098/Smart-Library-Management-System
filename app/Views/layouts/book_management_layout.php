@@ -83,7 +83,7 @@ Book Management
                         type="search"
                         name="search"
                         class="form-control"
-                        placeholder="Search book title..."
+                        placeholder="Search book category, title, author, publisher, published year..."
                         value="<?= $_GET['search'] ?? '' ?>"
                     >
 

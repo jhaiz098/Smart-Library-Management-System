@@ -54,7 +54,11 @@ class User extends BaseController
         // SEARCH
         // =========================
         if (!empty($data['search'])) {
-            $user_query->like('full_name', $data['search']);
+            $user_query->groupStart()
+                ->like('full_name', $data['search'])
+                ->orLike('library_id', $data['search'])
+                ->orLike('email', $data['search'])
+            ->groupEnd();
         }
 
         // =========================

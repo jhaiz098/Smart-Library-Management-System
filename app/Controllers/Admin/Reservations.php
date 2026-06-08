@@ -163,7 +163,6 @@ class Reservations extends BaseController
                     'users.library_id',
                     $search
                 )
-
                 ->orLike(
                     'users.full_name',
                     $search

@@ -42,7 +42,7 @@ class BorrowedBooks extends BaseController
                 issuer.full_name as issued_by_name,
 
                 fines.amount as fine_amount,
-
+                
                 CASE
                     WHEN borrowings.status = "borrowed"
                         AND borrowings.due_date < NOW()

@@ -9,27 +9,25 @@ use CodeIgniter\Router\RouteCollection;
 // PUBLIC
 $routes->get('/', 'Home::index');
 
-$routes->get('/login', 'Auth::login');
-$routes->post('/login/auth', 'Auth::loginAuth');
+$routes->get('login', 'Auth::login');
+$routes->post('login/auth', 'Auth::loginAuth');
 
-$routes->get('/register', 'Auth::register');
-$routes->post('/register/auth', 'Auth::registerAuth');
+$routes->get('register', 'Auth::register');
+$routes->post('register/auth', 'Auth::registerAuth');
 
-$routes->get('/logout', 'Auth::logout');
+$routes->get('unauthorized', 'Error::unauthorized');
 
-$routes->get('/unauthorized', 'Error::unauthorized');
+$routes->get('server_time', 'Server::server_time');
 
-$routes->get('/server_time', 'Server::server_time');
-
-$routes->get('/auth/change_password', 'Auth::must_change_pass');
-$routes->post('/auth/update_password', 'Auth::must_update_pass');
+$routes->get('auth/change_password', 'Auth::must_change_pass');
+$routes->post('auth/update_password', 'Auth::must_update_pass');
 
 
 
 // PRIVATE (PROTECTED) (Login required)
 
 $routes->group('', ['filter' => 'auth'], function($routes) {
-    $routes->get('/logout', 'Auth::logout');
+    $routes->get('logout', 'Auth::logout');
 });
 
 

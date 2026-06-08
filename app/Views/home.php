@@ -30,8 +30,8 @@
 
             <div>
                 <ul class="navbar-nav d-sm-flex d-none ms-auto">
-                    <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="/register" class="nav-link">Register</a></li>
+                    <li class="nav-item"><a href="<?= base_url('login') ?>" class="nav-link">Login</a></li>
+                    <li class="nav-item"><a href="<?= base_url('register') ?>" class="nav-link">Register</a></li>
                 </ul>
             </div>
         </div>
@@ -41,12 +41,12 @@
         <div class="sidebar-wrapper">
             <ul class="nav sidebar-menu flex-column">
                 <li class="nav-item mb-2">
-                    <a href="#" class="nav-link text-white px-3 py-2">
+                    <a href="<?= base_url('login') ?>" class="nav-link text-white px-3 py-2">
                         Login
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link text-white px-3 py-2">
+                    <a href="<?= base_url('register') ?>" class="nav-link text-white px-3 py-2">
                         Register
                     </a>
                 </li>
@@ -72,7 +72,7 @@
                         and manage your library activities online.
                     </p>
 
-                    <a href="/login" class="btn btn-lg text-white m-5 bg-dark-brown">
+                    <a href="<?= base_url('login') ?>" class="btn btn-lg text-white m-5 bg-dark-brown">
                         Get Started
                     </a>
                 

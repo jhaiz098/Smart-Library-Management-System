@@ -6,43 +6,59 @@ use App\Controllers\BaseController;
 use App\Models\BookModel;
 use App\Models\CategoryModel;
 use App\Models\BorrowingModel;
+use App\Models\UserModel;
+use App\Models\FinesModel;
 
 class Admin extends BaseController
 {
     public function dashboard()
     {
-        $db = \Config\Database::connect();
+        $book_model = new BookModel();
+        $user_model = new UserModel();
+        $borrowing_model = new BorrowingModel();
+        $fine_model = new FinesModel();
 
-        // TOTAL COUNTS
-        $totalBooks = $db->table('books')->countAll();
-        $totalUsers = $db->table('users')->countAll();
+        $totalBooks = $book_model->countAll();
+        $totalUsers = $user_model->countAll();
 
-        $activeBorrowed = $db->table('borrowings')
+        $activeBorrowed = $borrowing_model
             ->where('status', 'borrowed')
             ->countAllResults();
 
-        $overdueBorrowed = $db->table('borrowings')
+        $overdueBorrowed = $borrowing_model
             ->where('status', 'borrowed')
             ->where('due_date <', date('Y-m-d H:i:s'))
             ->countAllResults();
 
-        $totalFines = $db->table('fines')
+        $totalFines = $fine_model
             ->where('status', 'unpaid')
             ->countAllResults();
 
-        $paidFines = $db->table('fines')
+        $paidFines = $fine_model
             ->where('status', 'paid')
             ->countAllResults();
 
-        // RECENT BORROWINGS
-        $recentBorrowings = $db->table('borrowings')
-            ->select('borrowings.*, users.full_name, books.title')
-            ->join('users', 'users.id = borrowings.user_id')
-            ->join('books', 'books.id = borrowings.book_id')
-            ->orderBy('borrowings.borrow_date', 'DESC')
+        $recentBorrowings = $borrowing_model
+
+            ->select('
+                borrowings.*,
+                users.full_name,
+                books.title
+            ')
+            ->join(
+                'users',
+                'users.id = borrowings.user_id'
+            )
+            ->join(
+                'books',
+                'books.id = borrowings.book_id'
+            )
+            ->orderBy(
+                'borrowings.borrow_date',
+                'DESC'
+            )
             ->limit(5)
-            ->get()
-            ->getResultArray();
+            ->findAll();
 
         return view('admin/dashboard', [
             'totalBooks' => $totalBooks,
@@ -72,11 +88,20 @@ class Admin extends BaseController
         $perPage = 10;
 
         // SEPARATE INSTANCES
-        $active_query = (new BookModel())->where('status', 'active');
+        $active_query = $book_model
+            ->select('books.*, categories.name as category_name')
+            ->join('categories', 'categories.id = books.category_id')
+            ->where('books.status', 'active');
 
         // SEARCH
         if (!empty($search)) {
-            $active_query->like('title', $search);
+            $active_query->groupStart()
+                ->like('title', $search)
+                ->orLike('categories.name', $search)
+                ->orLike('author', $search)
+                ->orLike('publisher', $search)
+                ->orLike('published_year', $search)
+            ->groupEnd();
         }
 
         // CATEGORY FILTER (DB BASED)
@@ -100,12 +125,6 @@ class Admin extends BaseController
 
         $active_books = $active_query->paginate($perPage, 'active');
         $active_pager = $active_query->pager;
-
-        // CATEGORY NAME ATTACHMENT
-        foreach ($active_books as &$book) {
-            $category_data = $category_model->find($book['category_id']);
-            $book['category_name'] = $category_data['name'] ?? '';
-        }
 
         // ALL CATEGORIES (FOR FILTER DROPDOWN)
         $categories = $category_model->findAll();
@@ -134,12 +153,20 @@ class Admin extends BaseController
 
         $perPage = 10;
 
-        // SEPARATE INSTANCES
-        $draft_query  = (new BookModel())->where('status', 'draft');
+        $draft_query  = $book_model
+            ->select('books.*, categories.name as category_name')
+            ->join('categories', 'categories.id = books.category_id')
+            ->where('status', 'draft');
 
         // SEARCH
         if (!empty($search)) {
-            $draft_query->like('title', $search);
+            $draft_query->groupStart()
+                ->like('title', $search)
+                ->orLike('categories.name', $search)
+                ->orLike('author', $search)
+                ->orLike('publisher', $search)
+                ->orLike('published_year', $search)
+            ->groupEnd();
         }
 
         // CATEGORY FILTER (DB BASED)
@@ -163,11 +190,6 @@ class Admin extends BaseController
 
         $draft_books = $draft_query->paginate($perPage, 'draft');
         $draft_pager = $draft_query->pager;
-
-        foreach ($draft_books as &$book) {
-            $category_data = $category_model->find($book['category_id']);
-            $book['category_name'] = $category_data['name'] ?? '';
-        }
 
         // ALL CATEGORIES (FOR FILTER DROPDOWN)
         $categories = $category_model->findAll();

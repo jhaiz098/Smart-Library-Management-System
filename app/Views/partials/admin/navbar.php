@@ -3,9 +3,10 @@
 
     <!-- BRAND -->
     <div class="sidebar-brand p-3 border-bottom border-white border-opacity-10">
-        <a href="/admin/dashboard"
+        
+        <a href="<?= base_url('admin/dashboard') ?>"
            class="navbar-brand text-decoration-none d-flex align-items-center gap-2">
-
+        
             <i class="bi bi-shield-lock-fill text-info fs-4"></i>
 
             <span class="fw-bold text-white fs-5">
@@ -36,11 +37,11 @@
         </div>
 
         <div class="small opacity-75 mt-1">
-            <?= session()->get('email'); ?>
+            Email: <?= session()->get('email'); ?>
         </div>
 
         <div class="small opacity-75">
-            ID: <?= session()->get('library_id'); ?>
+            Library ID: <?= session()->get('library_id'); ?>
         </div>
 
     </div>
@@ -51,7 +52,7 @@
         <ul class="nav flex-column gap-1">
 
             <li class="nav-item">
-                <a href="/admin/dashboard"
+                <a href="<?= base_url('admin/dashboard') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
                 </a>
@@ -59,7 +60,7 @@
 
             <?php if(session()->get('can_manage_users')): ?>
             <li class="nav-item">
-                <a href="/admin/users"
+                <a href="<?= base_url('admin/users') ?>"
                 class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-people-fill me-2"></i>
                     User Management
@@ -69,7 +70,7 @@
 
             <?php if(session()->get('can_manage_books')): ?>
             <li class="nav-item">
-                <a href="/admin/book_management_active"
+                <a href="<?= base_url('admin/book_management_active') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-journal-bookmark-fill me-2"></i> Book Management
                 </a>
@@ -78,7 +79,7 @@
 
             <?php if(session()->get('can_manage_borrowed_books')): ?>
             <li class="nav-item">
-                <a href="/admin/borrowed_books"
+                <a href="<?= base_url('admin/borrowed_books') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-arrow-left-right me-2"></i> Borrowed Books
                 </a>
@@ -87,7 +88,7 @@
 
             <?php if(session()->get('can_manage_borrow_requests')): ?>
             <li class="nav-item">
-                <a href="/admin/borrow_requests"
+                <a href="<?= base_url('admin/borrow_requests') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-inbox-fill me-2"></i> Borrow Requests
                 </a>
@@ -96,7 +97,7 @@
 
             <?php if(session()->get('can_manage_reservations')): ?>
             <li class="nav-item">
-                <a href="/admin/reservations"
+                <a href="<?= base_url('admin/reservations') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-bookmark-check-fill me-2"></i></i> Book Reservations
                 </a>
@@ -105,7 +106,7 @@
 
             <?php if(session()->get('can_manage_fines')): ?>
             <li class="nav-item">
-                <a href="/admin/fines"
+                <a href="<?= base_url('admin/fines') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-cash-coin me-2"></i> Fines
                 </a>
@@ -114,7 +115,7 @@
 
             <?php if(session()->get('can_manage_settings')): ?>
             <li class="nav-item">
-                <a href="/admin/library_settings"
+                <a href="<?= base_url('admin/library_settings') ?>"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-gear-fill me-2"></i> Settings
                 </a>

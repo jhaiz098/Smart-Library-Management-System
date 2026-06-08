@@ -86,7 +86,7 @@
                             <input
                                 type="search"
                                 name="search"
-                                placeholder="Search users..."
+                                placeholder="Search library ID, full name, email..."
                                 class="form-control"
                                 value="<?= $_GET['search'] ?? '' ?>"
                             >
