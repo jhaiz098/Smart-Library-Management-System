@@ -115,8 +115,8 @@
                             <div class="table-responsive rounded-3 border bg-white shadow-sm">
 
                                 <table class="table table-hover align-middle mb-0">
-                                    <thead>
-                                        <tr class="text-center text-uppercase">
+                                    <thead class="table-light text-center text-uppercase">
+                                        <tr>
                                             <th>#</th>
                                             <th>Request Code</th>
                                             <th>Borrower</th>
@@ -142,7 +142,15 @@
                                             <td colspan="10" class="text-center">No borrow requests available</td>
                                         </tr>
                                     <?php else: ?>
-                                        <?php $i = 1; foreach($records as $pr): ?>
+
+                                        <?php
+                                        $currentPage = $pager->getCurrentPage();
+                                        $perPage = 10;
+
+                                        $i = (($currentPage - 1) * $perPage) + 1;
+                                        ?>
+
+                                        <?php foreach($records as $pr): ?>
                                             <tr>
                                                 <td class="text-center text-muted">
                                                     <?= $i++ ?>

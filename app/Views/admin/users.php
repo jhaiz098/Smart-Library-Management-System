@@ -162,7 +162,7 @@
 
                 <table class="table table-hover align-middle mb-0 fs-6">
 
-                    <thead class="bg-light border-bottom">
+                    <thead class="table-light border-bottom text-uppercase">
                         <tr class="text-muted small">
                             <th>#</th>
                             <th>Library ID</th>

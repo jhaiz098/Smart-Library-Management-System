@@ -42,7 +42,12 @@
 
                 <?php else: ?>
 
-                    <?php $i = 1; ?>
+                    <?php
+                    $currentPage = $draft_pager->getCurrentPage('draft');
+                    $perPage = 10;
+
+                    $i = (($currentPage - 1) * $perPage) + 1;
+                    ?>
 
                     <?php foreach($draft_books as $book): ?>
 

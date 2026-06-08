@@ -176,9 +176,9 @@ Dashboard Overview
 
                         <div class="table-responsive">
 
-                            <table class="table table-hover align-middle mb-0 fs-6">
+                            <table class="table table-hover align-middle mb-0 fs-7">
 
-                                <thead class="table-light">
+                                <thead class="table-light text-uppercase">
 
                                     <tr>
                                         <th>#</th>

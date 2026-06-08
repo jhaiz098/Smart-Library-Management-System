@@ -131,17 +131,17 @@
 
                         <!-- TABLE -->
                         <?php
-                        $page = $pager->getCurrentPage();
+                        $currentPage = $pager->getCurrentPage();
                         $perPage = 10;
 
-                        $i = (($page - 1) * $perPage) + 1;
+                        $i = (($currentPage - 1) * $perPage) + 1;
                         ?>
 
                         <div class="table-responsive rounded-3 border bg-white shadow-sm">
 
                             <table class="table table-hover align-middle mb-0">
 
-                                <thead class="table-light">
+                                <thead class="table-light text-uppercase">
 
                                     <tr>
 

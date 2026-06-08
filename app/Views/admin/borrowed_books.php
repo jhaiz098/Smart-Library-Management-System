@@ -164,7 +164,7 @@
 
                         <table class="table table-hover align-middle mb-0">
 
-                            <thead class="bg-light border-bottom align-middle">
+                            <thead class="table-light border-bottom align-middle">
                                 <tr class="text-muted small text-uppercase">
                                     <th>#</th>
                                     <th>Borrowing Code</th>
@@ -194,7 +194,14 @@
                                     </tr>
                                 <?php else: ?>
 
-                                    <?php $i = 1; foreach($records as $bb): ?>
+                                    <?php
+                                    $currentPage = $pager->getCurrentPage();
+                                    $perPage = 10;
+
+                                    $i = (($currentPage - 1) * $perPage) + 1;
+                                    ?>
+
+                                    <?php foreach($records as $bb): ?>
 
                                         <tr>
 

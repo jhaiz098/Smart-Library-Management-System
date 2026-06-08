@@ -249,7 +249,7 @@ class Reservations extends BaseController
 
             'records' => $records,
 
-            'pager' => $reservation_model->pager,
+            'pager' => $query->pager,
 
             'reservation_status' => $type,
 

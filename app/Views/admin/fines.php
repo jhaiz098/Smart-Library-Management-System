@@ -194,9 +194,9 @@
 
                         <table class="table table-hover align-middle mb-0">
 
-                            <thead class="text-center">
+                            <thead class="table-light text-center text-uppercase">
 
-                                <tr class="text-uppercase">
+                                <tr>
                                     <th>#</th>
                                     <th>Fine Code</th>
                                     <th>Borrowing Code</th>
@@ -229,7 +229,14 @@
 
                                 <?php else: ?>
 
-                                    <?php $i = 1; foreach($records as $fine): ?>
+                                    <?php
+                                    $currentPage = $pager->getCurrentPage();
+                                    $perPage = 10;
+
+                                    $i = (($currentPage - 1) * $perPage) + 1;
+                                    ?>
+
+                                    <?php foreach($records as $fine): ?>
 
                                         <tr>
 

@@ -219,7 +219,7 @@
 
                 <table class="table table-hover align-middle mb-0">
 
-                    <thead class="bg-light border-bottom">
+                    <thead class="table-light border-bottom text-uppercase">
 
                         <tr>
 
@@ -265,7 +265,14 @@
 
                         <?php else: ?>
 
-                            <?php $i = 1; foreach($records as $reservation): ?>
+                            <?php
+                            $currentPage = $pager->getCurrentPage();
+                            $perPage = 10;
+
+                            $i = (($currentPage - 1) * $perPage) + 1;
+                            ?>
+                            
+                            <?php foreach($records as $reservation): ?>
 
                                 <tr>
 
@@ -403,6 +410,10 @@
 
                 </table>
 
+                <!-- PAGINATION -->
+                <div class="mt-3 d-flex justify-content-center">
+                    <?= $pager->links('default', 'bootstrap_full') ?>
+                </div>
             </div>
 
         </div>

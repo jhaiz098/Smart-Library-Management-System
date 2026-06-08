@@ -44,7 +44,7 @@
                 <?php else: ?>
 
                     <?php
-                    $currentPage = $active_pager->getCurrentPage();
+                    $currentPage = $active_pager->getCurrentPage('active');
                     $perPage = 10;
 
                     $i = (($currentPage - 1) * $perPage) + 1;
