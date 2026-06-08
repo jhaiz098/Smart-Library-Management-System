@@ -137,33 +137,19 @@
                         $i = (($currentPage - 1) * $perPage) + 1;
                         ?>
 
-                        <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                        <div class="table-responsive">
 
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0 fs-7">
 
                                 <thead class="table-light text-uppercase">
 
                                     <tr>
 
-                                        <th width="70" class="text-center">
-                                            #
-                                        </th>
-
-                                        <th>
-                                            Category Name
-                                        </th>
-
-                                        <th width="180" class="text-center">
-                                            Created
-                                        </th>
-
-                                        <th width="180" class="text-center">
-                                            Updated
-                                        </th>
-
-                                        <th width="180" class="text-center">
-                                            Actions
-                                        </th>
+                                        <th>#</th>
+                                        <th>Category Name</th>
+                                        <th>Created</th>
+                                        <th>Updated</th>
+                                        <th>Actions</th>
 
                                     </tr>
 
@@ -176,7 +162,7 @@
                                         <tr>
 
                                             <td colspan="5"
-                                                class="text-center py-4 text-muted">
+                                                class="text-center text-muted py-4">
 
                                                 No categories found.
 
@@ -191,7 +177,7 @@
                                             <tr>
 
                                                 <!-- NUMBER -->
-                                                <td class="text-center fw-semibold">
+                                                <td>
 
                                                     <?= $i++ ?>
 
@@ -200,7 +186,7 @@
                                                 <!-- CATEGORY -->
                                                 <td>
 
-                                                    <div class="fw-semibold">
+                                                    <div>
 
                                                         <?= esc($cat['name']) ?>
 
@@ -209,7 +195,7 @@
                                                 </td>
 
                                                 <!-- CREATED -->
-                                                <td class="text-center text-muted small">
+                                                <td>
 
                                                     <?= date(
                                                         'M d, Y',
@@ -219,7 +205,7 @@
                                                 </td>
 
                                                 <!-- UPDATED -->
-                                                <td class="text-center text-muted small">
+                                                <td>
 
                                                     <?= date(
                                                         'M d, Y',
@@ -230,35 +216,29 @@
 
                                                 <!-- ACTIONS -->
                                                 <td>
+                                                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+                                                            data-bs-toggle="dropdown">
+                                                        <i class="bi bi-gear-fill me-1"></i>
+                                                        Actions
+                                                    </button>
 
-                                                    <div class="d-flex gap-2 justify-content-center">
+                                                    <ul class="dropdown-menu">
 
-                                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle"
-                                                                data-bs-toggle="dropdown">
-                                                            <i class="bi bi-gear-fill me-1"></i>
-                                                            Actions
-                                                        </button>
+                                                        <li>
+                                                            <button class="dropdown-item">
+                                                                <i class="bi bi-pencil-square me-2"></i>
+                                                                Edit
+                                                            </button>
+                                                        </li>
 
-                                                        <ul class="dropdown-menu">
+                                                        <li>
+                                                            <button class="dropdown-item text-danger">
+                                                                <i class="bi bi-trash me-2"></i>
+                                                                Delete
+                                                            </button>
+                                                        </li>
 
-                                                            <li>
-                                                                <button class="dropdown-item">
-                                                                    <i class="bi bi-pencil-square me-2"></i>
-                                                                    Edit
-                                                                </button>
-                                                            </li>
-
-                                                            <li>
-                                                                <button class="dropdown-item text-danger">
-                                                                    <i class="bi bi-trash me-2"></i>
-                                                                    Delete
-                                                                </button>
-                                                            </li>
-
-                                                        </ul>
-
-                                                    </div>
-
+                                                    </ul>
                                                 </td>
 
                                             </tr>

@@ -112,10 +112,10 @@
                                 <?= ucfirst($request_status) ?> Borrow Requests
                             </p>
 
-                            <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                            <div class="table-responsive">
 
-                                <table class="table table-hover align-middle mb-0">
-                                    <thead class="table-light text-center text-uppercase">
+                                <table class="table table-hover align-middle mb-0 fs-7">
+                                    <thead class="table-light text-uppercase">
                                         <tr>
                                             <th>#</th>
                                             <th>Request Code</th>
@@ -139,7 +139,7 @@
                                     <tbody>
                                     <?php if(empty($records)): ?>
                                         <tr>
-                                            <td colspan="10" class="text-center">No borrow requests available</td>
+                                            <td colspan="10" class="text-center text-muted py-4">No borrow requests available</td>
                                         </tr>
                                     <?php else: ?>
 
@@ -152,7 +152,7 @@
 
                                         <?php foreach($records as $pr): ?>
                                             <tr>
-                                                <td class="text-center text-muted">
+                                                <td>
                                                     <?= $i++ ?>
                                                 </td>
 
@@ -163,7 +163,7 @@
                                                 </td>
 
                                                 <td>
-                                                    <div class="fw-semibold">
+                                                    <div>
                                                         <?= esc($pr['full_name']) ?>
                                                     </div>
 
@@ -171,9 +171,11 @@
                                                         <?= esc($pr['library_id']) ?>
                                                     </div>
                                                 </td>
-                                                <td class="fw-semibold">
+
+                                                <td>
                                                     <?= esc($pr['book_title']) ?>
                                                 </td>
+
                                                 <td><?= date('F d, Y', strtotime($pr['request_date'])) ?></td>
 
                                                 <?php if($request_status == 'approved' || $request_status == 'expired'): ?>
@@ -199,7 +201,7 @@
                                                 <?php endif; ?>
 
                                                 <?php if($request_status == 'pending' || $request_status == 'approved'): ?>
-                                                <td class="text-center">
+                                                <td>
 
                                                     <div class="dropdown">
 

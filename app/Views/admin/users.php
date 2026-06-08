@@ -158,12 +158,12 @@
             </a>
 
             <!-- TABLE -->
-            <div class="table-responsive rounded-3 border bg-white shadow-sm">
+            <div class="table-responsive">
 
-                <table class="table table-hover align-middle mb-0 fs-6">
+                <table class="table table-hover align-middle mb-0 fs-7">
 
-                    <thead class="table-light border-bottom text-uppercase">
-                        <tr class="text-muted small">
+                    <thead class="table-light text-uppercase">
+                        <tr>
                             <th>#</th>
                             <th>Library ID</th>
                             <th>Full Name</th>
@@ -208,7 +208,7 @@
                                 <tr>
 
                                     <!-- # -->
-                                    <td class="text-muted fw-semibold">
+                                    <td>
                                         <?= $i++ ?>
                                     </td>
 
@@ -220,17 +220,17 @@
                                     </td>
 
                                     <!-- NAME -->
-                                    <td class="fw-semibold">
+                                    <td>
                                         <?= esc($user['full_name']) ?>
                                     </td>
 
                                     <!-- EMAIL -->
-                                    <td class="text-muted">
+                                    <td>
                                         <?= esc($user['email']) ?>
                                     </td>
 
                                     <!-- CONTACT -->
-                                    <td class="text-muted">
+                                    <td>
                                         <?= esc($user['contact_number']) ?>
                                     </td>
 
@@ -270,7 +270,7 @@
                                     </td>
 
                                     <!-- CREATED -->
-                                    <td class="text-muted small">
+                                    <td>
                                         <?= date('M d, Y', strtotime($user['created_at'])) ?>
                                     </td>
 

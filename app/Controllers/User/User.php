@@ -18,7 +18,7 @@ class User extends BaseController
         $reservationModel = new ReservationModel();
 
         $data['currentBorrowings'] = $borrowingModel
-            ->select('borrowings.*, books.title')
+            ->select('borrowings.*, books.title, books.description')
             ->join('books', 'books.id = borrowings.book_id')
             ->where('borrowings.user_id', $userId)
             ->whereIn('borrowings.status', ['borrowed', 'overdue'])

@@ -215,38 +215,29 @@
                 </div>
             <?php endif; ?>
 
-            <div class="table-responsive rounded-3 border bg-white shadow-sm">
+            <div class="table-responsive">
 
-                <table class="table table-hover align-middle mb-0">
+                <table class="table table-hover align-middle mb-0 fs-7">
 
-                    <thead class="table-light border-bottom text-uppercase">
+                    <thead class="table-light text-uppercase">
 
                         <tr>
-
-                            <th class="text-center">#</th>
-
+                            <th>#</th>
                             <th>Reserver</th>
-
                             <th>Book</th>
-
                             <?php if($reservation_status == 'pending'): ?>
                             <th>Queue Position</th>
                             <?php endif; ?>
-
-                            <th class="text-center">Reserved At</th>
-
+                            <th>Reserved At</th>
                             <?php if($reservation_status == 'pending'): ?>
-                            <th class="text-center">Expires At</th>
+                            <th>Expires At</th>
                             <?php endif; ?>
-                            
                             <?php if($reservation_status == 'expired'): ?>
-                            <th class="text-center">Expired At</th>
+                            <th>Expired At</th>
                             <?php endif; ?>
-
                             <?php if($reservation_status == 'all'): ?>
-                            <th class="text-center">Status</th>
+                            <th>Status</th>
                             <?php endif; ?>
-
                         </tr>
 
                     </thead>
@@ -257,7 +248,7 @@
 
                             <tr>
 
-                                <td colspan="8" class="text-center py-4 text-muted">
+                                <td colspan="8" class="text-center text-muted py-4">
                                     No reservations found.
                                 </td>
 
@@ -277,16 +268,17 @@
                                 <tr>
 
                                     <!-- # -->
-                                    <td class="text-center">
+                                    <td>
                                         <?= $i++ ?>
                                     </td>
 
                                     <!-- BORROWER -->
                                     <td>
 
-                                        <div class="fw-semibold">
+                                        <div>
                                             <?= esc($reservation['full_name']) ?>
                                         </div>
+                                        
                                         <div class="text-muted small">
                                             <?= esc($reservation['library_id']) ?>
                                         </div>
@@ -296,7 +288,7 @@
                                     <!-- BOOK -->
                                     <td>
 
-                                        <div class="fw-semibold">
+                                        <div>
                                             <?= esc($reservation['book_title']) ?>
                                         </div>
 
@@ -332,7 +324,7 @@
                                     <?php endif; ?>
 
                                     <!-- RESERVED DATE -->
-                                    <td class="text-center">
+                                    <td>
 
                                         <div>
                                             <?= date('M d, Y', strtotime($reservation['reservation_date'])) ?>
@@ -346,7 +338,7 @@
 
                                     <?php if($reservation_status == 'pending' || $reservation_status == 'expired'): ?>
                                     <!-- EXPIRATION -->
-                                    <td class="text-center">
+                                    <td>
 
                                         <?php if(!empty($reservation['expiration_date'])): ?>
 
@@ -369,7 +361,7 @@
 
                                     <?php if($reservation_status == 'all'): ?>
                                     <!-- STATUS -->
-                                    <td class="text-center">
+                                    <td>
 
                                         <?php if($reservation['status'] == 'pending'): ?>
 

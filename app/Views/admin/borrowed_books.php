@@ -160,12 +160,12 @@
                     <?php endif; ?>
 
                     <!-- TABLE -->
-                    <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                    <div class="table-responsive">
 
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="table table-hover align-middle mb-0 fs-7">
 
-                            <thead class="table-light border-bottom align-middle">
-                                <tr class="text-muted small text-uppercase">
+                            <thead class="table-light text-uppercase">
+                                <tr>
                                     <th>#</th>
                                     <th>Borrowing Code</th>
                                     <th>Borrower</th>
@@ -206,7 +206,7 @@
                                         <tr>
 
                                             <!-- ROW NUMBER -->
-                                            <td class="text-muted fw-semibold text-center">
+                                            <td>
                                                 <?= $i++ ?>
                                             </td>
 
@@ -218,7 +218,7 @@
 
                                             <!-- BORROWER -->
                                             <td>
-                                                <div class="fw-semibold">
+                                                <div>
                                                     <?= esc($bb['borrower_name']) ?>
                                                 </div>
                                                 <div class="text-muted small">
@@ -227,17 +227,17 @@
                                             </td>
 
                                             <!-- BOOK -->
-                                            <td class="fw-semibold">
+                                            <td>
                                                 <?= esc($bb['book_title']) ?>
                                             </td>
 
                                             <!-- BORROW DATE -->
-                                            <td class="text-muted">
+                                            <td>
                                                 <?= date('F d, Y', strtotime($bb['borrow_date'])) ?>
                                             </td>
 
                                             <!-- DUE DATE -->
-                                            <td class="text-muted">
+                                            <td>
                                                 <?= date('F d, Y', strtotime($bb['due_date'])) ?>
                                             </td>
 
@@ -281,7 +281,7 @@
                                             
                                             <!-- ISSUED BY -->
                                             <td>
-                                                <div class="small">
+                                                <div>
                                                     <?= esc($bb['issued_by_name']) ?>
                                                 </div>
                                                 <div class="text-muted small">
@@ -309,7 +309,7 @@
                                             
                                             <?php if($borrow_status == 'borrowed'): ?>
                                             <!-- ACTIONS -->
-                                            <td class="text-center">
+                                            <td>
 
                                                 <div class="dropdown">
 

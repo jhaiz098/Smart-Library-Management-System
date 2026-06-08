@@ -67,7 +67,7 @@ class Admin extends BaseController
             'overdueBorrowed' => $overdueBorrowed,
             'totalFines' => $totalFines,
             'paidFines' => $paidFines,
-            'recentBorrowings' => $recentBorrowings
+            'recentBorrowings' => $recentBorrowings,
         ]);
     }
 

@@ -190,11 +190,11 @@
             <div class="card">
                 <div class="card-body">
 
-                    <div class="table-responsive rounded-3 border bg-white shadow-sm">
+                    <div class="table-responsive">
 
-                        <table class="table table-hover align-middle mb-0">
+                        <table class="table table-hover align-middle mb-0 fs-7">
 
-                            <thead class="table-light text-center text-uppercase">
+                            <thead class="table-light text-uppercase">
 
                                 <tr>
                                     <th>#</th>
@@ -222,7 +222,7 @@
                                 <?php if(empty($records)): ?>
 
                                     <tr>
-                                        <td colspan="9" class="text-center">
+                                        <td colspan="9" class="text-center text-muted py-4">
                                             No fines found.
                                         </td>
                                     </tr>
@@ -241,19 +241,19 @@
                                         <tr>
 
                                             <!-- # -->
-                                            <td class="text-center fw-semibold">
+                                            <td>
                                                 <?= $i++ ?>
                                             </td>
 
                                             <!-- FINE CODE -->
-                                            <td class="text-center">
+                                            <td>
                                                 <span class="badge bg-dark rounded-pill px-3 py-2">
                                                     <?= esc($fine['fine_ref']) ?>
                                                 </span>
                                             </td>
 
                                             <!-- BORROWING CODE -->
-                                            <td class="text-center">
+                                            <td>
                                                 <span class="badge bg-secondary rounded-pill px-3 py-2">
                                                     <?= esc($fine['borrowing_code']) ?>
                                                 </span>
@@ -261,7 +261,7 @@
 
                                             <!-- BORROWER -->
                                             <td>
-                                                <div class="fw-semibold">
+                                                <div>
                                                     <?= esc($fine['borrower_full_name']) ?>
                                                 </div>
 
@@ -272,13 +272,13 @@
 
                                             <!-- BOOK -->
                                             <td>
-                                                <div class="fw-semibold">
+                                                <div>
                                                     <?= esc($fine['book_title']) ?>
                                                 </div>
                                             </td>
 
                                             <!-- AMOUNT -->
-                                            <td class="text-end">
+                                            <td>
                                                 <?php if($fine['status'] === 'paid'): ?>
 
                                                     <span class="fw-bold text-success">
@@ -295,7 +295,7 @@
                                             </td>
 
                                             <!-- STATUS -->
-                                            <td class="text-center">
+                                            <td>
 
                                                 <?php if($fine['status'] === 'paid'): ?>
 
@@ -319,7 +319,7 @@
 
                                                 <?php if(!empty($fine['payer_full_name'])): ?>
 
-                                                    <div class="fw-semibold">
+                                                    <div>
                                                         <?= esc($fine['payer_full_name']) ?>
                                                     </div>
 
@@ -329,14 +329,14 @@
 
                                                 <?php else: ?>
 
-                                                    <span class="text-muted">Not yet paid</span>
+                                                    <span>—</span>
 
                                                 <?php endif; ?>
 
                                             </td>
 
                                             <!-- PAID AT -->
-                                            <td class="text-center">
+                                            <td>
 
                                                 <?php if(!empty($fine['paid_at'])): ?>
 
@@ -360,7 +360,7 @@
                                             <!-- ISSUED BY -->
                                             <td>
 
-                                                <div class="fw-semibold">
+                                                <div>
                                                     <?= esc($fine['issuer_full_name']) ?>
                                                 </div>
 
@@ -371,7 +371,7 @@
                                             </td>
 
                                             <!-- ISSUED AT -->
-                                            <td class="text-center">
+                                            <td>
 
                                                 <div>
                                                     <?= date('M d, Y', strtotime($fine['created_at'])) ?>

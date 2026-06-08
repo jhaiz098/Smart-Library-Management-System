@@ -170,7 +170,7 @@ Dashboard
     <div class="row g-4">
 
         <!-- LEFT: BORROWINGS -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
 
             <div class="card border-0 shadow-sm rounded-3">
 
@@ -180,62 +180,82 @@ Dashboard
 
                 <div class="card-body p-0">
 
-                    <?php if (!empty($currentBorrowings)): ?>
 
                         <div class="table-responsive">
 
-                            <table class="table table-hover table-borderless align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0 fs-7">
 
-                                <thead class="table-light">
+                                <thead class="table-light text-uppercase">
 
                                     <tr>
-                                        <th class="text-muted">Book</th>
-                                        <th class="text-muted">Borrow Date</th>
-                                        <th class="text-muted">Due Date</th>
-                                        <th class="text-muted">Status</th>
+                                        <th>#</th>
+                                        <th>Book</th>
+                                        <th>Borrow Date</th>
+                                        <th>Due Date</th>
+                                        <th>Status</th>
                                     </tr>
 
                                 </thead>
 
                                 <tbody>
+                                    <?php if (!empty($currentBorrowings)): ?>
+                                        <?php $i=1; foreach ($currentBorrowings as $borrowing): ?>
 
-                                    <?php foreach ($currentBorrowings as $borrowing): ?>
+                                            <tr>
 
+                                                <td><?= $i++ ?></td>
+
+                                                <td>
+                                                    <div>
+                                                        <?= esc($borrowing['title']) ?>
+                                                    </div>
+
+                                                    <div class="small text-muted">
+
+                                                        <?php
+                                                            $description = strip_tags($borrowing['description']);
+                                                            echo strlen($description) > 60
+                                                                ? substr($description, 0, 60) . '...'
+                                                                : $description;
+                                                        ?>
+
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    <?= date('M d, Y', strtotime($borrowing['borrow_date'])) ?>
+                                                </td>
+
+                                                <td>
+                                                    <?= date('M d, Y', strtotime($borrowing['due_date'])) ?>
+                                                </td>
+
+                                                <td>
+
+                                                    <?php if (strtotime($borrowing['due_date']) < time()): ?>
+
+                                                        <span class="badge rounded-pill bg-danger px-3 py-2">
+                                                            Overdue
+                                                        </span>
+
+                                                    <?php else: ?>
+
+                                                        <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                                            Active
+                                                        </span>
+
+                                                    <?php endif; ?>
+
+                                                </td>
+
+                                            </tr>
+
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
                                         <tr>
-
-                                            <td class="fw-semibold">
-                                                <?= esc($borrowing['title']) ?>
-                                            </td>
-
-                                            <td class="text-muted">
-                                                <?= date('M d, Y', strtotime($borrowing['borrow_date'])) ?>
-                                            </td>
-
-                                            <td class="text-muted">
-                                                <?= date('M d, Y', strtotime($borrowing['due_date'])) ?>
-                                            </td>
-
-                                            <td>
-
-                                                <?php if (strtotime($borrowing['due_date']) < time()): ?>
-
-                                                    <span class="badge bg-danger px-3 py-2">
-                                                        Overdue
-                                                    </span>
-
-                                                <?php else: ?>
-
-                                                    <span class="badge bg-secondary px-3 py-2">
-                                                        Active
-                                                    </span>
-
-                                                <?php endif; ?>
-
-                                            </td>
-
+                                            <td colspan="5" class="text-center text-muted py-4">No active borrowings found.</td>
                                         </tr>
-
-                                    <?php endforeach; ?>
+                                    <?php endif; ?>
 
                                 </tbody>
 
@@ -243,54 +263,7 @@ Dashboard
 
                         </div>
 
-                    <?php else: ?>
-
-                        <div class="text-center p-4 text-muted">
-                            No active borrowings found.
-                        </div>
-
-                    <?php endif; ?>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- RIGHT: QUICK ACCESS -->
-        <div class="col-lg-4">
-
-            <div class="card border-0 shadow-sm rounded-3 mb-3">
-
-                <div class="card-header bg-white fw-semibold">
-                    Quick Access
-                </div>
-
-                <div class="list-group list-group-flush">
-
-                    <a href="<?= site_url('user/books') ?>" class="list-group-item list-group-item-action">
-                        Browse Books
-                    </a>
-
-                    <a href="<?= site_url('user/my_transactions/borrowings') ?>" class="list-group-item list-group-item-action">
-                        My Transactions
-                    </a>
-
-                    <a href="<?= site_url('user/overdue/list') ?>" class="list-group-item list-group-item-action">
-                        Overdue Books
-                    </a>
-
-                    <a href="<?= site_url('user/fines/unpaid') ?>" class="list-group-item list-group-item-action">
-                        Fines
-                    </a>
-
-                    <a href="<?= site_url('user/profile') ?>" class="list-group-item list-group-item-action">
-                        Profile
-                    </a>
-
-                    <a href="<?= site_url('user/help') ?>" class="list-group-item list-group-item-action">
-                        Help / FAQ
-                    </a>
+                    
 
                 </div>
 

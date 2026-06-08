@@ -9,13 +9,13 @@
 <div class="card">
     <div class="table-responsive">
 
-        <table class="table table-hover align-middle">
+        <table class="table table-hover align-middle mb-0 fs-7">
 
-            <thead class="table-light">
+            <thead class="table-light text-uppercase">
 
-                <tr class="text-muted small text-uppercase">
+                <tr>
 
-                    <th style="width:60px;">#</th>
+                    <th>#</th>
                     <th>Category</th>
                     <th>Book</th>
                     <th>Author</th>
@@ -56,7 +56,7 @@
 
                             <!-- NUMBER -->
 
-                            <td class="text-muted fw-semibold">
+                            <td>
                                 <?= $i++ ?>
                             </td>
 
@@ -74,7 +74,7 @@
 
                             <td>
 
-                                <div class="fw-semibold">
+                                <div>
                                     <?= esc($book['title']) ?>
                                 </div>
 
@@ -93,13 +93,13 @@
 
                             <!-- AUTHOR -->
 
-                            <td class="text-muted">
+                            <td>
                                 <?= esc($book['author']) ?>
                             </td>
 
                             <!-- PUBLISHER -->
 
-                            <td class="text-muted">
+                            <td>
                                 <?= esc($book['publisher']) ?>
                             </td>
 
@@ -131,7 +131,7 @@
 
                             <!-- CREATED -->
 
-                            <td class="small text-muted">
+                            <td>
 
                                 <?= date('M d, Y', strtotime($book['created_at'])) ?>
 

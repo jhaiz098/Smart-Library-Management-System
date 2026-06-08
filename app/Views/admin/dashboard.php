@@ -10,7 +10,7 @@ Dashboard Overview
 
 <?= $this->section('content') ?>
 
-<div class="py-3 px-3">
+<div class="p-3">
 
     <?php if(session()->getFlashdata('success')): ?>
         <div class="alert alert-success">
@@ -91,7 +91,7 @@ Dashboard Overview
                     </h3>
 
                     <div class="text-muted small">
-                        Active Loans
+                        Active Borrowings
                     </div>
 
                 </div>
@@ -154,7 +154,7 @@ Dashboard Overview
     <div class="row g-4">
 
         <!-- RECENT BORROWINGS -->
-        <div class="col-lg-8">
+        <div class="col-lg-12">
 
             <div class="card border-0 shadow-sm rounded-3">
 
@@ -171,8 +171,6 @@ Dashboard Overview
                 </div>
 
                 <div class="card-body p-0">
-
-                    <?php if(!empty($recentBorrowings)): ?>
 
                         <div class="table-responsive">
 
@@ -191,54 +189,64 @@ Dashboard Overview
                                 </thead>
 
                                 <tbody>
+                                    <?php if(!empty($recentBorrowings)): ?>
+                                        <?php $i = 1; foreach($recentBorrowings as $b): ?>
 
-                                    <?php $i = 1; foreach($recentBorrowings as $b): ?>
+                                            <tr>
+
+                                                <td>
+                                                    <?= $i++ ?>
+                                                </td>
+
+                                                <td>
+                                                    <span class="badge bg-dark rounded-pill px-3 py-2">
+                                                        <?= $b['borrowing_code'] ?>
+                                                    </span>
+                                                </td>
+
+                                                <td>
+
+                                                    <div>
+                                                        <?= esc($b['full_name']) ?>
+                                                    </div>
+
+                                                </td>
+
+                                                <td>
+                                                    <?= esc($b['title']) ?>
+                                                </td>
+
+                                                <td>
+
+                                                    <?php if($b['status'] === 'borrowed'): ?>
+
+                                                        <span class="badge bg-primary rounded-pill px-3 py-2">
+                                                            Borrowed
+                                                        </span>
+
+                                                    <?php else: ?>
+
+                                                        <span class="badge bg-success rounded-pill px-3 py-2">
+                                                            Returned
+                                                        </span>
+
+                                                    <?php endif; ?>
+
+                                                </td>
+
+                                            </tr>
+
+                                        <?php endforeach; ?>
+                                    
+                                    <?php else: ?>
 
                                         <tr>
-
-                                            <td>
-                                                <?= $i++ ?>
+                                            <td colspan="5" class="text-center text-muted py-4">
+                                                No borrowing records found.
                                             </td>
-
-                                            <td>
-                                                <span class="badge bg-dark rounded-pill px-3 py-2">
-                                                    <?= $b['borrowing_code'] ?>
-                                                </span>
-                                            </td>
-
-                                            <td>
-
-                                                <div class="fw-semibold">
-                                                    <?= esc($b['full_name']) ?>
-                                                </div>
-
-                                            </td>
-
-                                            <td>
-                                                <?= esc($b['title']) ?>
-                                            </td>
-
-                                            <td>
-
-                                                <?php if($b['status'] === 'borrowed'): ?>
-
-                                                    <span class="badge bg-primary rounded-pill px-3 py-2">
-                                                        Borrowed
-                                                    </span>
-
-                                                <?php else: ?>
-
-                                                    <span class="badge bg-success rounded-pill px-3 py-2">
-                                                        Returned
-                                                    </span>
-
-                                                <?php endif; ?>
-
-                                            </td>
-
                                         </tr>
 
-                                    <?php endforeach; ?>
+                                    <?php endif; ?>
 
                                 </tbody>
 
@@ -246,71 +254,7 @@ Dashboard Overview
 
                         </div>
 
-                    <?php else: ?>
-
-                        <div class="text-center p-4 text-muted">
-                            No borrowing records found.
-                        </div>
-
-                    <?php endif; ?>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="col-lg-4">
-
-            <!-- OVERDUE ALERTS -->
-            <div class="card border-0 shadow-sm rounded-3 mb-3">
-
-                <div class="card-header bg-white fw-semibold">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <span class="text-danger">
-                            Overdue Alerts
-                        </span>
-
-                    </div>
-
-                </div>
-
-                <div class="card-body">
-
-                    <?php if(empty($overdueList)): ?>
-
-                        <div class="text-center py-4">
-
-                            <i class="bi bi-check-circle text-success fs-1"></i>
-
-                            <div class="mt-2 text-muted">
-                                No overdue books.
-                            </div>
-
-                        </div>
-
-                    <?php else: ?>
-
-                        <?php foreach($overdueList as $o): ?>
-
-                            <div class="border rounded p-3 mb-2">
-
-                                <div class="fw-semibold">
-                                    <?= esc($o['full_name']) ?>
-                                </div>
-
-                                <div class="small text-muted">
-                                    <?= esc($o['title']) ?>
-                                </div>
-
-                            </div>
-
-                        <?php endforeach; ?>
-
-                    <?php endif; ?>
+                    
 
                 </div>
 
