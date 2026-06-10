@@ -87,7 +87,6 @@ class Admin extends BaseController
 
         $perPage = 10;
 
-        // SEPARATE INSTANCES
         $active_query = $book_model
             ->select('books.*, categories.name as category_name')
             ->join('categories', 'categories.id = books.category_id')
@@ -104,7 +103,7 @@ class Admin extends BaseController
             ->groupEnd();
         }
 
-        // CATEGORY FILTER (DB BASED)
+        // CATEGORY FILTER 
         if (!empty($category)) {
             $active_query->where('category_id', $category);
         }
@@ -169,7 +168,7 @@ class Admin extends BaseController
             ->groupEnd();
         }
 
-        // CATEGORY FILTER (DB BASED)
+        // CATEGORY FILTER 
         if (!empty($category)) {
             $draft_query->where('category_id', $category);
         }

@@ -207,7 +207,7 @@ class BorrowedBooks extends BaseController
 
         $now = date('Y-m-d H:i:s');
 
-        // update borrowing first
+        // update borrowing
         $borrowing_model->update($id, [
             'status' => 'returned',
             'return_date' => $now,
@@ -284,7 +284,7 @@ class BorrowedBooks extends BaseController
                 $amount = min($amount, $max_fine_amount);
             }
 
-            // INSERT FIRST
+            // INSERT 
             $fine_model->insert([
                 'borrowing_id' => $id,
                 'user_id' => $borrowing['user_id'],

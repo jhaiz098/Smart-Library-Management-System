@@ -127,7 +127,7 @@ class Auth extends BaseController
                 'can_manage_borrow_requests' =>
                     $permissions['can_manage_borrow_requests'] ?? 0,
 
-                'can_manage_returns' =>
+                'can_manage_reservations' =>
                     $permissions['can_manage_reservations'] ?? 0,
 
                 'can_manage_fines' =>

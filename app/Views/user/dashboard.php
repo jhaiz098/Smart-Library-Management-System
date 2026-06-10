@@ -240,7 +240,7 @@ Dashboard
 
                                                     <?php else: ?>
 
-                                                        <span class="badge rounded-pill bg-secondary px-3 py-2">
+                                                        <span class="badge rounded-pill bg-success px-3 py-2">
                                                             Active
                                                         </span>
 

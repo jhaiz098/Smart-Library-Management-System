@@ -222,7 +222,7 @@
                                 <?php if(empty($records)): ?>
 
                                     <tr>
-                                        <td colspan="9" class="text-center text-muted py-4">
+                                        <td colspan="12" class="text-center text-muted py-4">
                                             No fines found.
                                         </td>
                                     </tr>

@@ -12,6 +12,11 @@
 
 <div class="p-3">
 
+<a href="/admin/book_management_active"
+    class="btn btn-secondary mb-3">
+    Back
+</a>
+
     <div class="row justify-content-center">
 
         <div class="col-lg-8">
@@ -33,11 +38,6 @@
                         </div>
 
                     </div>
-
-                    <a href="/admin/book_management_active"
-                       class="btn btn-outline-secondary btn-sm">
-                        Back
-                    </a>
 
                 </div>
 

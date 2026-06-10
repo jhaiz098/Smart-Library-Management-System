@@ -170,8 +170,12 @@
                                     <th>Borrowing Code</th>
                                     <th>Borrower</th>
                                     <th>Book Title</th>
+                                    <?php if($borrow_status == 'all'): ?>
+                                    <th>Processed Date</th>
+                                    <?php else: ?>
                                     <th>Borrow Date</th>
                                     <th>Due Date</th>
+                                    <?php endif; ?>
                                     <th>Status</th>
                                     <th>Issued By</th>
                                     <?php if($borrow_status == 'returned'): ?>
@@ -188,7 +192,7 @@
 
                                 <?php if(empty($records)): ?>
                                     <tr>
-                                        <td colspan="8" class="text-center text-muted py-4">
+                                        <td colspan="11" class="text-center text-muted py-4">
                                             No borrowed books found
                                         </td>
                                     </tr>
@@ -231,6 +235,14 @@
                                                 <?= esc($bb['book_title']) ?>
                                             </td>
 
+                                            <?php if($borrow_status == 'all'): ?>
+                                            <!-- PROCESSED DATE -->
+                                            <td>
+                                                <?= date('F d, Y', strtotime($bb['updated_at'])) ?>
+                                            </td>
+                                            
+                                            <?php else: ?>
+                                            
                                             <!-- BORROW DATE -->
                                             <td>
                                                 <?= date('F d, Y', strtotime($bb['borrow_date'])) ?>
@@ -240,6 +252,7 @@
                                             <td>
                                                 <?= date('F d, Y', strtotime($bb['due_date'])) ?>
                                             </td>
+                                            <?php endif; ?>
 
                                             <!-- STATUS -->
                                             <td>

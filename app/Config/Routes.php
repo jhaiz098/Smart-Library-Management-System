@@ -105,6 +105,10 @@ $routes->get('books/view/(:num)', 'User\Book::book_view/$1');
 $routes->post('books/view/send_borrow_request/(:num)', 'User\Book::send_borrow_request/$1');
 $routes->post('books/view/cancel_borrow_request/(:num)', 'User\Book::cancel_borrow_request/$1');
 
+$routes->get('borrowed_books/borrowed', 'User\BorrowedBooks::borrowed_list');
+$routes->get('borrowed_books/returned', 'User\BorrowedBooks::returned_list');
+$routes->get('borrowed_books/all', 'User\BorrowedBooks::all_list');
+
 $routes->post('books/view/reserve_book/(:num)', 'User\Book::reserve_book/$1');
 $routes->post('books/view/cancel_reserve_book/(:num)', 'User\Book::cancel_reserve_book/$1');
 

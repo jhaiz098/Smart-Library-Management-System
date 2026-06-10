@@ -71,7 +71,7 @@ class Book extends BaseController
             'publisher'       => trim($this->request->getPost('publisher'))
         ];
 
-        // validation (skip availability)
+        // validation
         foreach ($data as $key => $value) {
 
             if (empty($value)) {
@@ -83,12 +83,12 @@ class Book extends BaseController
 
         if ($id) {
 
-            // 🔥 EDIT MODE: DO NOT TOUCH STATUS
+            // EDIT
             $model->update($id, $data);
 
         } else {
 
-            // 🔥 ADD MODE: FORCE ACTIVE
+            // ADD
             $data['status'] = 'active';
 
             $model->insert($data);
@@ -347,7 +347,7 @@ class Book extends BaseController
         $role_id = (int) session()->get('role_id');
         $user_id = session()->get('user_id');
 
-        // ROLE CHECK (adjust based on your system)
+        // ROLE CHECK
         if (!in_array($role_id, [1, 2])) {
             return redirect()->back()
                 ->with('error', 'You are not authorized to approve requests.');
@@ -401,7 +401,7 @@ class Book extends BaseController
         $request = $borrow_request_model->find($id);
         $borrow_days = $library_settings_model->first()['borrow_days'];
 
-        // ROLE CHECK (adjust based on your system)
+        // ROLE CHECK
         if (!in_array($role_id, [1, 2])) {
             return redirect()->back()
                 ->with('error', 'You are not authorized to approve requests.');

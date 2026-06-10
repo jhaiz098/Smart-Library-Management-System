@@ -205,7 +205,7 @@
                             
                             <?php foreach($users as $user): ?>
 
-                                <tr>
+                                <tr class="<?= ($user['id'] == session()->get('user_id') ? 'table-warning' : '') ?>">
 
                                     <!-- # -->
                                     <td>

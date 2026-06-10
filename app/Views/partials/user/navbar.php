@@ -65,6 +65,13 @@
             </li>
 
             <li class="nav-item">
+                <a href="/user/borrowed_books/borrowed"
+                   class="nav-link text-white px-3 py-2 rounded sidebar-link">
+                    <i class="bi bi-journal-bookmark me-2"></i> Borrowed Books
+                </a>
+            </li>
+
+            <li class="nav-item">
                 <a href="/user/my_transactions/borrowings"
                    class="nav-link text-white px-3 py-2 rounded sidebar-link">
                     <i class="bi bi-receipt me-2"></i> My Transactions

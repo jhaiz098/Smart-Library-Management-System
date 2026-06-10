@@ -35,9 +35,8 @@ class User extends BaseController
             ->select('users.*, staff_levels.name as staff_level_name')
             ->join('staff_levels', 'staff_levels.id = users.staff_level_id', 'left');
 
-        // =========================
-        // TYPE FILTER (NEW)
-        // =========================
+        
+        // TYPE FILTER
         if ($data['type'] == 'user') {
             $user_query->where('role_id', 3);
         }
@@ -50,9 +49,7 @@ class User extends BaseController
         }
         // "all" = no filter
 
-        // =========================
         // SEARCH
-        // =========================
         if (!empty($data['search'])) {
             $user_query->groupStart()
                 ->like('full_name', $data['search'])
@@ -61,16 +58,12 @@ class User extends BaseController
             ->groupEnd();
         }
 
-        // =========================
-        // ROLE FILTER (optional extra filter)
-        // =========================
+        // ROLE FILTER
         if (!empty($data['role'])) {
             $user_query->where('role_id', $data['role']);
         }
 
-        // =========================
         // SORT
-        // =========================
         if ($data['sort'] == 'name_asc') {
             $user_query->orderBy('full_name', 'ASC');
         }
@@ -291,7 +284,6 @@ class User extends BaseController
 
         try {
 
-            // generate TEMP-XXXXXX password
             $tempPassword = 'TEMP-' . strtoupper(substr(bin2hex(random_bytes(3)), 0, 6));
 
             // update user password + force change flag

@@ -182,7 +182,6 @@ class Transactions extends BaseController
             $perPage
         );
 
-        // CI4 pager
         $pager = \Config\Services::pager();
         $pager->makeLinks($page, $perPage, $total);
 

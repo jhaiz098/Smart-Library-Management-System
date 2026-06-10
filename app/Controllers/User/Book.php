@@ -42,7 +42,7 @@ class Book extends BaseController
         $borrowing_model = new BorrowingModel();
         $library_settings_model = new LibrarySettingsModel();
 
-        $user_id = session()->get('user_id'); // IMPORTANT
+        $user_id = session()->get('user_id');
 
         $library_settings = $library_settings_model->first();
 
@@ -53,7 +53,7 @@ class Book extends BaseController
         $category = $category_model->find($book['category_id']);
         $book['category_name'] = $category['name'];
         
-        // CURRENT BORROWER (global state)
+        // CURRENT BORROWER
         $current_borrowing = $borrowing_model
             ->where('book_id', $id)
             ->where('status', 'borrowed')
@@ -95,7 +95,7 @@ class Book extends BaseController
         
         $book['user_borrowed'] = $user_borrowing ? true : false;
 
-        // USER BORROW REQUEST (important)
+        // USER BORROW REQUEST
         $user_borrow_request = $borrow_request_model
             ->where('book_id', $id)
             ->where('user_id', $user_id)
@@ -135,7 +135,7 @@ class Book extends BaseController
             ->orderBy('created_at', 'ASC')
             ->findAll();
 
-        // ALL BORROW REQUESTS (admin view logic)
+        // ALL BORROW REQUESTS
         $book['borrow_requests'] = $borrow_request_model
             ->where('book_id', $id)
             ->where('status', 'pending')
@@ -537,7 +537,7 @@ class Book extends BaseController
             ->where('status', 'borrowed')
             ->first();
 
-        // OPTIONAL: prevent duplicate reservation
+        // prevent duplicate reservation
         $existing = $reservation_model
             ->where('book_id', $id)
             ->where('user_id', $user_id)
@@ -614,7 +614,7 @@ class Book extends BaseController
                 ->with('error', 'Reservation not found or already processed.');
         }
 
-        // OPTIONAL: role check (user can only cancel own reservation)
+        // role check (user can only cancel own reservation)
         if (!in_array($role_id, [1, 2, 3])) {
             return redirect()->back()
                 ->with('error', 'You are not authorized.');

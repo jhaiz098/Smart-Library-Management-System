@@ -252,7 +252,7 @@
                     <!-- ACTIVATE / DEACTIVATE -->
                     <?php if($user['status'] == 'activated'): ?>
 
-                        <a href="/admin/users/deactivate/<?= $user['id'] ?>"
+                        <a href="/admin/users/toggle_status/<?= $user['id'] ?>"
                             class="btn btn-danger">
 
                             <i class="bi bi-person-x"></i>
