@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,14 +9,14 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@4.0.0-rc3/dist/css/adminlte.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
 </head>
-<body class="sidebar-collapse layout-fixed sidebar-expand-md">
+<body class="sidebar-collapse layout-fixed sidebar-expand-lg">
     
 <div class="app-wrapper">
     
     <!-- HEADER -->
-    <header class="app-header navbar navbar-expand-md navbar-dark bg-dark-dark-brown">
+    <header class="app-header navbar navbar-expand-sm navbar-dark bg-dark-dark-brown">
         <div class="container-fluid d-flex justify-content-between">
             <div class="d-flex align-items-center">
                 <a href="#" class="btn btn-link text-white fs-5 d-sm-none" data-lte-toggle="sidebar"><i class="bi bi-list"></i></a>
@@ -28,7 +29,7 @@
             </div>
 
             <div>
-                <ul class="navbar-nav d-md-flex d-none ms-auto">
+                <ul class="navbar-nav d-sm-flex d-none ms-auto">
                     <li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
                     <li class="nav-item"><a href="/register" class="nav-link">Register</a></li>
                 </ul>
@@ -36,20 +37,22 @@
         </div>
     </header>
 
-    <nav class="app-sidebar d-lg-none" style="background-color:#5c3d2e;">
-        <ul class="navbar-nav p-3">
-            <li class="nav-item mb-2">
-                <a href="#" class="nav-link text-white px-3 py-2">
-                    Login
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link text-white px-3 py-2">
-                    Register
-                </a>
-            </li>
-        </ul>
-    </nav>
+    <div class="app-sidebar d-lg-none bg-dark-dark-brown">
+        <div class="sidebar-wrapper">
+            <ul class="nav sidebar-menu flex-column">
+                <li class="nav-item mb-2">
+                    <a href="#" class="nav-link text-white px-3 py-2">
+                        Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link text-white px-3 py-2">
+                        Register
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 
     <div class="app-main pb-0">
         
@@ -62,7 +65,7 @@
                     <p class="hero-sub">Smart Library Reservation and Borrowing Management System</p>
                     <p>Reserve books, select your borrow dates, and manage your library visits easily.</p>
                 
-                    <a href="#" class="btn btn-lg text-white m-5 bg-dark-brown">Get Started</a>
+                    <a href="/login" class="btn btn-lg text-white m-5 bg-dark-brown">Get Started</a>
                 
                     <!-- FEATURES -->
 

@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
     
     <style>
         .btn-main {
@@ -42,8 +42,20 @@
                     <p class="text-muted">Create your account</p>
                 </div>
 
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="alert alert-danger">
+                        <?= session()->getFlashdata('error') ?>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- FORM -->
-                <form method="POST" action="/register">
+                <form method="POST" action="/register/auth">
                     <small class="text-muted">
                         Note: Fields marked with <span class="text-danger">*</span> are required.
                     </small>

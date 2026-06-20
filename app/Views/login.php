@@ -7,7 +7,7 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="<?= base_url('css/style.css') ?>">
     <style>
         .btn-main {
             background: #8b5e3c;
@@ -41,17 +41,23 @@
                     <p class="text-muted">Login to your account</p>
                 </div>
 
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="alert alert-danger">
+                        <?= session()->getFlashdata('error') ?>
+                    </div>
+                <?php endif; ?>
+
                 <!-- FORM -->
-                <form>
+                <form method="post" action="/login/auth">
 
                     <div class="mb-3">
                         <label class="form-label">Email or Library Card ID</label>
-                        <input type="email" class="form-control" placeholder="Enter your email or library ID" required>
+                        <input type="text" name="login" class="form-control" placeholder="Enter your email or library ID" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Password</label>
-                        <input type="password" class="form-control" placeholder="Enter your password" required>
+                        <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
                     </div>
 
                     <div class="d-grid mb-3">
@@ -63,7 +69,7 @@
                     <div class="text-center">
                         <small>
                             Don't have an account? 
-                            <a href="register.html" class="text-decoration-none text-dark-brown">
+                            <a href="/register" class="text-decoration-none text-dark-brown">
                                 Register
                             </a>
                         </small>
