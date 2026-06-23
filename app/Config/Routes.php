@@ -99,5 +99,11 @@ $routes->get('my_transactions/borrow_requests', 'User\Transactions::borrow_reque
 $routes->get('my_transactions/reservations', 'User\Transactions::reservations_list');
 $routes->get('my_transactions/all', 'User\Transactions::all_list');
 
-$routes->get('fines/list', 'User\Fines::list');
+$routes->get('overdue/list', 'User\Overdue::list');
+
+$routes->get('fines/unpaid', 'User\Fines::unpaid_list');
+$routes->get('fines/paid', 'User\Fines::paid_list');
+$routes->get('fines/all', 'User\Fines::all_list');
+
+$routes->get('profile', 'User\Profile::display');
 });

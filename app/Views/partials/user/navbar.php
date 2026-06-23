@@ -34,13 +34,13 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="/user/fines/list" class="nav-link text-white px-3 py-2">
+                <a href="/user/fines/unpaid" class="nav-link text-white px-3 py-2">
                     Fines
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link text-white px-3 py-2">
-                    Reports
+                <a href="/user/profile" class="nav-link text-white px-3 py-2">
+                    Profile
                 </a>
             </li>
             <li class="nav-item">

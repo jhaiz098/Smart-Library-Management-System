@@ -152,8 +152,10 @@ class BorrowedBooks extends BaseController
 
         if ($return_date > $due_date) {
 
-            $interval = $due_date->diff($return_date);
-            $days_late = (int) $interval->days;
+            $days_late = (int) ceil(
+                (strtotime($now) - strtotime($borrowing['due_date']))
+                / 86400
+            );
 
             // load settings ONCE (bug fix)
             $settings = $library_settings_model->first();
