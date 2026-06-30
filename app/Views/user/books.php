@@ -1,57 +1,166 @@
 <?= $this->extend('layouts/user_layout') ?>
 
 <?= $this->section('title') ?>
-    User | Books
+User | Books
 <?= $this->endSection() ?>
 
 <?= $this->section('header') ?>
-    Books
+Books
 <?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
 
-<div class="p-3">
+<?php
+    // pagination offset (IMPORTANT)
+    $page = $_GET['page'] ?? 1;
+    $perPage = 10;
+    $i = ($page - 1) * $perPage + 1;
+?>
+
+<div class="py-0 px-3">
+
+    <!-- FLASH MESSAGE -->
     <?php if(session()->getFlashdata('success')): ?>
-        <div class="alert alert-success">
-            <?= session()->getFlashdata('success') ?>
+        <div class="alert alert-success border-0 shadow-sm d-flex align-items-center gap-2">
+            <i class="bi bi-check-circle-fill"></i>
+            <div><?= session()->getFlashdata('success') ?></div>
         </div>
     <?php endif; ?>
-    <div class="card">
-        <div class="card-header fw-bold">Books List</div>
-        <div class="card-body">
 
-            <table class="table table-bordered fs-7">
-                <tr>
-                    <th>Category</th>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Description</th>
-                    <th>Availability</th>
-                    <th>Published Year</th>
-                    <th>Publisher</th>
-                    <th>Action</th>
-                </tr>
-                <?php if(empty($books)): ?>
-                    <tr>
-                        <td colspan="10" class="text-center">No books available</td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach($books as $book): ?>
-                        <tr>
-                            <td><?= $book['category_name'] ?></td>
-                            <td><?= $book['title'] ?></td>
-                            <td><?= $book['author'] ?></td>
-                            <td><?= $book['description'] ?></td>
-                            <td><?= $book['availability'] ?></td>
-                            <td><?= $book['published_year'] ?></td>
-                            <td><?= $book['publisher'] ?></td>
-                            <td><a href="books/view/<?= $book['id'] ?>" class="btn btn-sm btn-primary">View</a></td>
+    <!-- MAIN CARD -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white fw-semibold d-flex justify-content-between align-items-center">
+            <span class="d-flex align-items-center gap-2">
+                <i class="bi bi-journal-bookmark text-primary"></i>
+                Books Catalog
+            </span>
+
+            <span class="text-muted small">
+                <?= isset($books) ? count($books) : 0 ?> books
+            </span>
+        </div>
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+
+                        <tr class="text-muted small">
+                            <th>#</th>
+                            <th>Category</th>
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Description</th>
+                            <th>Availability</th>
+                            <th>Year</th>
+                            <th>Publisher</th>
+                            <th class="text-center">Action</th>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </table>
+
+                    </thead>
+
+                    <tbody>
+
+                        <?php if(empty($books)): ?>
+
+                            <tr>
+                                <td colspan="9" class="text-center p-5 text-muted">
+
+                                    <i class="bi bi-journal-x fs-1 d-block mb-2 opacity-50"></i>
+
+                                    <div class="fw-semibold">No books available</div>
+                                    <small>Check back later for new additions</small>
+
+                                </td>
+                            </tr>
+
+                        <?php else: ?>
+
+                            <?php foreach($books as $book): ?>
+
+                                <tr>
+
+                                    <!-- ROW NUMBER -->
+                                    <td class="text-muted fw-semibold">
+                                        <?= $i++ ?>
+                                    </td>
+
+                                    <td class="text-muted small">
+                                        <?= $book['category_name'] ?>
+                                    </td>
+
+                                    <td class="fw-semibold">
+                                        <?= $book['title'] ?>
+                                    </td>
+
+                                    <td>
+                                        <?= $book['author'] ?>
+                                    </td>
+
+                                    <td class="text-muted small" style="max-width:260px;">
+                                        <?= $book['description'] ?>
+                                    </td>
+
+                                    <td>
+
+                                        <?php if($book['availability'] === 'Available'): ?>
+
+                                            <span class="badge bg-success px-3 py-2">
+                                                Available
+                                            </span>
+
+                                        <?php else: ?>
+
+                                            <span class="badge bg-secondary px-3 py-2">
+                                                <?= $book['availability'] ?>
+                                            </span>
+
+                                        <?php endif; ?>
+
+                                    </td>
+
+                                    <td class="text-muted">
+                                        <?= $book['published_year'] ?>
+                                    </td>
+
+                                    <td class="text-muted">
+                                        <?= $book['publisher'] ?>
+                                    </td>
+
+                                    <td class="text-center">
+
+                                        <a href="books/view/<?= $book['id'] ?>"
+                                           class="btn btn-sm btn-outline-primary px-3">
+
+                                            <i class="bi bi-eye me-1"></i> View
+
+                                        </a>
+
+                                    </td>
+
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        <?php endif; ?>
+
+                    </tbody>
+
+                </table>
+
+                <!-- PAGINATION -->
+                <div class="mt-3 d-flex justify-content-center pb-3">
+                    <?= $pager->links('default', 'bootstrap_full') ?>
+                </div>
+
+            </div>
 
         </div>
+
     </div>
 
 </div>

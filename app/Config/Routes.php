@@ -106,4 +106,7 @@ $routes->get('fines/paid', 'User\Fines::paid_list');
 $routes->get('fines/all', 'User\Fines::all_list');
 
 $routes->get('profile', 'User\Profile::display');
+$routes->post('profile/change_password', 'User\Profile::change_password');
+
+$routes->get('help', 'User\Help::display');
 });

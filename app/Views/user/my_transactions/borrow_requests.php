@@ -4,31 +4,34 @@
     User | My Transactions
 <?= $this->endSection() ?>
 
-<?= $this->section('header') ?>
-    My Transactions
-<?= $this->endSection() ?>
-
 <?= $this->section('render_transactions') ?>
 
-<div class="">
+<div class="py-0">
 
     <div class="card border-0 shadow-sm">
 
+        <!-- HEADER (IMPROVED LIKE BORROWINGS STYLE) -->
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
-            <div class="fw-bold">
-                Borrow Requests
+            <div>
+                <div class="fw-bold">Borrow Requests</div>
+                <div class="text-muted small">
+                    Books you requested for borrowing and their approval status
+                </div>
             </div>
-
-            <span class="badge bg-primary">
-                <?= count($borrow_requests) ?>
-            </span>
 
         </div>
 
+        <!-- BODY -->
         <div class="card-body p-0">
 
             <?php if(!empty($borrow_requests)): ?>
+
+                <?php
+                    $perPage = $pager->getPerPage('default');
+                    $page = $pager->getCurrentPage('default');
+                    $i = ($page - 1) * $perPage + 1;
+                ?>
 
                 <div class="table-responsive">
 
@@ -36,7 +39,8 @@
 
                         <thead class="table-light">
 
-                            <tr>
+                            <tr class="text-muted small">
+                                <th>#</th>
                                 <th>Book</th>
                                 <th>Request Date</th>
                                 <th>Status</th>
@@ -51,6 +55,12 @@
 
                                 <tr>
 
+                                    <!-- # -->
+                                    <td class="text-muted fw-semibold">
+                                        <?= $i++ ?>
+                                    </td>
+
+                                    <!-- BOOK -->
                                     <td>
 
                                         <div class="fw-semibold">
@@ -63,7 +73,8 @@
 
                                     </td>
 
-                                    <td>
+                                    <!-- REQUEST DATE -->
+                                    <td class="text-muted">
 
                                         <?= 
                                             !empty($request['created_at'])
@@ -73,35 +84,36 @@
 
                                     </td>
 
+                                    <!-- STATUS (ALL ROUNDED PILLS) -->
                                     <td>
 
                                         <?php if($request['status'] == 'pending'): ?>
 
-                                            <span class="badge bg-warning text-dark">
+                                            <span class="badge rounded-pill bg-warning text-dark px-3 py-2">
                                                 Pending
                                             </span>
 
                                         <?php elseif($request['status'] == 'approved'): ?>
 
-                                            <span class="badge bg-success">
+                                            <span class="badge rounded-pill bg-success px-3 py-2">
                                                 Approved
                                             </span>
 
                                         <?php elseif($request['status'] == 'rejected'): ?>
 
-                                            <span class="badge bg-danger">
+                                            <span class="badge rounded-pill bg-danger px-3 py-2">
                                                 Rejected
                                             </span>
 
                                         <?php elseif($request['status'] == 'cancelled'): ?>
 
-                                            <span class="badge bg-secondary">
+                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
                                                 Cancelled
                                             </span>
 
                                         <?php else: ?>
 
-                                            <span class="badge bg-dark">
+                                            <span class="badge rounded-pill bg-dark px-3 py-2">
                                                 <?= ucfirst($request['status']) ?>
                                             </span>
 
@@ -109,6 +121,7 @@
 
                                     </td>
 
+                                    <!-- CLAIM CODE -->
                                     <td>
 
                                         <?php if($request['status'] == 'approved'): ?>
@@ -133,8 +146,6 @@
 
                                     </td>
 
-                                    
-
                                 </tr>
 
                             <?php endforeach; ?>
@@ -142,22 +153,25 @@
                         </tbody>
 
                     </table>
-                    
-                    <div class="mt-3 d-flex justify-content-center">
+
+                    <!-- PAGINATION -->
+                    <div class="p-3 d-flex justify-content-center">
                         <?= $pager->links('default', 'bootstrap_full') ?>
                     </div>
+
                 </div>
 
             <?php else: ?>
 
-                <div class="p-4 text-center text-muted">
+                <!-- EMPTY STATE -->
+                <div class="text-center p-5">
 
-                    <div class="mb-2 fs-5">
-                        No borrow requests found.
+                    <div class="mb-2 fs-5 fw-semibold text-muted">
+                        No borrow requests found
                     </div>
 
-                    <div class="small">
-                        Your borrow requests will appear here.
+                    <div class="text-muted small">
+                        Your borrow requests will appear here once you submit one.
                     </div>
 
                 </div>

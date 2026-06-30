@@ -115,6 +115,45 @@
 
             </div>
 
+            <div class="card bg-light border-0 mt-4">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold mb-3">
+                        Borrowing Rules
+                    </h6>
+
+                    <ul class="mb-0 small">
+
+                        <li>
+                            Books must be returned on or before the due date.
+                        </li>
+
+                        <li>
+                            Overdue books incur a fine of
+                            <strong>₱<?= number_format($library_settings['daily_overdue_fine'], 2) ?></strong>
+                            per day.
+                        </li>
+
+                        <li>
+                            The maximum fine per borrowing is
+                            <strong>₱<?= number_format($library_settings['max_fine_amount'], 2) ?></strong>.
+                        </li>
+
+                        <li>
+                            Borrowing privileges may be restricted when unpaid fines exist.
+                        </li>
+
+                        <li>
+                            Approved borrow requests must be claimed before they expire.
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
         </div>
 
         <!-- RIGHT -->
@@ -467,8 +506,7 @@
                             ?>
                             <form action="<?= $btn['action'] ?>"
                                 method="post"
-                                class="mb-2"
-                                onsubmit="return confirm('<?= $confirmMessage ?>')">
+                                class="mb-2">
 
                                 <input type="hidden"
                                     name="user_id"
@@ -478,9 +516,15 @@
                                     name="book_id"
                                     value="<?= $book['id'] ?>">
 
-                                <input type="submit"
-                                    value="<?= $btn['text'] ?>"
-                                    class="btn btn-<?= $btn['color'] ?> w-100">
+                                <button
+                                    type="button"
+                                    class="btn btn-<?= $btn['color'] ?> w-100"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#actionModal<?= md5($btn['action']) ?>">
+
+                                    <?= $btn['text'] ?>
+
+                                </button>
 
                             </form>
 
@@ -491,6 +535,102 @@
                 </div>
 
             </div>
+
+            <?php foreach ($buttons as $btn): ?>
+
+            <div class="modal fade" id="actionModal<?= md5($btn['action']) ?>" tabindex="-1">
+
+                <div class="modal-dialog modal-dialog-centered">
+
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h5 class="modal-title">
+                                <?= esc($btn['text']) ?>
+                            </h5>
+
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <?php if ($btn['type'] === 'borrow_request'): ?>
+
+                                <div class="fw-semibold mb-2">
+                                    Borrow Request
+                                </div>
+
+                                <div class="small text-muted">
+                                    You are about to send a borrow request for this book.
+                                    Make sure you understand the borrowing rules.
+                                </div>
+
+                            <?php elseif ($btn['type'] === 'cancel_borrow_request'): ?>
+
+                                <div class="text-warning fw-semibold mb-2">
+                                    Cancel Borrow Request
+                                </div>
+
+                                <div class="small text-muted">
+                                    This will cancel your borrow request for this book.
+                                </div>
+
+                            <?php elseif ($btn['type'] === 'reservation'): ?>
+
+                                <div class="fw-semibold mb-2">
+                                    Reservation
+                                </div>
+
+                                <div class="small text-muted">
+                                    You will be placed in the reservation queue.
+                                </div>
+
+                            <?php elseif ($btn['type'] === 'cancel_reservation'): ?>
+
+                                <div class="text-danger fw-semibold mb-2">
+                                    Cancel Reservation
+                                </div>
+
+                                <div class="small text-muted">
+                                    This will remove you from the reservation queue. You may lose your position.
+                                </div>
+
+                            <?php else: ?>
+
+                                <div class="small text-muted">
+                                    Are you sure you want to continue?
+                                </div>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                        <div class="modal-footer">
+
+                            <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+
+                            <form action="<?= $btn['action'] ?>" method="post">
+
+                                <input type="hidden" name="user_id" value="<?= session()->get('user_id') ?>">
+                                <input type="hidden" name="book_id" value="<?= $book['id'] ?>">
+
+                                <button type="submit" class="btn btn-primary">
+                                    Confirm
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <?php endforeach; ?>
 
         </div>
 

@@ -9,6 +9,7 @@ use App\Models\BorrowRequestModel;
 use App\Models\BorrowRequestHistoryModel;
 use App\Models\ReservationModel;
 use App\Models\BorrowingModel;
+use App\Models\LibrarySettingsModel;
 
 class Book extends BaseController
 {
@@ -17,13 +18,18 @@ class Book extends BaseController
         $book_model = new BookModel();
         $category_model = new CategoryModel();
 
-        $data['books'] = $book_model->findAll();
+        // PAGINATION ADDED HERE
+        $data['books'] = $book_model
+            ->orderBy('id', 'DESC')
+            ->paginate(10);
+
+        $data['pager'] = $book_model->pager;
 
         foreach ($data['books'] as &$book) {
             $category = $category_model->find($book['category_id']);
             $book['category_name'] = $category['name'] ?? '';
         }
-        
+
         return view('user/books', $data);
     }
 
@@ -34,8 +40,11 @@ class Book extends BaseController
         $borrow_request_model = new BorrowRequestModel();
         $reservation_model = new ReservationModel();
         $borrowing_model = new BorrowingModel();
+        $library_settings_model = new LibrarySettingsModel();
 
         $user_id = session()->get('user_id'); // IMPORTANT
+
+        $library_settings = $library_settings_model->first();
 
         // BOOK
         $book = $book_model->find($id);
@@ -174,7 +183,8 @@ class Book extends BaseController
                             $buttons[] = [
                                 'text' => 'Cancel Borrow Request',
                                 'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
-                                'color' => 'danger'
+                                'color' => 'danger',
+                                'type' => 'cancel_borrow_request'
                             ];
 
                         } elseif ($book['user_borrow_request']['status'] == 'approved') {
@@ -182,7 +192,8 @@ class Book extends BaseController
                             $buttons[] = [
                                 'text' => 'Cancel Approved Request',
                                 'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
-                                'color' => 'danger'
+                                'color' => 'danger',
+                                'type' => 'cancel_borrow_request'
                             ];
 
                         } elseif ($book['user_borrow_request']['status'] == 'rejected') {
@@ -190,7 +201,8 @@ class Book extends BaseController
                             $buttons[] = [
                                 'text' => 'Send Borrow Request Again',
                                 'action' => site_url('user/books/view/send_borrow_request/' . $id),
-                                'color' => 'primary'
+                                'color' => 'primary',
+                                'type' => 'borrow_request'
                             ];
                         }
 
@@ -199,7 +211,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Send Borrow Request',
                             'action' => site_url('user/books/view/send_borrow_request/' . $id),
-                            'color' => 'primary'
+                            'color' => 'primary',
+                            'type' => 'borrow_request'
                         ];
                     }
 
@@ -224,7 +237,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Cancel Reservation',
                             'action' => site_url('user/books/view/cancel_reserve_book/' . $id),
-                            'color' => 'warning'
+                            'color' => 'warning',
+                            'type' => 'cancel_reservation'
                         ];
 
                     }
@@ -240,7 +254,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Join Reservation Queue',
                             'action' => site_url('user/books/view/reserve_book/' . $id),
-                            'color' => 'secondary'
+                            'color' => 'secondary',
+                            'type' => 'reservation'
                         ];
                     }
                 }
@@ -262,7 +277,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Cancel Borrow Request',
                             'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
-                            'color' => 'danger'
+                            'color' => 'danger',
+                            'type' => 'cancel_borrow_request'
                         ];
 
                     } elseif ($book['user_borrow_request']['status'] == 'approved') {
@@ -270,7 +286,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Cancel Approved Request',
                             'action' => site_url('user/books/view/cancel_borrow_request/' . $id),
-                            'color' => 'danger'
+                            'color' => 'danger',
+                            'type' => 'cancel_borrow_request'
                         ];
 
                     } elseif ($book['user_borrow_request']['status'] == 'rejected') {
@@ -278,7 +295,8 @@ class Book extends BaseController
                         $buttons[] = [
                             'text' => 'Send Borrow Request Again',
                             'action' => site_url('user/books/view/send_borrow_request/' . $id),
-                            'color' => 'primary'
+                            'color' => 'primary',
+                            'type' => 'borrow_request'
                         ];
                     }
 
@@ -287,7 +305,8 @@ class Book extends BaseController
                     $buttons[] = [
                         'text' => 'Send Borrow Request',
                         'action' => site_url('user/books/view/send_borrow_request/' . $id),
-                        'color' => 'primary'
+                        'color' => 'primary',
+                        'type' => 'borrow_request'
                     ];
                 }
             }
@@ -307,7 +326,8 @@ class Book extends BaseController
                 $buttons[] = [
                     'text' => 'You Currently Borrowed This Book',
                     'action' => '#',
-                    'color' => 'dark'
+                    'color' => 'dark',
+                    'type' => '#'
                 ];
 
             } else {
@@ -318,7 +338,8 @@ class Book extends BaseController
                     $buttons[] = [
                         'text' => 'Cancel Reservation',
                         'action' => site_url('user/books/view/cancel_reserve_book/' . $id),
-                        'color' => 'warning'
+                        'color' => 'warning',
+                        'type' => 'cancel_reservation'
                     ];
 
                 } else {
@@ -326,7 +347,8 @@ class Book extends BaseController
                     $buttons[] = [
                         'text' => 'Reserve Book',
                         'action' => site_url('user/books/view/reserve_book/' . $id),
-                        'color' => 'secondary'
+                        'color' => 'secondary',
+                        'type' => 'reserve'
                     ];
                 }
             }
@@ -334,7 +356,8 @@ class Book extends BaseController
 
         return view('user/view_book', [
             'book' => $book,
-            'buttons' => $buttons
+            'buttons' => $buttons,
+            'library_settings' => $library_settings
         ]);
     }
 

@@ -1,44 +1,48 @@
 <?= $this->extend('layouts/User/my_transactions_layout') ?>
 
 <?= $this->section('title') ?>
-    User | My Transactions
-<?= $this->endSection() ?>
-
-<?= $this->section('header') ?>
-    My Transactions
+User | My Transactions
 <?= $this->endSection() ?>
 
 <?= $this->section('render_transactions') ?>
 
-<div class="">
+<div class="py-0">
 
-    <div class="card border-0">
+    <div class="card border-0 shadow-sm">
 
+        <!-- HEADER -->
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
 
-            <div class="fw-bold">
-                Current Borrowings
+            <div>
+                <div class="fw-bold">Current Borrowings</div>
+                <div class="text-muted small">
+                    Books you currently borrowed and their due dates
+                </div>
             </div>
-
-            <span class="badge bg-primary">
-                <?= count($borrowings) ?>
-            </span>
 
         </div>
 
+        <!-- BODY -->
         <div class="card-body p-0">
 
             <?php if(!empty($borrowings)): ?>
 
+                <?php
+                    $perPage = $pager->getPerPage('default');
+                    $page = $pager->getCurrentPage('default');
+                    $i = ($page - 1) * $perPage + 1;
+                ?>
+
                 <div class="table-responsive">
 
-                    <table class="table table-hover align-middle mb-0">
+                    <table class="table align-middle mb-0">
 
                         <thead class="table-light">
 
-                            <tr>
+                            <tr class="text-muted small">
+                                <th>#</th>
                                 <th>Book</th>
-                                <th>Borrowed Date</th>
+                                <th>Borrowed</th>
                                 <th>Due Date</th>
                                 <th>Status</th>
                             </tr>
@@ -51,61 +55,59 @@
 
                                 <tr>
 
-                                    <td>
+                                    <!-- # -->
+                                    <td class="text-muted fw-semibold">
+                                        <?= $i++ ?>
+                                    </td>
 
+                                    <!-- BOOK -->
+                                    <td>
                                         <div class="fw-semibold">
                                             <?= esc($borrowing['title']) ?>
                                         </div>
-
-                                        <div class="small text-muted">
+                                        <div class="text-muted small">
                                             <?= esc($borrowing['author']) ?>
                                         </div>
-
                                     </td>
 
-                                    <td>
-
-                                        <?=
-                                            !empty($borrowing['borrow_date'])
+                                    <!-- BORROW DATE -->
+                                    <td class="text-muted">
+                                        <?= !empty($borrowing['borrow_date'])
                                             ? date('M d, Y', strtotime($borrowing['borrow_date']))
-                                            : '-'
-                                        ?>
-
+                                            : '-' ?>
                                     </td>
 
-                                    <td>
-
-                                        <?=
-                                            !empty($borrowing['due_date'])
+                                    <!-- DUE DATE -->
+                                    <td class="text-muted">
+                                        <?= !empty($borrowing['due_date'])
                                             ? date('M d, Y', strtotime($borrowing['due_date']))
-                                            : '-'
-                                        ?>
-
+                                            : '-' ?>
                                     </td>
 
+                                    <!-- STATUS -->
                                     <td>
 
                                         <?php if($borrowing['status'] == 'borrowed'): ?>
 
-                                            <span class="badge bg-success">
+                                            <span class="badge rounded-pill bg-success px-3 py-2">
                                                 Borrowed
                                             </span>
 
                                         <?php elseif($borrowing['status'] == 'returned'): ?>
 
-                                            <span class="badge bg-secondary">
+                                            <span class="badge rounded-pill bg-secondary px-3 py-2">
                                                 Returned
                                             </span>
 
                                         <?php elseif($borrowing['status'] == 'overdue'): ?>
 
-                                            <span class="badge bg-danger">
+                                            <span class="badge rounded-pill bg-danger px-3 py-2">
                                                 Overdue
                                             </span>
 
                                         <?php else: ?>
 
-                                            <span class="badge bg-dark">
+                                            <span class="badge rounded-pill bg-dark px-3 py-2">
                                                 <?= ucfirst($borrowing['status']) ?>
                                             </span>
 
@@ -120,22 +122,25 @@
                         </tbody>
 
                     </table>
-                    
-                    <div class="mt-3 d-flex justify-content-center">
-                        <?= $pager->links('default', 'bootstrap_full') ?>
-                    </div>
+
+                </div>
+
+                <!-- PAGINATION -->
+                <div class="p-3 d-flex justify-content-center">
+                    <?= $pager->links('default', 'bootstrap_full') ?>
                 </div>
 
             <?php else: ?>
 
-                <div class="p-4 text-center text-muted">
+                <!-- EMPTY STATE -->
+                <div class="text-center p-5">
 
-                    <div class="mb-2 fs-5">
-                        No borrowings found.
+                    <div class="mb-2 fs-5 fw-semibold text-muted">
+                        No borrowings found
                     </div>
 
-                    <div class="small">
-                        Books you borrow will appear here.
+                    <div class="text-muted small">
+                        Books you borrow will appear here once you start borrowing.
                     </div>
 
                 </div>

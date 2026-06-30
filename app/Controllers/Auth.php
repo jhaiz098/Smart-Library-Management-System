@@ -52,6 +52,7 @@ class Auth extends BaseController
             'library_id' => $user['library_id'],
             'name' => $user['full_name'],
             'role_id' => $user['role_id'],
+            'email' => $user['email'],
             'logged_in' => true
         ];
 
