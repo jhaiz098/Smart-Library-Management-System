@@ -1,37 +1,70 @@
-<div class="d-flex justify-content-end align-items-center mb-3 flex-wrap gap-2">
-    <!-- LEFT SIDE -->
-    <!-- <div>
-        <a class="btn btn-primary fs-7" href="/admin/book_management/add_book">
-            + Add Book
-        </a>
-    </div> -->
+<form
+    method="get"
+    action="<?= current_url() ?>"
+    class="row g-2"
+>
 
-    <!-- RIGHT SIDE -->
-    <div class="d-flex align-items-center gap-2 flex-wrap">
-        <!-- SEARCH -->
-        <form method="get" action="<?= current_url() ?>" class="d-flex gap-2">
+    <input
+        type="hidden"
+        name="type"
+        value="<?= $request_status ?? 'all' ?>"
+    >
 
-            <input
-                type="search"
-                name="search"
-                placeholder="Search title..."
-                class="form-control"
-                value=""
-            >
+    <div class="col-md-8">
 
-            <button type="submit" class="btn btn-secondary">
-                Search
-            </button>
+        <input
+            type="search"
+            name="search"
+            class="form-control"
+            placeholder="Search request code, borrower, library ID, or book title..."
+            value="<?= $_GET['search'] ?? '' ?>"
+        >
 
-            <!-- SORT -->
-            <select name="sort" class="form-select" onchange="this.form.submit()">
-                <option value="">Sort By</option>
-            </select>
-
-            <!-- FILTER -->
-            <select name="category" class="form-select" onchange="this.form.submit()">
-                <option value="">All Categories</option>
-            </select>
-        </form>
     </div>
-</div>
+
+    <div class="col-md-2">
+
+        <button
+            type="submit"
+            class="btn btn-primary w-100"
+        >
+            Search
+        </button>
+
+    </div>
+
+    <div class="col-md-2">
+
+        <select
+            name="sort"
+            class="form-select"
+            onchange="this.form.submit()"
+        >
+
+            <option value="">Sort By</option>
+
+            <option value="newest"
+                <?= ($sort ?? '') == 'newest' ? 'selected' : '' ?>>
+                Recently Requested
+            </option>
+
+            <option value="oldest"
+                <?= ($sort ?? '') == 'oldest' ? 'selected' : '' ?>>
+                Earliest Requested
+            </option>
+
+            <option value="code_asc"
+                <?= ($sort ?? '') == 'code_asc' ? 'selected' : '' ?>>
+                Request Code Ascending
+            </option>
+
+            <option value="code_desc"
+                <?= ($sort ?? '') == 'code_desc' ? 'selected' : '' ?>>
+                Request Code Descending
+            </option>
+
+        </select>
+
+    </div>
+
+</form>

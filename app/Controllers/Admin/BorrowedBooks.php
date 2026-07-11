@@ -339,7 +339,7 @@ class BorrowedBooks extends BaseController
                 ?: "Borrowing extended by {$extend_days} day(s)."
         ]);
         
-        return redirect()->to(base_url('admin/borrowed_books/borrowed'))
+        return redirect()->to(base_url('admin/borrowed_books'))
             ->with('success', "Borrowing extended by {$extend_days} day(s).");
     }
 

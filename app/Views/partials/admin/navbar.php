@@ -86,7 +86,7 @@
             </li>
 
             <li class="nav-item">
-                <a href="/admin/unpaid_fines_list"
+                <a href="/admin/fines"
                    class="nav-link sidebar-link text-white rounded">
                     <i class="bi bi-cash-coin me-2"></i> Fines
                 </a>

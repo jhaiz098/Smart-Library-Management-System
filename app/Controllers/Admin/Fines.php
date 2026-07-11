@@ -44,13 +44,15 @@ class Fines extends BaseController
         ]);
     }
 
-    public function unpaid_fines_list()
+    public function fines_list()
     {
         $fines_model = new FinesModel();
 
         $perPage = 10;
 
-        $unpaid_fines = $fines_model
+        $type = $this->request->getGet('type') ?? 'all';
+
+        $query = $fines_model
             ->select('
                 fines.*,
 
@@ -65,6 +67,7 @@ class Fines extends BaseController
 
                 books.title as book_title,
 
+                borrowings.borrowing_code,
                 borrowings.due_date,
                 borrowings.return_date
             ')
@@ -90,37 +93,65 @@ class Fines extends BaseController
             ->join(
                 'books',
                 'books.id = borrowings.book_id'
-            )
-
-            ->where('fines.status', 'unpaid')
-
-            ->orderBy('fines.created_at', 'DESC')
-
-            ->paginate($perPage);
-
-        // COMPUTE DAYS LATE
-        foreach ($unpaid_fines as &$fine) {
-
-            $due_date = strtotime($fine['due_date']);
-            $return_date = strtotime($fine['return_date']);
-
-            $seconds_late = $return_date - $due_date;
-
-            $days_late = ceil(
-                $seconds_late / (60 * 60 * 24)
             );
 
-            if ($days_late < 0) {
-                $days_late = 0;
-            }
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS FILTER
+        |--------------------------------------------------------------------------
+        */
 
-            $fine['days_late'] = $days_late;
+        switch ($type) {
+
+            case 'unpaid':
+                $query->where('fines.status', 'unpaid');
+                break;
+
+            case 'paid':
+                $query->where('fines.status', 'paid');
+                break;
+
+            case 'all':
+            default:
+                break;
         }
 
-        return view('admin/fines/unpaid_fines_list', [
-            'unpaid_fines' => $unpaid_fines,
+        $records = $query
+            ->orderBy('fines.created_at', 'DESC')
+            ->paginate($perPage);
+
+        /*
+        |--------------------------------------------------------------------------
+        | COMPUTE DAYS LATE
+        |--------------------------------------------------------------------------
+        */
+
+        foreach ($records as &$fine) {
+
+            $fine['days_late'] = 0;
+
+            if (
+                !empty($fine['due_date']) &&
+                !empty($fine['return_date'])
+            ) {
+
+                $due_date = strtotime($fine['due_date']);
+                $return_date = strtotime($fine['return_date']);
+
+                $seconds_late = $return_date - $due_date;
+
+                $days_late = ceil(
+                    $seconds_late / (60 * 60 * 24)
+                );
+
+                $fine['days_late'] = max(0, $days_late);
+            }
+        }
+
+        return view('admin/fines', [
+            'records' => $records,
             'pager' => $fines_model->pager,
-            'fine_status' => 'unpaid'
+            'fine_status' => $type
         ]);
     }
 
@@ -157,7 +188,7 @@ class Fines extends BaseController
         // UPDATE FINE
         $fines_model->update($fine_id, [
             'status' => 'paid',
-            'paid_at' => date('Y-m-d H:i:s'),
+            'paid_at' => date('Y-m-d 23:59:59'),
             'paid_by' => $user_id,
             'remarks' => $remarks ?: 'Fine paid successfully.'
         ]);

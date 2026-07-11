@@ -11,7 +11,26 @@
 <?= $this->section('content') ?>
 <div class="p-3">
     <div class="card">
-        <div class="card-header fw-bold">Borrow Requests</div>
+        <!-- HEADER -->
+        <div class="card-header bg-white">
+
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        Borrow Requests
+                    </h5>
+
+                    <div class="text-muted small">
+                        Manage and monitor book borrowing requests
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
         <div class="card-body">
             <div class="row">
                 <div class="col-12">
@@ -33,47 +52,66 @@
 
                             <li class="nav-item">
                                 <a href="?type=all"
-                                class="nav-link <?= ($request_status ?? '') == 'all' ? 'active' : '' ?>">
-                                    All
+                                class="nav-link d-flex align-items-center gap-2 <?= ($request_status ?? '') == 'all' ? 'active' : '' ?>">
+
+                                    <i class="bi bi-collection"></i>
+                                    <span>All</span>
+
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a href="?type=pending"
-                                class="nav-link <?= ($request_status ?? '') == 'pending' ? 'active' : '' ?>">
-                                    Pending
+                                class="nav-link d-flex align-items-center gap-2 <?= ($request_status ?? '') == 'pending' ? 'active' : '' ?>">
+
+                                    <i class="bi bi-hourglass-split"></i>
+                                    <span>Pending</span>
+
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a href="?type=approved"
-                                class="nav-link <?= ($request_status ?? '') == 'approved' ? 'active' : '' ?>">
-                                    Approved
+                                class="nav-link d-flex align-items-center gap-2 <?= ($request_status ?? '') == 'approved' ? 'active' : '' ?>">
+
+                                    <i class="bi bi-check-circle"></i>
+                                    <span>Approved</span>
+
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a href="?type=completed"
-                                class="nav-link <?= ($request_status ?? '') == 'completed' ? 'active' : '' ?>">
-                                    Completed
+                                class="nav-link d-flex align-items-center gap-2 <?= ($request_status ?? '') == 'completed' ? 'active' : '' ?>">
+
+                                    <i class="bi bi-check2-all"></i>
+                                    <span>Completed</span>
+
                                 </a>
                             </li>
 
                             <li class="nav-item">
                                 <a href="?type=expired"
-                                class="nav-link <?= ($request_status ?? '') == 'expired' ? 'active' : '' ?>">
-                                    Expired
+                                class="nav-link d-flex align-items-center gap-2 <?= ($request_status ?? '') == 'expired' ? 'active' : '' ?>">
+
+                                    <i class="bi bi-x-circle"></i>
+                                    <span>Expired</span>
+
                                 </a>
                             </li>
 
                         </ul>
 
+                        <?= $this->include('partials/admin/borrow_request_filters') ?>
+                        
+                        <hr>
+                        
                         <div class="card p-3">
                             <p class="fs-6 fw-bold mb-3">
                                 <?= ucfirst($request_status) ?> Borrow Requests
                             </p>
 
-                            <?= $this->include('partials/admin/borrow_request_filters') ?>
+                            
 
                             <div class="table-responsive rounded-3 border bg-white shadow-sm">
 

@@ -76,7 +76,7 @@ $routes->post('users/delete/(:num)', 'Admin\User::delete/$1');
 $routes->post('users/reset_password/(:num)', 'Admin\User::reset_password/$1');
 
 $routes->get('paid_fines_list', 'Admin\Fines::paid_fines_list');
-$routes->get('unpaid_fines_list', 'Admin\Fines::unpaid_fines_list');
+$routes->get('fines', 'Admin\Fines::fines_list');
 $routes->post('unpaid_fines_list/pay_fine', 'Admin\Fines::pay_fine');
 
 $routes->get('library_settings', 'Admin\Setting::library_settings');

@@ -187,7 +187,7 @@ class Book extends BaseController
 
         $perPage = 10;
 
-        // Auto-expire pending requests
+        // Auto-expire approved requests
         $borrow_requests_model
             ->where('status', 'approved')
             ->where('expires_at <=', date('Y-m-d H:i:s'))
@@ -198,6 +198,8 @@ class Book extends BaseController
             ->update();
 
         $type = $this->request->getGet('type') ?? 'all';
+        $search = trim($this->request->getGet('search') ?? '');
+        $sort = $this->request->getGet('sort') ?? 'newest';
 
         $query = $borrow_requests_model
             ->select('
@@ -211,6 +213,12 @@ class Book extends BaseController
             ->join('users as borrower', 'borrower.id = borrow_requests.user_id')
             ->join('books', 'books.id = borrow_requests.book_id');
 
+        /*
+        |--------------------------------------------------------------------------
+        | STATUS FILTER
+        |--------------------------------------------------------------------------
+        */
+
         switch ($type) {
 
             case 'pending':
@@ -222,7 +230,11 @@ class Book extends BaseController
                 break;
 
             case 'completed':
-                $query->whereIn('borrow_requests.status', ['cancelled', 'rejected', 'claimed']);
+                $query->whereIn('borrow_requests.status', [
+                    'cancelled',
+                    'rejected',
+                    'claimed'
+                ]);
                 break;
 
             case 'expired':
@@ -231,18 +243,66 @@ class Book extends BaseController
 
             case 'all':
             default:
-                // no filter
                 break;
         }
 
-        $records = $query
-            ->orderBy('borrow_requests.request_date', 'DESC')
-            ->paginate($perPage);
+        /*
+        |--------------------------------------------------------------------------
+        | SEARCH
+        |--------------------------------------------------------------------------
+        */
+
+        if (!empty($search)) {
+
+            $query->groupStart()
+
+                ->like('borrow_requests.borrow_request_code', $search)
+
+                ->orLike('borrower.library_id', $search)
+
+                ->orLike('borrower.full_name', $search)
+
+                ->orLike('books.title', $search)
+
+            ->groupEnd();
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | SORT
+        |--------------------------------------------------------------------------
+        */
+
+        switch ($sort) {
+
+            case 'code_asc':
+                $query->orderBy('borrow_requests.borrow_request_code', 'ASC');
+                break;
+
+            case 'code_desc':
+                $query->orderBy('borrow_requests.borrow_request_code', 'DESC');
+                break;
+
+            case 'oldest':
+                $query->orderBy('borrow_requests.request_date', 'ASC');
+                break;
+
+            case 'newest':
+            default:
+                $query->orderBy('borrow_requests.request_date', 'DESC');
+                break;
+        }
+
+        $records = $query->paginate($perPage);
 
         return view('admin/borrow_requests', [
             'records' => $records,
             'pager' => $borrow_requests_model->pager,
-            'request_status' => $type
+
+            'request_status' => $type,
+
+            'search' => $search,
+            'sort' => $sort
         ]);
     }
 
